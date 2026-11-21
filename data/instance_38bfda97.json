@@ -1,0 +1,44 @@
+{
+  "instance_id": "38bfda97",
+  "grid_size": 40,
+  "terrain_cost": {
+    "road": 1,
+    "grass": 3,
+    "mud": 5,
+    "ford": 9
+  },
+  "obstacle_density": 0.285,
+  "start": [
+    5,
+    4
+  ],
+  "delivery_stops": [
+    [
+      36,
+      32
+    ],
+    [
+      4,
+      10
+    ],
+    [
+      38,
+      7
+    ],
+    [
+      17,
+      14
+    ],
+    [
+      12,
+      37
+    ]
+  ],
+  "adversary": "blocker",
+  "slip_probability": 0.25,
+  "adversary_search_depth": 6,
+  "twists": [
+    "fuel_limit_with_charging_stations",
+    "teleport_tunnels"
+  ]
+}

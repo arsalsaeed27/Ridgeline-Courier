@@ -1,0 +1,62 @@
+{
+  "charging_stations": [
+    [
+      23,
+      11
+    ],
+    [
+      0,
+      25
+    ],
+    [
+      21,
+      28
+    ],
+    [
+      31,
+      20
+    ]
+  ],
+  "depot_recharges": true,
+  "fuel_capacity": 98,
+  "fuel_burn": {
+    "road": 1,
+    "grass": 1,
+    "mud": 2,
+    "ford": 3
+  },
+  "teleport_tunnels": [
+    [
+      [
+        26,
+        14
+      ],
+      [
+        22,
+        35
+      ]
+    ],
+    [
+      [
+        10,
+        36
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    [
+      [
+        19,
+        6
+      ],
+      [
+        38,
+        12
+      ]
+    ]
+  ],
+  "tunnel_cost": 2,
+  "tunnel_fuel": 1
+}
