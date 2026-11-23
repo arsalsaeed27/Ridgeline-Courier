@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first to see terrain names. Then plan_route with avoid_terrain [\"ford\"].\n\nThen result. We'll call plan_route. Then output.\n\nLet's do that.",
+ "tool_calls": [
+  {
+   "id": "fc_c5eb5c8a-8183-4ea1-83c7-d8b906d6c4b1",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 807,
+  "completion": 60
+ }
+}

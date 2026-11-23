@@ -19,6 +19,7 @@ ambiguous_reading (a defensible alternative reading of a vague request: reported
 """
 from __future__ import annotations
 
+import dataclasses
 import json
 import re
 import sys
@@ -31,7 +32,7 @@ import pandas as pd
 from oel.config import ROOT
 from oel.experiments.stats import wilson_ci
 from oel.llm import plans, tools
-from oel.llm.agent import LLMClient, run_agent
+from oel.llm.agent import LLMClient, mode_label, run_agent
 from oel.stamp import save_table, stamp
 from oel.world.constraints import PlanConstraints, verify_plan
 
@@ -39,6 +40,11 @@ REQUESTS = ROOT / "oel" / "llm" / "requests.json"
 GOLD_DOC = ROOT / "docs" / "llm_gold_answers.md"
 TRACE_DOC = ROOT / "report" / "sections" / "part_d_traces.md"
 COST_TOLERANCE = 0.01
+# Groq models with tool calling, largest first. llama-3.1-8b-instant (in Groq's tool-use table)
+# is not available to our key (404) and allam-2-7b rejects tool calling, so the smallest
+# usable ones are the two 20B models: gpt-oss-20b and its safety-tuned twin gpt-oss-safeguard-20b.
+EVAL_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "openai/gpt-oss-safeguard-20b"]
+CONTRAST_REQUEST = "H1"   # vague request shown for every model in the trace write-up
 FIELDS = ["stop_order", "avoid_terrain", "avoid_cells", "use_tunnels", "fuel_reserve", "max_cost"]
 SUCCESS_LABELS = {"exact_args", "equivalent_args"}
 
@@ -243,7 +249,7 @@ def run_direct(cfg, requests) -> list:
 def run_llm_mode(cfg, requests, validation: bool, log) -> tuple:
     client = LLMClient(cfg)
     rows = []
-    mode = "llm_validation" if validation else "llm"
+    mode = mode_label(cfg.llm_model, validation)
     for req in requests:
         t0 = time.perf_counter()
         run = run_agent(cfg, req["id"], req["text"], client, validation)
@@ -254,7 +260,8 @@ def run_llm_mode(cfg, requests, validation: bool, log) -> tuple:
         gap = None
         if g["cost"] is not None and direct_cost:
             gap = round(100 * (g["cost"] - direct_cost) / direct_cost, 2)
-        rows.append({"id": req["id"], "tier": req["tier"], "mode": mode, "gold": req["gold"]["kind"],
+        rows.append({"id": req["id"], "tier": req["tier"], "mode": mode, "model": cfg.llm_model,
+                     "validation": validation, "gold": req["gold"]["kind"],
                      "result": run["result"]["kind"], "success": g["success"],
                      "labels": ",".join(sorted(g["labels"])), "cost": g["cost"],
                      "direct_cost": direct_cost, "cost_gap_pct": gap, "tool_calls": run["tool_calls"],
@@ -271,6 +278,9 @@ def summarise(rows: list, api_failures: dict) -> tuple:
     summary, errors = [], []
     for mode, grp in df.groupby("mode", sort=False):
         graded = grp[grp.success.notna()]
+        # API failures and cache misses are not LLM mistakes: report them, don't grade them
+        no_answer = graded[graded.labels.isin(["api_failure", "cache_miss"])]
+        graded = graded.drop(no_answer.index)
         amb = graded[graded.labels.str.contains("ambiguous_reading", na=False)]
         counted = graded.drop(amb.index)
         wins = int(counted.success.sum())
@@ -284,7 +294,7 @@ def summarise(rows: list, api_failures: dict) -> tuple:
                         "mean_cost_gap_pct": round(gaps.mean(), 2) if len(gaps) else None,
                         "mean_tool_calls": round(grp.tool_calls.mean(), 2) if mode != "direct" else None,
                         "validator_rejections": int(grp.rejected_calls.sum()),
-                        "api_failures": api_failures.get(mode, 0)})
+                        "runs_lost_to_api_errors": len(no_answer)})
         if mode != "direct":
             counts = {}
             for labels in grp.labels:
@@ -300,41 +310,76 @@ def summarise(rows: list, api_failures: dict) -> tuple:
 
 
 # ---------------------------------------------------------------- trace write-up
+def _trace_lines(mode: str, rid: str, labels: str) -> list:
+    """One saved trace as markdown, every step tagged Sense / Reason / Act."""
+    path = ROOT / "results" / "logs" / "llm_traces" / mode / f"{rid}.json"
+    trace = json.loads(path.read_text(encoding="utf-8"))
+    lines = [f"**Model / mode:** `{mode}`  ", f"**Request ({rid}):** {trace['request']}", ""]
+    for k, s in enumerate(trace["steps"], 1):
+        if s.get("thought"):
+            lines.append(f"{k}. **Reason (Thought):** {' '.join(s['thought'].split())[:500]}")
+        if s.get("action"):
+            lines.append(f"   **Act (Action):** `{s['action']['tool']}({json.dumps(s['action']['arguments'])})`"
+                         f" (validation: {s.get('validation')})")
+            obs = json.dumps(s["observation"])
+            lines.append(f"   **Sense (Observation):** `{obs[:400]}{' ...' if len(obs) > 400 else ''}`")
+        if s.get("answer"):
+            lines.append(f"   **Final answer:** {' '.join(s['answer'].split())[:500]}")
+    lines += ["", f"Result: `{trace['result']}`; grade: **{labels}**", ""]
+    return lines
+
+
 def write_trace_doc(rows) -> str | None:
-    """One success (validation ON) and one failure that validation fixed, labelled with
-    Sense / Reason / Act."""
+    """(1) a successful hard request with validation ON (big model), and (2) a request that
+    failed with validation OFF but succeeded with it ON, preferring one where the validator
+    actually rejected a call (small model first). Steps are tagged Sense / Reason / Act."""
     df = pd.DataFrame(rows)
-    on = df[df["mode"] == "llm_validation"].set_index("id")
-    off = df[df["mode"] == "llm"].set_index("id")
-    fixed = [i for i in on.index if on.loc[i, "success"] and not off.loc[i, "success"]
-             and on.loc[i, "rejected_calls"] > 0]
-    fixed = fixed or [i for i in on.index if on.loc[i, "success"] and not off.loc[i, "success"]]
-    good = [i for i in on.index if on.loc[i, "success"] and on.loc[i, "tier"] == "hard"] or \
-           [i for i in on.index if on.loc[i, "success"]]
-    if not good:
-        return None
-    parts = [f"_{stamp()}_", "", "# Part D: two annotated traces", "",
+    df = df[df["mode"] != "direct"]
+    parts = [f"_{stamp()}_", "", "# Part D: annotated traces", "",
              "Each ReAct step maps onto the agent cycle: **Observation = Sense** (what the agent "
              "perceives from a tool), **Thought = Reason** (the model's reasoning), "
              "**Action = Act** (one tool call).", ""]
-    picks = [("A successful run (validation ON)", "llm_validation", good[0])]
+
+    big_on = mode_label(EVAL_MODELS[0], True)
+    good = df[(df["mode"] == big_on) & (df.success == True)]   # noqa: E712 (pandas)
+    good = good[good.tier == "hard"] if (good.tier == "hard").any() else good
+    if len(good):
+        rid = good.iloc[0]["id"]
+        parts += ["## 1. A successful run", ""] + _trace_lines(big_on, rid, good.iloc[0]["labels"])
+
+    fixed = None
+    for model in reversed(EVAL_MODELS):          # small model first
+        on = df[df["mode"] == mode_label(model, True)].set_index("id")
+        off = df[df["mode"] == mode_label(model, False)].set_index("id")
+        # a real fix: OFF failed as an LLM mistake (not an API error), ON succeeded, and the
+        # validator actually rejected a call on the way
+        cands = [i for i in on.index if on.loc[i, "success"] and not off.loc[i, "success"]
+                 and off.loc[i, "labels"] not in ("api_failure", "cache_miss")
+                 and on.loc[i, "rejected_calls"] > 0]
+        if cands:
+            fixed = (model, cands[0], off.loc[cands[0], "labels"], on.loc[cands[0], "labels"])
+            break
     if fixed:
-        picks.append(("A failure WITHOUT validation ...", "llm", fixed[0]))
-        picks.append(("... that validation fixed", "llm_validation", fixed[0]))
-    for title, mode, rid in picks:
-        trace = json.loads((ROOT / "results" / "logs" / "llm_traces" / mode / f"{rid}.json").read_text(encoding="utf-8"))
-        parts += [f"## {title}: {rid}", "", f"**Request:** {trace['request']}", ""]
-        for k, s in enumerate(trace["steps"], 1):
-            if s.get("thought"):
-                parts.append(f"{k}. **Reason (Thought):** {s['thought'].strip()[:500]}")
-            if s.get("action"):
-                parts.append(f"   **Act (Action):** `{s['action']['tool']}({json.dumps(s['action']['arguments'])})`")
-                obs = json.dumps(s["observation"])
-                parts.append(f"   **Sense (Observation):** `{obs[:400]}{' ...' if len(obs) > 400 else ''}`")
-            if s.get("answer"):
-                parts.append(f"   **Final answer:** {s['answer'].strip()[:500]}")
-        parts += ["", f"Result: {trace['result']}; grade: "
-                  f"{(on if mode == 'llm_validation' else off).loc[rid, 'labels']}", ""]
+        model, rid, off_labels, on_labels = fixed
+        parts += ["## 2. A failure without validation ...", ""]
+        parts += _trace_lines(mode_label(model, False), rid, off_labels)
+        parts += ["## ... that validation fixed", ""]
+        parts += _trace_lines(mode_label(model, True), rid, on_labels)
+    else:
+        parts += ["## 2. No failure was fixed by validation in these runs", "",
+                  "No model failed a request without validation and then succeeded with it.", ""]
+
+    # 3. the same vague request read differently by different models
+    parts += [f"## 3. One request, different readings: {CONTRAST_REQUEST}", "",
+              "\"The stop closest to the depot\" can mean closest by true path cost (stop 4, cost 14 "
+              "via the tunnel (4,2)->(10,36)) or by straight-line distance (stop 1, 7 cells). Both "
+              "models SENSE the same get_instance_info observation; they REASON differently and "
+              "therefore ACT with different stop_order arguments.", ""]
+    for model in EVAL_MODELS:
+        mode = mode_label(model, True)
+        row = df[(df["mode"] == mode) & (df["id"] == CONTRAST_REQUEST)]
+        if len(row):
+            parts += [f"### {model}", ""] + _trace_lines(mode, CONTRAST_REQUEST, row.iloc[0]["labels"])
     TRACE_DOC.parent.mkdir(parents=True, exist_ok=True)
     TRACE_DOC.write_text("\n".join(parts) + "\n", encoding="utf-8")
     return str(TRACE_DOC)
@@ -358,10 +403,12 @@ def run(cfg, log, gold_only: bool = False):
         return None
     rows = run_direct(cfg, requests)
     api_failures = {}
-    for validation in (False, True):
-        mode_rows, fails = run_llm_mode(cfg, requests, validation, log)
-        rows += mode_rows
-        api_failures["llm_validation" if validation else "llm"] = fails
+    for model in EVAL_MODELS:
+        model_cfg = dataclasses.replace(cfg, llm_model=model)
+        for validation in (False, True):
+            mode_rows, fails = run_llm_mode(model_cfg, requests, validation, log)
+            rows += mode_rows
+            api_failures[mode_label(model, validation)] = fails
     summary, errors = summarise(rows, api_failures)
     save_table(pd.DataFrame(rows), "llm_eval_requests")
     save_table(summary, "llm_eval_summary")

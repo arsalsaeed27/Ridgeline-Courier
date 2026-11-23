@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with max_cost=360. No other constraints. Use default algorithm \"ucs\". Then output plan_id.",
+ "tool_calls": [
+  {
+   "id": "fc_cf4175bd-283e-4fb8-b73e-71b76488f605",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 805,
+  "completion": 54
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan route with constraints: avoid ford cells, deliver stop 2 first and then stop 0. Use default algorithm (ucs). Use plan_route with constraints. Avoid terrain type 'ford' or cells with ford? The user said \"Avoid ford cells\" meaning avoid cells that have terrain type ford. So we set avoid_terrain=['ford']. Also stop_order [2,0]. Also we might need to keep defaults. So call plan_route with algorithm 'ucs', avoid_terrain ['ford'], stop_order [2,0]. No other constraints.\n\nLet's produce call.",
+ "tool_calls": [
+  {
+   "id": "fc_68156f09-f253-4c7a-b9dc-a9b19a7117ac",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\",\"avoid_terrain\":[\"ford\"],\"stop_order\":[2,0]}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1379,
+  "completion": 156
+ }
+}

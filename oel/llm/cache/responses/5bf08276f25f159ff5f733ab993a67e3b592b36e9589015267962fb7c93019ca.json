@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with algorithm \"ucs\". No other constraints. Then output plan_id.",
+ "tool_calls": [
+  {
+   "id": "fc_bac2a927-05a2-43bc-9843-590052049fdb",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 808,
+  "completion": 47
+ }
+}

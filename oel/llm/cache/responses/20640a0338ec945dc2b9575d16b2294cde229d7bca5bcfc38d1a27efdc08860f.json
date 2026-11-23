@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with avoid_terrain: ['ford'], stop_order: [2,0]. The rest defaults. Then output result with plan_id.",
+ "tool_calls": [
+  {
+   "id": "fc_9a9c16a3-5271-4a33-95f9-8f00576622e7",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 809,
+  "completion": 60
+ }
+}

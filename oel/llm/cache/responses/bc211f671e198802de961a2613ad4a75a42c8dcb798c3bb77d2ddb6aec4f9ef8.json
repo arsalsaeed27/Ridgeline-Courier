@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with constraints: stop_order [4], avoid_cells [(14,23)], use_tunnels false. Algorithm unspecified, so default ucs. Then we need cost. So we call plan_route. Then output cost. Then final line RESULT: plan_id=... Probably plan_id returned. Let's do.",
+ "tool_calls": [
+  {
+   "id": "fc_07e2d7f7-6b94-4d1e-8456-011b854d5a12",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 818,
+  "completion": 93
+ }
+}

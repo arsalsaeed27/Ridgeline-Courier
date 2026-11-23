@@ -1,0 +1,10 @@
+{
+ "content": "The request refers to \u201clava fields,\u201d a terrain type that does not exist in this instance.  \nRESULT: invalid",
+ "reasoning": "User: \"Avoid the lava fields and deliver all parcels.\" We need to plan route avoiding lava fields. But we don't know which terrain is lava. The instance info says terrain types: road, grass, mud, ford. No lava. So maybe lava fields are a terrain type not present. So request refers to something that does not exist. That is INVALID. According to rules: \"A request is INVALID if it refers to something that does not exist (e.g. a stop index outside 0-4, an unknown terrain or algorithm, a cell outside the grid).\" Lava fields unknown terrain. So invalid. We should respond with RESULT: invalid.",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 1372,
+  "completion": 165
+ }
+}

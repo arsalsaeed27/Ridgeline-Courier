@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need fuel_report to get height climbed.",
+ "tool_calls": [
+  {
+   "id": "fc_0eb23446-a1a3-4630-800b-297c4c5af0e6",
+   "name": "fuel_report",
+   "arguments": "{\"plan_id\":\"77fda132be84\"}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1547,
+  "completion": 35
+ }
+}

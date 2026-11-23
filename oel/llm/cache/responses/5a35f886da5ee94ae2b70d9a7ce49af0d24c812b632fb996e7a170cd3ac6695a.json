@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan a full delivery run from the depot using ucs planner. No constraints. So call plan_route with algorithm 'ucs' only.",
+ "tool_calls": [
+  {
+   "id": "fc_a6433ddc-7216-453a-93f3-66e17774873f",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\"}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1378,
+  "completion": 51
+ }
+}

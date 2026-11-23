@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan cheapest route delivering all parcels. Use plan_route with algorithm \"ucs\". No other constraints. So call plan_route with algorithm: \"ucs\".",
+ "tool_calls": [
+  {
+   "id": "fc_902ca0e1-e5dc-4986-b8c7-2c7860fdbf05",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\"}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1372,
+  "completion": 53
+ }
+}

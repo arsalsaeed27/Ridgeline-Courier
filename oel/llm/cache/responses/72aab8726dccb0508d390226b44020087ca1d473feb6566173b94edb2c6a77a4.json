@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan route with constraints: avoid ford cells, deliver stop 2 first then stop 0. Use default algorithm ucs. No other constraints. So call plan_route with algorithm 'ucs', avoid_terrain ['ford'], stop_order [2,0]. Also maybe avoid_cells? Not needed. Use_tunnels default true. fuel_reserve default. max_cost default. So call plan_route.",
+ "tool_calls": [
+  {
+   "id": "fc_f57af79f-d22a-4aa0-aef9-ffda446b839c",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\",\"avoid_terrain\":[\"ford\"],\"stop_order\":[2,0]}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1379,
+  "completion": 117
+ }
+}

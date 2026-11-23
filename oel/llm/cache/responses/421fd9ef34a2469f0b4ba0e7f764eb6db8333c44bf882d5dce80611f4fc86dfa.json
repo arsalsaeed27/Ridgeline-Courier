@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first to get facts. Then plan_route with no constraints. Use default algorithm \"ucs\". Then answer cost. Then final line with RESULT: plan_id=...",
+ "tool_calls": [
+  {
+   "id": "fc_c3d2b5d7-9dc4-429f-8687-0b665d5a4bcc",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 810,
+  "completion": 60
+ }
+}

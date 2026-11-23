@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with avoid_cells containing the cell of stop 0. We need to get stop 0 cell. So call get_instance_info.",
+ "tool_calls": [
+  {
+   "id": "fc_6a274d72-ead7-41c2-8542-3a6410d1a8ab",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 807,
+  "completion": 59
+ }
+}

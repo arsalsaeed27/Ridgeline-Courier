@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info to get terrain info etc. But user asks \"Avoid the lava fields and deliver all parcels.\" So constraints: avoid_terrain includes 'lava'? We need to confirm terrain names from instance info. So first call get_instance_info.",
+ "tool_calls": [
+  {
+   "id": "fc_2fbdf487-0b34-49a8-99f7-d7df65517c6c",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 802,
+  "completion": 74
+ }
+}

@@ -211,3 +211,28 @@ def test_validator_flags_contradiction_as_infeasible():
     # the same check for an avoided terrain that a stop stands on (stop 1 is on grass)
     clean, error = validator.validate(cfg, "plan_route", {"algorithm": "ucs", "avoid_terrain": ["grass"]})
     assert clean is None and error.startswith("infeasible request") and "stop 1" in error
+
+
+def test_validator_catches_every_injected_fault():
+    """Fault injection, validator side only (no planning): every corruption type is caught."""
+    from oel.experiments import validator_fault_injection as fi
+    cfg = parse_cli([])
+    for gold in ({"algorithm": "ucs"}, {"algorithm": "ucs", "stop_order": [2, 0], "avoid_terrain": ["ford"]}):
+        assert validator.validate(cfg, "plan_route", gold)[1] is None
+        for fault in fi.FAULTS:
+            bad = fi.corrupt(fault, gold, cfg)
+            clean, error = validator.validate(cfg, "plan_route", bad)
+            assert clean is None and error, (fault, bad)
+
+
+def test_recorded_api_failure_replays_and_is_not_graded(cfg, tmp_caches):
+    """A permanent API error (e.g. 413 over the tokens-per-minute limit) is cached, replays as
+    an API failure, and the run is reported as api_failure, not as an LLM mistake."""
+    client = agent.LLMClient(parse_cli([]))
+    messages = [{"role": "system", "content": agent.SYSTEM_PROMPT}, {"role": "user", "content": "x"}]
+    from oel.llm import tools as llm_tools
+    agent.RESPONSE_DIR.mkdir(parents=True)
+    key = client._key(messages, llm_tools.TOOL_SCHEMAS)
+    (agent.RESPONSE_DIR / f"{key}.json").write_text(json.dumps({"api_error": "APIStatusError: 413 TPM"}))
+    run = agent.run_agent(cfg, "T9", "x", client, validation=True)
+    assert run["error"].startswith("api_failure") and run["result"]["kind"] == "none"

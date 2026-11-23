@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "User: \"Get the parcels out fast and stay off the swampy bits.\"\n\nThey want a plan that delivers all parcels fast and avoid swampy bits. Swampy bits presumably refer to mud? Maybe \"swampy bits\" is \"mud\" terrain. So constraints: avoid terrain type 'mud' and maybe 'ford' also? But statement just \"stay off the swampy bits\". Usually swampy= mud. So avoid_terrain: [\"mud\"].\n\nAlso want fast => minimal cost? So use default ucs, minimal path cost. Also we want to deliver all stops, maybe in any order. They didn't specify stop order. So just plan_route with avoid_terrain [\"mud\"].\n\nLet's produce plan_route call.",
+ "tool_calls": [
+  {
+   "id": "fc_005360df-44b3-4714-af28-789441f80589",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\",\"avoid_terrain\":[\"mud\"]}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1376,
+  "completion": 180
+ }
+}

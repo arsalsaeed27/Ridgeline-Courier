@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with use_tunnels: false. No other constraints. Use default algorithm \"ucs\". Then output plan_id.",
+ "tool_calls": [
+  {
+   "id": "fc_1eb1b235-2e05-4f1b-a6fc-fca81d5dfb6a",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 804,
+  "completion": 55
+ }
+}

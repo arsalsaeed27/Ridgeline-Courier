@@ -1,0 +1,10 @@
+{
+ "content": "The planner found a feasible route that delivers all parcels while maintaining at least 30 units of fuel at all times. The route uses two tunnels, three refuels, and has a total cost of 391.0.\n\nRESULT: plan_id=64cd78fdcd02",
+ "reasoning": "We have plan. The user asked: \"Deliver all parcels, but always keep at least 30 units of fuel in the tank.\" We provided plan. We should answer briefly and end with RESULT line.",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 1542,
+  "completion": 106
+ }
+}

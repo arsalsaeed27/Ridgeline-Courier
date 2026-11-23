@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan route delivering all parcels but never drive through ford cells. So avoid terrain \"ford\". Use default algorithm ucs. No other constraints. So call plan_route with avoid_terrain [\"ford\"]. Also maybe avoid_cells? Not needed. Use default fuel reserve. So call plan_route.",
+ "tool_calls": [
+  {
+   "id": "fc_c49255bb-68bf-4f2c-b06a-d2ddf20f4f1d",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\",\"avoid_terrain\":[\"ford\"]}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1377,
+  "completion": 91
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "The user wants a route that delivers all 5 parcels quickly and stays off swampy bits. \"Swampy bits\" likely refers to terrain type \"swamp\" or maybe \"mud\"? The user says \"stay off the swampy bits\". We need to interpret that as avoid terrain type \"swamp\". We need to call get_instance_info first to get facts. Then plan_route with avoid_terrain: [\"swamp\"]. Also maybe they want fast: maybe no max_cost constraint? They didn't specify algorithm, so default \"ucs\". So plan_route with algorithm \"ucs\" and avoid_terrain [\"swamp\"]. No other constraints. Then we output plan_id. Then final line: RESULT: plan_id=...",
+ "tool_calls": [
+  {
+   "id": "fc_1cfad071-651b-48f2-902d-d244b0779b3f",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 806,
+  "completion": 166
+ }
+}

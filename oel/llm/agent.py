@@ -57,6 +57,11 @@ class LLMError(Exception):
     """The model itself produced an unusable reply (e.g. a malformed tool call)."""
 
 
+class APIFailure(Exception):
+    """The API refused the request for a reason that is not the model's fault and that a retry
+    won't fix (e.g. 413: request larger than our tier's tokens-per-minute limit)."""
+
+
 class LLMClient:
     """Groq chat completions with an on-disk cache and retry-with-backoff."""
 
@@ -75,11 +80,19 @@ class LLMClient:
         key = self._key(messages, tool_schemas)
         path = RESPONSE_DIR / f"{key}.json"
         if path.exists():
-            return json.loads(path.read_text(encoding="utf-8"))
+            cached = json.loads(path.read_text(encoding="utf-8"))
+            if "api_error" in cached:        # a recorded permanent API failure: replay it
+                raise APIFailure(cached["api_error"])
+            return cached
         if not self.cfg.llm_live:
             raise CacheMiss(f"LLM reply {key[:12]} not cached; rerun with --live")
-        reply = self._call_api(messages, tool_schemas)
         RESPONSE_DIR.mkdir(parents=True, exist_ok=True)
+        try:
+            reply = self._call_api(messages, tool_schemas)
+        except APIFailure as err:
+            # cache permanent failures too, so a replay reproduces exactly what happened
+            path.write_text(json.dumps({"api_error": str(err)}), encoding="utf-8")
+            raise
         path.write_text(json.dumps(reply, indent=1), encoding="utf-8")
         return reply
 
@@ -108,6 +121,12 @@ class LLMClient:
             except groq.BadRequestError as err:
                 # e.g. "tool_use_failed": the MODEL wrote a malformed tool call -> LLM mistake
                 raise LLMError(str(err)[:300]) from None
+            except groq.APIStatusError as err:
+                # e.g. 413 "request too large" for our tier's tokens-per-minute limit: not the
+                # model's fault, and retrying the same request can't help
+                self.api_failures += 1
+                self.log.warning("API failure (not retried): %s: %s", type(err).__name__, str(err)[:400])
+                raise APIFailure(f"{type(err).__name__}: {str(err)[:400]}") from None
         msg = resp.choices[0].message
         return {
             "content": msg.content or "",
@@ -117,6 +136,11 @@ class LLMClient:
             "finish_reason": resp.choices[0].finish_reason,
             "usage": {"prompt": resp.usage.prompt_tokens, "completion": resp.usage.completion_tokens},
         }
+
+
+def mode_label(model: str, validation: bool) -> str:
+    """e.g. 'gpt-oss-20b_val-on': names the trace folder and the rows of the result tables."""
+    return f"{model.split('/')[-1]}_val-{'on' if validation else 'off'}"
 
 
 def parse_result(text: str) -> dict:
@@ -146,6 +170,9 @@ def run_agent(cfg, request_id: str, request_text: str, client: LLMClient, valida
             break
         except CacheMiss as err:
             run["error"] = f"cache_miss: {err}"
+            break
+        except APIFailure as err:
+            run["error"] = f"api_failure: {err}"
             break
         except Exception as err:               # API still failing after the retries
             run["error"] = f"api_failure: {type(err).__name__}: {str(err)[:200]}"
@@ -178,7 +205,7 @@ def run_agent(cfg, request_id: str, request_text: str, client: LLMClient, valida
     run["plan_calls"] = [s["action"]["arguments"] for s in steps
                          if s.get("action") and s["action"]["tool"] == "plan_route"
                          and isinstance(s["action"]["arguments"], dict)]
-    save_trace(run, "llm_validation" if validation else "llm")
+    save_trace(run, mode_label(cfg.llm_model, validation))
     return run
 
 

@@ -1,0 +1,1805 @@
+{
+ "key": "e29f20196ff373cc",
+ "rows": [
+  {
+   "request": "E1",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "E1",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.55,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "E1",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.52,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "E1",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "E1",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\"}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "E1",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 16.72,
+   "detail": "cost 329.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E1",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E1",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 10.57,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "E1",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.34,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "E1",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "E2",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "E2",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.55,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "E2",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.52,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "E2",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "E2",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\"}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "E2",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 16.61,
+   "detail": "cost 329.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E2",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E2",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 11.28,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "E2",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.34,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "E2",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "E3",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "E3",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.55,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "E3",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.52,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "E3",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "E3",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\"}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "E3",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 16.72,
+   "detail": "cost 329.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E3",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E3",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 10.57,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "E3",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.34,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "E3",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "E4",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "E4",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.55,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "E4",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.52,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "E4",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "E4",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\"}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "E4",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 16.72,
+   "detail": "cost 329.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E4",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E4",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 10.57,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "E4",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.34,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "E4",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "E5",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "E5",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.55,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "E5",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.52,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "E5",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "E5",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\"}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "E5",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 16.72,
+   "detail": "cost 329.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E5",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "E5",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 10.57,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "E5",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.34,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "E5",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "M1",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [7, 3]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "M1",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3], \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 5.97,
+   "detail": "cost 426.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "M1",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3], \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 6.1,
+   "detail": "cost 426.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "M1",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3], \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "M1",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"stop_order\": [3]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "M1",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3], \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 6.98,
+   "detail": "cost 350.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M1",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3], \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M1",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3], \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 6.12,
+   "detail": "the cheapest plan under the other constraints costs 426, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "M1",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.34,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "M1",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [3], \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "M2",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "M2",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 9.62,
+   "detail": "cost 465.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "M2",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 9.58,
+   "detail": "cost 465.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "M2",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\", \"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "M2",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"avoid_terrain\": [\"ford\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "M2",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 12.16,
+   "detail": "cost 364.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M2",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M2",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 9.36,
+   "detail": "the cheapest plan under the other constraints costs 465, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "M2",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.27,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "M2",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "M3",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "M3",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.26,
+   "detail": "cost 480.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "M3",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.31,
+   "detail": "cost 480.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "M3",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "M3",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"use_tunnels\": false}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "M3",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 16.64,
+   "detail": "cost 428.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M3",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M3",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 10.95,
+   "detail": "the cheapest plan under the other constraints costs 480, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "M3",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.34,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "M3",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "M4",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 360, \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "M4",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 360, \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 11.61,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "M4",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 360, \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 12.5,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "M4",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 360, \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "M4",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"max_cost\": 360}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "M4",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 360, \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 19.1,
+   "detail": "cost 329.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M4",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 360, \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M4",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 11.28,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "M4",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 360, \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.4,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "M4",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 360, \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "M5",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 30, \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "M5",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 30, \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 9.98,
+   "detail": "cost 391.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "M5",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 30, \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 10.94,
+   "detail": "cost 391.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "M5",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 30, \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "M5",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"fuel_reserve\": 30}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "M5",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 16.61,
+   "detail": "cost 329.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M5",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "M5",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 30, \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 10.78,
+   "detail": "the cheapest plan under the other constraints costs 391, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "M5",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 30, \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.31,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "M5",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 30, \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "H1",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [7, 4]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "H1",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [4], \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 5.29,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "H1",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [4], \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 5.39,
+   "detail": "cost 353.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "H1",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [4], \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "H1",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"stop_order\": [4]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "H1",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [4], \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 8.4,
+   "detail": "cost 329.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H1",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [4], \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H1",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [4], \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 5.27,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "H1",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [4, 4]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.43,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [4, 4] lists a stop twice"
+  },
+  {
+   "request": "H1",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"stop_order\": [4], \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "H2",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [7, 2, 0]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "H2",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [2, 0], \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 1.31,
+   "detail": "cost 510.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "H2",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [2, 0], \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 1.32,
+   "detail": "cost 510.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "H2",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\", \"lava\"], \"stop_order\": [2, 0]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "H2",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [2, 0]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "H2",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [2, 0], \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 1.98,
+   "detail": "cost 441.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H2",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [2, 0], \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H2",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [2, 0], \"max_cost\": -10}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 1.17,
+   "detail": "the cheapest plan under the other constraints costs 510, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "H2",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [2, 0, 2]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.26,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [2, 0, 2] lists a stop twice"
+  },
+  {
+   "request": "H2",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [2, 0], \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "H3",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "H3",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 9.62,
+   "detail": "cost 465.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "H3",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 9.58,
+   "detail": "cost 465.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "H3",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\", \"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "H3",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"avoid_terrain\": [\"ford\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "H3",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 12.16,
+   "detail": "cost 364.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H3",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H3",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 9.36,
+   "detail": "the cheapest plan under the other constraints costs 465, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "H3",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.27,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "H3",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"ford\"], \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "H4",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [7, 4], \"avoid_cells\": [[14, 23]]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "H4",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [4], \"avoid_cells\": [[14, 23], [45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 4.89,
+   "detail": "cost 627.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "H4",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [4], \"avoid_cells\": [[14, 23], [0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 4.98,
+   "detail": "cost 627.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "H4",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [4], \"avoid_cells\": [[14, 23]], \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "H4",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"use_tunnels\": false, \"stop_order\": [4], \"avoid_cells\": [[14, 23]]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "H4",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [4], \"avoid_cells\": [[14, 23]], \"fuel_reserve\": -5}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 6.99,
+   "detail": "cost 525.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H4",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [4], \"avoid_cells\": [[14, 23]], \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H4",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [4], \"avoid_cells\": [[14, 23]], \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 5.03,
+   "detail": "the cheapest plan under the other constraints costs 627, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "H4",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [4, 4], \"avoid_cells\": [[14, 23]]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.38,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [4, 4] lists a stop twice"
+  },
+  {
+   "request": "H4",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"use_tunnels\": false, \"stop_order\": [4], \"avoid_cells\": [[14, 23], [36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "H5",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 10, \"use_tunnels\": false, \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "H5",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 10, \"use_tunnels\": false, \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 12.39,
+   "detail": "cost 448.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "H5",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 10, \"use_tunnels\": false, \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "silent_ignore",
+   "planning_seconds": 12.78,
+   "detail": "cost 448.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "H5",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 10, \"use_tunnels\": false, \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "H5",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"fuel_reserve\": 10, \"use_tunnels\": false}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "H5",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": -5, \"use_tunnels\": false}",
+   "without_validation": "silent_wrong_plan",
+   "planning_seconds": 16.64,
+   "detail": "cost 428.0",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H5",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 500, \"use_tunnels\": false}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "H5",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 10, \"use_tunnels\": false, \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 12.54,
+   "detail": "the cheapest plan under the other constraints costs 448, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "H5",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 10, \"use_tunnels\": false, \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.43,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "H5",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"fuel_reserve\": 10, \"use_tunnels\": false, \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "A2",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 100, \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "A2",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 100, \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 10.86,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost 100",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "A2",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 100, \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 10.57,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost 100",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "A2",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 100, \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "A2",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"max_cost\": 100}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "A2",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 100, \"fuel_reserve\": -5}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 14.58,
+   "detail": "the cheapest plan under the other constraints costs 329, above max_cost 100",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "A2",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 100, \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "A2",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": -10}",
+   "without_validation": "wasted_search",
+   "planning_seconds": 11.28,
+   "detail": "the cheapest plan under the other constraints costs 353, above max_cost -10",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "A2",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 100, \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.42,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "A2",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"max_cost\": 100, \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "A3",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]], \"stop_order\": [7]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "A3",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32], [45, 3]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "A3",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32], [0, 4]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "A3",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]], \"avoid_terrain\": [\"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "A3",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "A3",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]], \"fuel_reserve\": -5}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "A3",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]], \"fuel_reserve\": 500}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "A3",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]], \"max_cost\": -10}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "A3",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32]], \"stop_order\": [3, 3]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "A3",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_cells\": [[36, 32], [36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  },
+  {
+   "request": "A5",
+   "fault": "nonexistent_stop",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"mud\"], \"stop_order\": [7]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "IndexError: list assignment index out of range",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop 7 does not exist (valid stops are 0-4)"
+  },
+  {
+   "request": "A5",
+   "fault": "out_of_bounds_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"mud\"], \"avoid_cells\": [[45, 3]]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.05,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [45, 3] is outside the 40x40 grid"
+  },
+  {
+   "request": "A5",
+   "fault": "blocked_cell",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"mud\"], \"avoid_cells\": [[0, 4]]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.05,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: cell [0, 4] is already blocked (a wall), avoiding it means nothing"
+  },
+  {
+   "request": "A5",
+   "fault": "unknown_terrain",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"mud\", \"lava\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "ValueError: 'lava' is not in list",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: terrain 'lava' does not exist; valid terrains: ['road', 'grass', 'mud', 'ford']"
+  },
+  {
+   "request": "A5",
+   "fault": "unknown_algorithm",
+   "arguments": "{\"algorithm\": \"astar9000\", \"avoid_terrain\": [\"mud\"]}",
+   "without_validation": "crash",
+   "planning_seconds": 0.0,
+   "detail": "KeyError: 'astar9000'",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: algorithm 'astar9000' does not exist; available: ['ucs']"
+  },
+  {
+   "request": "A5",
+   "fault": "negative_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"mud\"], \"fuel_reserve\": -5}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.07,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "A5",
+   "fault": "absurd_reserve",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"mud\"], \"fuel_reserve\": 500}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.0,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: fuel_reserve must be in 0..97"
+  },
+  {
+   "request": "A5",
+   "fault": "negative_max_cost",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"mud\"], \"max_cost\": -10}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.05,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: max_cost must be in (0, 100000]"
+  },
+  {
+   "request": "A5",
+   "fault": "duplicate_stops",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"mud\"], \"stop_order\": [3, 3]}",
+   "without_validation": "misleading_infeasible",
+   "planning_seconds": 0.03,
+   "detail": "no route satisfies the constraints (search space exhausted)",
+   "caught_by_validator": true,
+   "validator_message": "invalid arguments for plan_route: stop_order [3, 3] lists a stop twice"
+  },
+  {
+   "request": "A5",
+   "fault": "stop_cell_contradiction",
+   "arguments": "{\"algorithm\": \"ucs\", \"avoid_terrain\": [\"mud\"], \"avoid_cells\": [[36, 32]]}",
+   "without_validation": "correct_error",
+   "planning_seconds": 0.0,
+   "detail": "stop(s) [0] lie on avoided cells/terrain, so they can't be delivered",
+   "caught_by_validator": true,
+   "validator_message": "infeasible request (contradiction, nothing was planned): stop 0 is at [36, 32], which avoid_cells forbids, so it can never be delivered. If this is what the user asked for, the request is infeasible."
+  }
+ ]
+}

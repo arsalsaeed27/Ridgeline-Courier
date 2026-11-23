@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan route with max_cost 360. Use plan_route with max_cost=360. No other constraints. Use default algorithm ucs.",
+ "tool_calls": [
+  {
+   "id": "fc_233dff8e-7d41-4f05-b2d0-03fafc9a24a3",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\",\"max_cost\":360}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1375,
+  "completion": 59
+ }
+}

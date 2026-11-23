@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with avoid_terrain: lava. No other constraints. Use default algorithm \"ucs\". Then output plan_id.",
+ "tool_calls": [
+  {
+   "id": "fc_b50f962b-5096-42d1-a669-068ae5539bb5",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 802,
+  "completion": 55
+ }
+}

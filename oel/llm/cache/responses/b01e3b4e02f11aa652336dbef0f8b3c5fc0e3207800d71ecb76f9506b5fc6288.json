@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with stop_order [3]. Use default algorithm ucs. No other constraints. Then output plan_id.",
+ "tool_calls": [
+  {
+   "id": "fc_93be986d-2d4e-49cf-99af-94d834c25ba2",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 803,
+  "completion": 54
+ }
+}

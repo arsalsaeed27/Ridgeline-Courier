@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with constraints: avoid_terrain: ['ford']; stop_order: [2,0]. Use default algorithm 'ucs'. No other constraints. Then output result.",
+ "tool_calls": [
+  {
+   "id": "fc_e05a15b3-e91e-4733-afea-ee45fa8b73dd",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 809,
+  "completion": 65
+ }
+}

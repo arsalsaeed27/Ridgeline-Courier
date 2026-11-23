@@ -1,0 +1,10 @@
+{
+ "content": "The planner has produced a feasible route that avoids tunnels.\n\nRESULT: plan_id=e2f0f91082ae",
+ "reasoning": "We need to answer briefly. Provide plan_id. The plan returned feasible. The user requested a route that does not use any tunnels. That's satisfied. So final line: RESULT: plan_id=e2f0f91082ae.",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 973,
+  "completion": 80
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to get instance info first. Then plan_route with stop_order: the stop closest to the depot first. Need to know which stop is closest. We don't know without calling get_instance_info. So call get_instance_info.\n\n",
+ "tool_calls": [
+  {
+   "id": "fc_3deb5802-415c-4561-8331-2690b72d2537",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 806,
+  "completion": 67
+ }
+}

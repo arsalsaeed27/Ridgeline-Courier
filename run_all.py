@@ -8,7 +8,7 @@ import sys
 import time
 
 from oel.config import parse_cli
-from oel.experiments import fuel_reserve, llm_eval, standin_demo
+from oel.experiments import fuel_reserve, llm_eval, standin_demo, validator_fault_injection
 from oel.stamp import get_logger, stamp
 from oel.world.plots import plot_elevation_map, plot_instance_map
 
@@ -53,6 +53,9 @@ def main(argv=None):
     # LLM dispatcher: 20 requests x (direct, LLM, LLM + validation). Replays the committed LLM
     # and plan caches (no API key needed, a few seconds); --live calls Groq on a cache miss.
     llm_eval.run(cfg, log)
+    # validator fault injection: 18 gold calls x 10 corruptions, no API. The full run computes it
+    # (~15-25 min); --quick reuses the cached results (seconds) or skips if the config changed.
+    validator_fault_injection.run(cfg, log, compute=not cfg.quick)
 
     # ------------------------------------------------------------ Part E (Turn 1: M. Arsal Saeed)
     # TODO: summary figures for the UI / report.

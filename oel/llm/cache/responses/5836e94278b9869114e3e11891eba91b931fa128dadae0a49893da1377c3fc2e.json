@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We must call get_instance_info first? The user request refers to fuel reserve: we need to know fuel capacity etc. But maybe not necessary? According to rules: If request depends on facts about map, call get_instance_info. Fuel reserve constraint may be independent of map? We still might need to know fuel capacity to see if constraint feasible. But better call get_instance_info.\n\nThen call plan_route with fuel_reserve: 30. Use default algorithm ucs. Provide no other constraints.\n\nOutput: RESULT: plan_id=... or infeasible.\n\nLet's do.\n\n",
+ "tool_calls": [
+  {
+   "id": "fc_cf88366b-c95f-4904-b6d6-4deb0bebd041",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 811,
+  "completion": 135
+ }
+}

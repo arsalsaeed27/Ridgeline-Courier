@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call plan_route with algorithm 'ucs', no other constraints. So produce plan_id. Let's call plan_route.",
+ "tool_calls": [
+  {
+   "id": "fc_60ef7674-0ac4-4baa-b9fd-7ca427a85039",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\"}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1378,
+  "completion": 46
+ }
+}

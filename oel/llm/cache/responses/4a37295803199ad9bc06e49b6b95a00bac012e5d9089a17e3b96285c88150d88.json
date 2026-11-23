@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first to know which stop is closest. Then plan_route with stop_order specifying that stop first. We need to know stop indices 0-4. We need to find which is closest. So call get_instance_info.",
+ "tool_calls": [
+  {
+   "id": "fc_6b3d5377-c4e0-4f13-bfc4-d2e475d15890",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 806,
+  "completion": 72
+ }
+}

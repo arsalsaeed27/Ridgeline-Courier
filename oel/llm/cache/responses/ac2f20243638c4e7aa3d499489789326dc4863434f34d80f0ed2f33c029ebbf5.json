@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We have plan_id. Need simulate with seed 7.",
+ "tool_calls": [
+  {
+   "id": "fc_3a0e0f40-ac74-4ce1-80e9-8562bf573962",
+   "name": "simulate",
+   "arguments": "{\"plan_id\":\"cd656f4d09a7\",\"seed\":7}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 971,
+  "completion": 45
+ }
+}

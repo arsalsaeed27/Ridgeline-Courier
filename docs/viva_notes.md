@@ -74,7 +74,21 @@ A: Before a tool runs it checks the shape (pydantic: the right argument names an
 A: By outcome, not by exact arguments. A plan request succeeds if the LLM's final plan passes `verify_plan` against OUR gold constraints and costs at most 1% more than the direct planner's plan. An infeasible or invalid request succeeds if the LLM says the same word. Comparing arguments with the gold only assigns labels (equivalent_args, invented_argument, ignored_constraint, …).
 
 **Q: Results?**
-A: gpt-oss-120b solved all 20 requests (Wilson 95% CI 84–100%), with 1.6 tool calls on average and no API failures. It used `get_instance_info` instead of guessing; for example it chose stop 4 as "closest" by path cost (14, via a tunnel), not stop 1 by straight line. It rejected "stop 7" and the stop-0 contradiction on its own, so the validator was never needed. Honest limitation: our 20 requests are too easy to show the validator's value with this model.
+A: Three Groq models, each with validation OFF and ON:
+
+| model / mode | success (95% Wilson CI) | ambiguous readings | runs lost to API errors | validator rejections |
+|---|---|---|---|---|
+| gpt-oss-120b OFF / ON | 20/20 (84–100%) | 0 | 0 | 0 |
+| gpt-oss-20b OFF / ON | 19/19 (83–100%) | 1 (H1) | 0 | 0 |
+| gpt-oss-safeguard-20b OFF / ON | 13/13 (77–100%) | 1 (H1) | 6 | 0 |
+
+The honest summary: **none of the three models needed validation on our 20 requests.** No model produced an argument the validator would reject, so each ON run followed exactly the same conversation as its OFF run. The smaller models differ only on H1 ("the stop closest to the depot first"): 120b reads "closest" as path cost (stop 4, cost 14 via a tunnel, plan 353); both 20B models read it as straight-line distance (stop 1, 7 cells, plan 391, +10.8%). That reading is defensible, so it's reported as `ambiguous_reading`, not as a failure.
+
+**Q: Why only 13 graded runs for safeguard-20b, and why not a smaller model?**
+A: Our Groq tier allows safeguard-20b only 2,000 tokens per minute, and one request (system prompt + tool schemas + reply headroom) needs about 2,400. So 6 runs got HTTP 413. That's an account limit, not a model mistake, so those runs are reported separately and not graded. Smaller models from Groq's docs weren't usable with our key: llama-3.1-8b-instant returned 404 and allam-2-7b doesn't support tool calling. So the smallest usable tool-calling models were the 20B ones.
+
+**Q: Then what is the validator for? (fault injection)**
+A: We took the 18 gold `plan_route` calls and corrupted each in 10 ways an LLM could get wrong: stop 7, a cell off the grid, a wall cell, the terrain "lava", an unknown algorithm, reserve −5, reserve 500, max_cost −10, a duplicate stop, and avoiding a stop's own cell. That gives 180 calls. The validator caught **100%** before anything ran. Without it: **53 crashes**, **30 silent ignores** (the nonsense was dropped without telling anyone), **15 silent wrong plans** (reserve −5 lets fuel go below 0), **18 wasted searches** (e.g. a 30 s plan only to fail max_cost −10), **39 misleading "infeasible"** answers (e.g. a duplicate stop makes stop 3 wait for itself forever), and 25 correct errors (mostly the contradiction, which our planner also pre-checks). That's 671 s of planning avoided. So the validator protects the tools regardless of how good the model is; with a strong model it's a safety net that rarely fires.
 
 **Q: How is it reproducible without an API key?**
 A: Every LLM reply is cached under a hash of (model, temperature, messages, tools), and every plan and simulation under a hash of its inputs. The caches are committed, so `run_all.py` replays the exact runs in seconds; `--live` calls Groq only on a cache miss.

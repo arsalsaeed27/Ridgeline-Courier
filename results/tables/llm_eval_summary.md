@@ -1,7 +1,11 @@
 _Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) | M. Rayyan (534733) | instance 38bfda97_
 
-| mode           |   graded |   successes |   success_rate |   ci_low |   ci_high |   ambiguous_readings |   mean_cost_gap_pct |   mean_tool_calls |   validator_rejections |   api_failures |
-|:---------------|---------:|------------:|---------------:|---------:|----------:|---------------------:|--------------------:|------------------:|-----------------------:|---------------:|
-| direct         |       18 |          18 |              1 |    0.824 |         1 |                    0 |                   0 |             nan   |                      0 |              0 |
-| llm            |       20 |          20 |              1 |    0.839 |         1 |                    0 |                   0 |               1.6 |                      0 |              0 |
-| llm_validation |       20 |          20 |              1 |    0.839 |         1 |                    0 |                   0 |               1.6 |                      0 |              0 |
+| mode                          |   graded |   successes |   success_rate |   ci_low |   ci_high |   ambiguous_readings |   mean_cost_gap_pct |   mean_tool_calls |   validator_rejections |   runs_lost_to_api_errors |
+|:------------------------------|---------:|------------:|---------------:|---------:|----------:|---------------------:|--------------------:|------------------:|-----------------------:|--------------------------:|
+| direct                        |       18 |          18 |              1 |    0.824 |         1 |                    0 |                   0 |            nan    |                      0 |                         0 |
+| gpt-oss-120b_val-off          |       20 |          20 |              1 |    0.839 |         1 |                    0 |                   0 |              1.6  |                      0 |                         0 |
+| gpt-oss-120b_val-on           |       20 |          20 |              1 |    0.839 |         1 |                    0 |                   0 |              1.6  |                      0 |                         0 |
+| gpt-oss-20b_val-off           |       19 |          19 |              1 |    0.832 |         1 |                    1 |                   0 |              1.95 |                      0 |                         0 |
+| gpt-oss-20b_val-on            |       19 |          19 |              1 |    0.832 |         1 |                    1 |                   0 |              1.95 |                      0 |                         0 |
+| gpt-oss-safeguard-20b_val-off |       13 |          13 |              1 |    0.772 |         1 |                    1 |                   0 |              1.6  |                      0 |                         6 |
+| gpt-oss-safeguard-20b_val-on  |       13 |          13 |              1 |    0.772 |         1 |                    1 |                   0 |              1.6  |                      0 |                         6 |

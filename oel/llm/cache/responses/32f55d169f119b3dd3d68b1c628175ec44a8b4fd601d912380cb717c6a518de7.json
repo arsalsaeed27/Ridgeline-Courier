@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with avoid_terrain: ['ford']. Then fuel_report. Then answer.",
+ "tool_calls": [
+  {
+   "id": "fc_580f76ee-54cb-4df6-a961-e3b57ba87205",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 817,
+  "completion": 48
+ }
+}

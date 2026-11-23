@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to call get_instance_info first. Then plan_route with fuel_reserve=30. No other constraints. Use default algorithm \"ucs\". Then output plan_id.",
+ "tool_calls": [
+  {
+   "id": "fc_9ddac143-277d-4958-8023-5c2c63b12769",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 811,
+  "completion": 55
+ }
+}

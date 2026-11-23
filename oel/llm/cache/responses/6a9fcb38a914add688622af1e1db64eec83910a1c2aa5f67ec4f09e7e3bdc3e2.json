@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan route with fuel_reserve 30. Use plan_route.",
+ "tool_calls": [
+  {
+   "id": "fc_b501ae94-38b4-484a-a770-f5fdcf9fc864",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\",\"fuel_reserve\":30}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1381,
+  "completion": 46
+ }
+}
