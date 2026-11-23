@@ -8,6 +8,7 @@ import sys
 import time
 
 from oel.config import parse_cli
+from oel.experiments import standin_demo
 from oel.stamp import get_logger, stamp
 from oel.world.plots import plot_elevation_map, plot_instance_map
 
@@ -24,6 +25,11 @@ def main(argv=None):
     # ------------------------------------------------------------ maps (Turn 1)
     log.info("saved %s", plot_instance_map(cfg).name)
     log.info("saved %s", plot_elevation_map(cfg).name)
+
+    # ------------------------------------------------------------ stand-in pipeline (Turn 1)
+    # TEMPORARY: plan with the stand-in UCS, execute it in the simulator (slip + rival,
+    # rejoin/full replanning), save standin_route.png + standin_summary. Swap in Laiba's A*.
+    standin_demo.run(cfg, log)
 
     # ------------------------------------------------------------ Part A (Turn 4: M. Rayyan)
     # TODO: vectorised cost map + loop benchmark table, PEAS / environment tables.

@@ -66,3 +66,30 @@ def plot_elevation_map(cfg, name="elevation_map"):
     path = save_fig(fig, name)
     plt.close(fig)
     return path
+
+
+def plot_route(cfg, agent_path, rival_path, planned_path=None, title="", name="standin_route"):
+    """Terrain + elevation contours + the agent's actual route, the planned route (dashed) and
+    the rival's path. Paths are lists of (row, col) cells."""
+    fig, ax = plt.subplots(figsize=(9, 7.5))
+    ax.imshow(cfg.grid + 1, cmap=ListedColormap(TERRAIN_COLOURS), vmin=0, vmax=4,
+              origin="upper", alpha=0.55)
+    if cfg.use_hills:
+        contours = ax.contour(cfg.elevation, levels=range(1, 10), colors="#5d4037",
+                              linewidths=0.6, alpha=0.7)
+        ax.clabel(contours, fontsize=6, fmt="%d")
+    if planned_path:
+        pr, pc = zip(*planned_path)
+        ax.plot(pc, pr, ls="--", lw=1.2, color="#1565c0", alpha=0.8, label="planned route")
+    if agent_path:
+        ar, ac = zip(*agent_path)
+        ax.plot(ac, ar, lw=2.0, color="#d50000", alpha=0.85, label="actual route (slips)")
+    if rival_path:
+        rr, rc = zip(*rival_path)
+        ax.plot(rc, rr, lw=1.5, color="#212121", ls=":", label="rival path")
+        ax.plot(rc[-1], rr[-1], marker="X", ms=11, color="#212121", mec="white", label="rival (end)")
+    _overlay(ax, cfg)
+    ax.set_title(title or "Route")
+    path = save_fig(fig, name)
+    plt.close(fig)
+    return path

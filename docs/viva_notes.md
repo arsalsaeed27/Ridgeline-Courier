@@ -15,6 +15,27 @@ A: All parameters live in one `Config` object. `parse_cli` applies flags such as
 **Q: How do you guarantee that every output is stamped?**
 A: Figures, tables and logs are only written through `oel/stamp.py`. Figures get the stamp as a suptitle and in their PNG metadata. Tables get it on the first line. Logs get it on the first line. `tests/test_stamp.py` checks every file in `results/`, using `results/manifest.json` and the PNG metadata for images.
 
+**Q: What is the difference between DeliveryProblem and the Simulator?**
+A: DeliveryProblem is the perfect, deterministic model that planners search: an action always does the same thing. The Simulator is the real world, with slips (25% of moves turn 90°) and a rival that moves every step. Successful moves in the simulator go through `problem.result()`, so both use the same fuel, hill and tunnel rules and can never disagree.
+
+**Q: Why is fuel part of the state but elevation isn't?**
+A: Elevation is fixed for each cell, so `(row, col)` already tells you the height. Fuel depends on the route taken to get there, so two visits to the same cell with different fuel are different situations: one can reach the next station and the other can't.
+
+**Q: Why does UCS test for the goal when it pops a state, not when it pushes it?**
+A: When a state is pushed, a cheaper route to it may still be waiting in the queue. When it is popped with the lowest g, every cheaper path has already been expanded, so g is optimal.
+
+**Q: How do you check that the rules are right?**
+A: The stand-in UCS reproduces all the reference optima from the brute-force run: 307 (hills off), 400 (no tunnels), 296 (no fuel). With hills on the optimum is 318.
+
+**Q: What happens after a slip?**
+A: First a *rejoin*: a small UCS within 4 cells, with the rival treated as a wall, looks for the cheapest way back onto the remaining plan. The target state must have the same delivered set and at least `need[k]` fuel, the minimum fuel the rest of the plan needs from that point, computed backwards. More fuel never hurts, so the rest of the plan stays fuel-feasible. If the agent is still on the plan and only the rival is in the way, it *waits* one step. Otherwise it does a *full replan*. Over a run, about 94% of replans are cheap rejoins.
+
+**Q: What does a failed move cost?**
+A: The agent stays put and burns no fuel, but it pays 1 (a wasted time step) and the step counts toward the 600-step limit. If it were free, we would underestimate how much slipping costs.
+
+**Q: Why does the agent sometimes get stranded?**
+A: The optimal plan uses the tank almost to empty before each recharge, because spare fuel has no value in a perfect world. Slips burn extra fuel, so the agent can end up where no route to a station exists. This is what the no-slip assumption gets wrong: an optimal plan for a perfect world is fragile in a slippery one.
+
 ## Part A: Environment, PEAS, cost map
 
 ## Part B: Search planners and heuristic
@@ -41,3 +62,9 @@ A: `scripts/make_elevation.py` adds 4–6 Gaussian bumps whose centres, peak hei
 
 **Q: What changes for the planners?**
 A: Moves become direction-dependent, because A→B ≠ B→A. Heuristic distance fields therefore have to be computed backwards over reversed edges. Fuel can also go up without a station, so feasibility checks can't assume fuel only decreases.
+
+**Q: Can the agent move with an empty tank?**
+A: Only downhill, when the regen pays for the move. We check the *net* fuel change (`burn + 2·climb − 1·drop`) against the tank. Rolling down one level into a road cell costs 1 − 1 = 0, so it is legal even at 0 fuel, like an electric car coasting. The rule lives in one function, `fuel_after()`, which both the planner and the simulator use.
+
+**Q: How much do the hills change the optimum?**
+A: From 307 to 318 (+3.6%). Neighbouring cells differ by at most one level, so the extra cost is at most 1 per climbing move. The bigger effect is on fuel: +2 per level up, −1 per level down.

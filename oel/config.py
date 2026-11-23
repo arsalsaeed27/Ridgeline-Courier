@@ -86,6 +86,10 @@ class Config:
     up_cost: int = UP_COST
     up_fuel: int = UP_FUEL
     regen: int = REGEN
+    # simulator ("real world") settings
+    failed_move_cost: float = 1.0  # a move that fails (slip into a wall/rival) still wastes one time step
+    max_steps: int = 600           # step limit for one simulated run -> outcome "draw"
+    rejoin_radius: int = 4         # after a slip, look this far (Manhattan) for a way back onto the plan
     # twist on/off flags
     use_fuel: bool = True
     use_tunnels: bool = True

@@ -1,0 +1,5 @@
+_Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) | M. Rayyan (534733) | instance 38bfda97_
+
+| planner      | hills   | fuel   | tunnels   |   slip |      seed |   planned_cost |   nodes_expanded |   max_frontier |   plan_runtime_s | peak_mem_kb            | outcome   | end_reason                             |   actual_cost |   extra_cost |   steps |   slips |   failed_moves |   waits |   replans_rejoin |   replans_full |
+|:-------------|:--------|:-------|:----------|-------:|----------:|---------------:|-----------------:|---------------:|-----------------:|:-----------------------|:----------|:---------------------------------------|--------------:|-------------:|--------:|--------:|---------------:|--------:|-----------------:|---------------:|
+| stand-in UCS | True    | True   | True      |   0.25 | 952097431 |            318 |          1813207 |          41198 |            32.99 | not measured (--quick) | loss      | stranded: no plan can finish from here |           266 |          nan |     112 |      33 |              5 |       0 |               30 |              2 |
