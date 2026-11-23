@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "User wants cheapest route delivering every parcel. So we need plan_route with algorithm \"ucs\" (default) and no extra constraints. Should we specify avoid? No. So call plan_route with algorithm \"ucs\".",
+ "tool_calls": [
+  {
+   "id": "fc_acaa9751-08f8-4f28-800f-32fc3f5f73c4",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\"}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1372,
+  "completion": 70
+ }
+}

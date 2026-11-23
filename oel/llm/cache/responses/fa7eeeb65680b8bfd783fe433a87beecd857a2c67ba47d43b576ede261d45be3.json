@@ -1,0 +1,10 @@
+{
+ "content": "The planned route that visits all five stops costs\u202f353.0 (total path cost).  \nRESULT: plan_id=cd656f4d09a7",
+ "reasoning": "",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 1537,
+  "completion": 36
+ }
+}

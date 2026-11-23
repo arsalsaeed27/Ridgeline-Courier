@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to get instance info first? The request depends on map facts? Possibly need to know which cells are ford, but we can just pass avoid_terrain: [\"ford\"], and stop_order: [2,0]. Use default algorithm ucs. So call plan_route with avoid_terrain and stop_order.",
+ "tool_calls": [
+  {
+   "id": "fc_0d4abb27-edb4-4e4b-ab23-681c869f52aa",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\",\"avoid_terrain\":[\"ford\"],\"stop_order\":[2,0]}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 809,
+  "completion": 111
+ }
+}

@@ -8,7 +8,7 @@ import sys
 import time
 
 from oel.config import parse_cli
-from oel.experiments import fuel_reserve, standin_demo
+from oel.experiments import fuel_reserve, llm_eval, standin_demo
 from oel.stamp import get_logger, stamp
 from oel.world.plots import plot_elevation_map, plot_instance_map
 
@@ -50,7 +50,9 @@ def main(argv=None):
     # TODO: minimax vs alpha-beta node counts, weight tuning, 100-game tournament (Wilson CIs).
 
     # ------------------------------------------------------------ Part D (Turn 1: M. Arsal Saeed)
-    # TODO: LLM dispatcher runs (from oel/llm/cache/ when no GROQ_API_KEY).
+    # LLM dispatcher: 20 requests x (direct, LLM, LLM + validation). Replays the committed LLM
+    # and plan caches (no API key needed, a few seconds); --live calls Groq on a cache miss.
+    llm_eval.run(cfg, log)
 
     # ------------------------------------------------------------ Part E (Turn 1: M. Arsal Saeed)
     # TODO: summary figures for the UI / report.

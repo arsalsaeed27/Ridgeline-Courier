@@ -93,6 +93,11 @@ class Config:
     # planning safety margin: the PLANNER never lets fuel drop below this (the real world's
     # limit stays 0). Chosen with oel/experiments/fuel_reserve.py, see docs/viva_notes.md.
     fuel_reserve: int = 20
+    # Part D: LLM dispatcher (Groq). gpt-oss-120b: a production Groq model with tool calling.
+    llm_model: str = "openai/gpt-oss-120b"
+    llm_temperature: float = 0.0
+    llm_max_tool_calls: int = 8
+    llm_live: bool = False         # False = replay cached LLM replies only (no API key needed)
     # twist on/off flags
     use_fuel: bool = True
     use_tunnels: bool = True
@@ -192,6 +197,9 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--no-tunnels", action="store_true", help="turn off the tunnel twist")
     p.add_argument("--no-hills", action="store_true", help="turn off the hills twist")
     p.add_argument("--seed", type=int, help="override BASE_SEED")
+    p.add_argument("--live", action="store_true",
+                   help="call the Groq API for LLM replies missing from the cache (needs GROQ_API_KEY)")
+    p.add_argument("--llm-model", help="Groq model id for the LLM dispatcher")
     return p
 
 
@@ -236,6 +244,13 @@ def parse_cli(argv=None, data_dir: Path = DATA_DIR) -> Config:
     # checked even without the flag: a smaller --fuel-capacity could make the default too big
     if not 0 <= cfg.fuel_reserve < cfg.fuel_capacity:
         raise ValueError(f"--fuel-reserve must be in 0..{cfg.fuel_capacity - 1}, got {cfg.fuel_reserve}")
+
+    if args.live:
+        cfg.llm_live = True
+        cfg.overrides.append("live LLM")
+    if args.llm_model:
+        cfg.llm_model = args.llm_model
+        cfg.overrides.append(f"llm_model={args.llm_model}")
 
     if args.seed is not None:
         cfg.seed = args.seed

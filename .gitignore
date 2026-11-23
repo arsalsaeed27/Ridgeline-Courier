@@ -22,3 +22,6 @@ results/**/*.npy
 results/**/*.pkl
 results/**/*.parquet
 *.tmp
+
+
+.env

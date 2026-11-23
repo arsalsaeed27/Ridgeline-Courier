@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "The user wants a full delivery run from the depot, using ucs planner. No extra constraints. So we need to call plan_route with algorithm 'ucs' and no other arguments. But we must first call get_instance_info? The rules: \"Call get_instance_info first when the request depends on facts about the map (which stop is where, distances, terrain names, stations, tunnels).\" The user just wants a plan; we don't need map facts. But it's safe to call get_instance_info? Not required. We can directly call plan_route.\n\nWe'll call plan_route with algorithm 'ucs'. No other constraints.",
+ "tool_calls": [
+  {
+   "id": "fc_4a4a7777-b8cb-49bb-ba6a-1a27bafdf37b",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\"}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 808,
+  "completion": 152
+ }
+}

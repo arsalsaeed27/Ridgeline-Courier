@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We have a plan. Now need to simulate with seed 7. Use simulate tool.",
+ "tool_calls": [
+  {
+   "id": "fc_d928c303-2b2a-4311-adf0-dc3720740eff",
+   "name": "simulate",
+   "arguments": "{\"plan_id\":\"cd656f4d09a7\",\"seed\":7}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1541,
+  "completion": 49
+ }
+}

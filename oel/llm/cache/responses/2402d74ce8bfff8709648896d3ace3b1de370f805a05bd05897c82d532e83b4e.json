@@ -1,0 +1,10 @@
+{
+ "content": "The route can start with stop\u202f3 and then visit the remaining stops in any order.  \nRESULT: plan_id=b79aea263aef",
+ "reasoning": "",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 971,
+  "completion": 33
+ }
+}

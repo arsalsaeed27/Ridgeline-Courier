@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan cheapest route delivering all 5 parcels (stops 0-4). Use default algorithm (ucs) as user didn't specify. Need to call get_instance_info first? The request depends on facts about map? Probably we need to know stops etc. According to rules, call get_instance_info first when request depends on facts about map. Yes, we need to know stops. So call get_instance_info.",
+ "tool_calls": [
+  {
+   "id": "fc_af7cad64-4b80-4e55-acc9-c4dff8939ecb",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 802,
+  "completion": 106
+ }
+}

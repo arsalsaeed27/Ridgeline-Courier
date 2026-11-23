@@ -1,0 +1,1 @@
+{"plan_id": "cd656f4d09a7", "seed": 7, "outcome": "loss", "end_reason": "stranded: no plan can finish from here", "real_cost": 621.0, "planned_cost": 353.0, "extra_cost": "n/a (stranded)", "steps": 236, "slips": 59, "failed_moves": 13, "waits": 0, "replans": 58, "full_replans": 8}

@@ -1,0 +1,10 @@
+{
+ "content": "The uniform\u2011cost search plan delivers all five parcels, using tunnels and three refuels, with total cost\u202f353.0 and length\u202f145 steps.  \nRESULT: plan_id=cd656f4d09a7",
+ "reasoning": "",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 1531,
+  "completion": 49
+ }
+}

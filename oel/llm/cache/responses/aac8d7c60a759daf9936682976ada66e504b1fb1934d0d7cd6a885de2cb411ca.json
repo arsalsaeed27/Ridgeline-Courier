@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We have a plan. The user asks: \"Keep a fuel reserve of 10 and skip the tunnels. How many height levels does the route climb in total?\" So we need to get fuel_report for that plan to get total height climbed. Use fuel_report tool.",
+ "tool_calls": [
+  {
+   "id": "fc_7185274e-df58-4f7b-be73-09d27abd5c0c",
+   "name": "fuel_report",
+   "arguments": "{\"plan_id\":\"77fda132be84\"}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 977,
+  "completion": 85
+ }
+}

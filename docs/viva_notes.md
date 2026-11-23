@@ -50,6 +50,9 @@ We tested reserves 0, 5, 10, 15 and 20, with 30 seeded runs each (slip 0.25, riv
 
 The rule we fixed in advance: take the smallest reserve with a win rate of at least 80%, or the best one if none reaches it. None did, so we chose 20. Going from 0 to 20 cuts losses from 23 to 9 and raises the planned cost by only 7% (329 → 353). Reserves 5–20 have overlapping CIs, so their order among themselves isn't certain; the clear result is "any reserve beats 0". The remaining non-wins are mostly the placeholder rival parking on a stop (draws), plus a few strandings after slips. The reference optima (307 / 329) are always computed with `--fuel-reserve 0`.
 
+**Q: How are the stops numbered?**
+A: From **0 to 4**, everywhere: in the code (stop i = bit i of `delivered_mask`), the figures, the tables, the LLM tools (`get_instance_info` says "Stops are numbered 0-4") and the docs. Stop 0 is (36,32), 1 is (4,10), 2 is (38,7), 3 is (17,14) and 4 is (12,37). So "stop 7" (or "stop 5") does not exist and is an *invalid* request.
+
 ## Part A: Environment, PEAS, cost map
 
 ## Part B: Search planners and heuristic
@@ -57,6 +60,25 @@ The rule we fixed in advance: take the smallest reserve with a win rate of at le
 ## Part C: Adversarial search (rival blocker)
 
 ## Part D: LLM dispatcher
+
+**Q: What does the LLM actually do?**
+A: It only translates English into tool calls. Our own UCS does the planning, our simulator does the simulating and `fuel_report` reads the fuel and hills along the route. The LLM (Groq `openai/gpt-oss-120b`, temperature 0) runs in our own ReAct loop: Thought (its reasoning), Action (one tool call), Observation (the tool's result or the validator's error), repeated until it writes `RESULT: plan_id=… / infeasible / invalid`. It may make at most 8 tool calls.
+
+**Q: How are constraints like "stop 3 first" put into the search?**
+A: Inside the transition rule. Entering a stop only marks it delivered once the stops that must come first are delivered (one bitmask check per stop), so the state stays (row, col, mask, fuel). Avoided terrain and cells become walls, and `max_cost` is checked after planning. `verify_plan` checks a finished plan independently: it replays the moves on the plain map and checks the visited cells, without using the planner's own delivery rule.
+
+**Q: What does the validation layer do?**
+A: Before a tool runs it checks the shape (pydantic: the right argument names and types, nothing invented) and the values against our map (the stop exists, the cell is on the grid and not a wall, the terrain is real, the algorithm exists, numbers are in sane ranges, no duplicates). It also detects contradictions, such as avoiding a stop's own cell, which it reports as *infeasible*. If a check fails, the tool doesn't run and the message goes back to the LLM as its Observation.
+
+**Q: How is the LLM graded?**
+A: By outcome, not by exact arguments. A plan request succeeds if the LLM's final plan passes `verify_plan` against OUR gold constraints and costs at most 1% more than the direct planner's plan. An infeasible or invalid request succeeds if the LLM says the same word. Comparing arguments with the gold only assigns labels (equivalent_args, invented_argument, ignored_constraint, …).
+
+**Q: Results?**
+A: gpt-oss-120b solved all 20 requests (Wilson 95% CI 84–100%), with 1.6 tool calls on average and no API failures. It used `get_instance_info` instead of guessing; for example it chose stop 4 as "closest" by path cost (14, via a tunnel), not stop 1 by straight line. It rejected "stop 7" and the stop-0 contradiction on its own, so the validator was never needed. Honest limitation: our 20 requests are too easy to show the validator's value with this model.
+
+**Q: How is it reproducible without an API key?**
+A: Every LLM reply is cached under a hash of (model, temperature, messages, tools), and every plan and simulation under a hash of its inputs. The caches are committed, so `run_all.py` replays the exact runs in seconds; `--live` calls Groq only on a cache miss.
+
 
 ## Part E: UI and experiments
 

@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to avoid lava fields. Lava fields likely a terrain type. We need to know terrain names. Must call get_instance_info first to see terrain types. Then plan_route with avoid_terrain: [\"lava\"]? But need exact name. Let's call get_instance_info.",
+ "tool_calls": [
+  {
+   "id": "fc_a11ed887-468c-469a-b953-a2285e0611bf",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 802,
+  "completion": 76
+ }
+}

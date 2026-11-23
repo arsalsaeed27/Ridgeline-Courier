@@ -1,0 +1,10 @@
+{
+ "content": "The route delivers all five parcels while never dropping below 30 fuel units.  \nRESULT: plan_id=64cd78fdcd02",
+ "reasoning": "",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 1542,
+  "completion": 31
+ }
+}

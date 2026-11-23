@@ -1,0 +1,10 @@
+{
+ "content": "The route can deliver all parcels within the requested cost limit, using tunnels and three refuel stops, with a total cost of 353.\n\nRESULT: plan_id=f591aac389bc",
+ "reasoning": "",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 1537,
+  "completion": 41
+ }
+}

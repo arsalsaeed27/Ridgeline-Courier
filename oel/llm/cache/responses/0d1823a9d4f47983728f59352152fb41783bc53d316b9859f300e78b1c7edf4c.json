@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan a route that avoids ford cells. So we need to call get_instance_info first? The request depends on map facts: \"ford cells\". We need to know which cells are ford terrain. So call get_instance_info. Then plan_route with avoid_terrain: [\"ford\"]. Use default algorithm (ucs). Then after plan, call fuel_report to get lowest fuel level and refuel locations. Then answer briefly and give RESULT line with plan_id.\n\nWe need to call get_instance_info.",
+ "tool_calls": [
+  {
+   "id": "fc_7d06b6af-4825-4a0d-80a5-0e0ba1d48a53",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 817,
+  "completion": 122
+ }
+}

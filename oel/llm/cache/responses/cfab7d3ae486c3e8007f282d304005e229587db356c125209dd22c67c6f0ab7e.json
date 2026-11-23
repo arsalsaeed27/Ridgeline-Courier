@@ -1,0 +1,10 @@
+{
+ "content": "The route delivers all five parcels while avoiding any ford terrain cells.  \nRESULT: plan_id=842ddcba1e76",
+ "reasoning": "",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 972,
+  "completion": 30
+ }
+}

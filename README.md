@@ -24,7 +24,7 @@ tools, and a UI with reproducible, stamped experiments.
 | Grid | 40x40, obstacle density 0.285 |
 | Terrain cost (cost of the cell entered) | road 1, grass 3, mud 5, ford 9 |
 | Start / depot | (5, 4) |
-| Delivery stops (0..4) | (36,32), (4,10), (38,7), (17,14), (12,37) |
+| Delivery stops (numbered 0-4) | (36,32), (4,10), (38,7), (17,14), (12,37) |
 | Rival | blocker, search depth 6 |
 | Slip probability | 0.25 |
 

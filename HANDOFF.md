@@ -99,3 +99,22 @@ _Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) |
 - **Reference optima are computed with `--fuel-reserve 0`** (307, 329). With the default reserve 20 the stand-in plan costs 353.
 - Laiba: the reserve lives inside DeliveryProblem, so your planners need no change. A faster A* would make the fuel-reserve experiment fit in `--quick` again.
 - Memory: one full UCS uses ~360 MB of Python memory, and `tracemalloc` makes it ~5-8x slower.
+
+## Turn 1 (session 4): M. Arsal Saeed (506676), 2026-11-23
+### What I built (Part D: LLM dispatcher)
+- `oel/world/constraints.py`: `PlanConstraints` (stop_order, avoid_terrain, avoid_cells, use_tunnels, fuel_reserve, max_cost) + `verify_plan()` (independent replay on the plain map). Wired into `DeliveryProblem(config, constraints=...)`; unconstrained behaviour is unchanged (307/329 tests pass).
+- `oel/llm/plans.py`: planner registry (`register_planner(name, fn)`), on-disk plan cache (`oel/llm/cache/plans/`) and sim cache (`.../sims/`), keyed by hashes of algorithm + resolved constraints + planning config.
+- `oel/llm/tools.py` (get_instance_info, plan_route, simulate, fuel_report), `validator.py` (pydantic + map checks + contradiction pre-check), `agent.py` (own ReAct loop, Groq tool calling, LLM response cache, retry with backoff, traces).
+- `oel/llm/requests.json` (20 requests, 4 tiers) + `docs/llm_gold_answers.md`; `oel/experiments/llm_eval.py` (direct vs LLM vs LLM+validation, outcome-based grading); `report/sections/part_d_traces.md`.
+### How to run it
+- `python run_all.py --quick` replays Part D from the committed caches (no key needed). `python -m oel.experiments.llm_eval --live` calls Groq for missing replies (needs `GROQ_API_KEY` in `.env`). `--llm-model <id>` switches the model.
+### Key results / numbers
+- Model `openai/gpt-oss-120b` (Groq production model with tool calling), temperature 0, max 8 tool calls.
+- Success: direct 18/18, LLM 20/20, LLM+validation 20/20 (Wilson 95% CI 0.84-1.00); 1.6 tool calls per request; 0 validator rejections; 0 API failures.
+- Map facts found: avoiding mud cuts the depot off from stops 0-3 (infeasible); avoiding ford is feasible (465).
+### Known issues / TODOs
+- The benchmark does not separate validation ON/OFF for gpt-oss-120b (it made no argument errors). Because the LLM cache key is the conversation, validation-ON replayed validation-OFF replies until a rejection would have made them differ (none did).
+- In `--quick`, Part D is skipped if the gold plans for the current config aren't cached (e.g. a live change with `--no-hills`).
+### What the next person needs to know
+- **Laiba:** `from oel.llm.plans import register_planner; register_planner("astar", astar)` makes it available to the LLM (`get_instance_info` lists it). Planners must work with `DeliveryProblem(constraints=...)`; nothing changes for you if you only use the interface.
+- `verify_plan(actions, constraints, cfg)` is a handy independent checker for your planners too.

@@ -22,7 +22,7 @@ def _overlay(ax, cfg):
     for i, (r, c) in enumerate(cfg.stops):
         ax.plot(c, r, marker="*", ms=14, color="gold", mec="black")
         ax.text(c + 0.6, r - 0.6, str(i), fontsize=9, weight="bold", color="black")
-    ax.plot([], [], marker="*", ls="", ms=12, color="gold", mec="black", label="delivery stop (index)")
+    ax.plot([], [], marker="*", ls="", ms=12, color="gold", mec="black", label="delivery stop (numbered 0-4)")
     if cfg.use_fuel:
         for r, c in cfg.stations:
             ax.plot(c, r, marker="P", ms=10, color="#00c853", mec="black")

@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to deliver stop closest to depot first, then rest (any order). Need to know which stop is closest. Must call get_instance_info to get distances. Then plan_route with stop_order set to that stop index first. Use default algorithm (ucs). So steps: call get_instance_info.",
+ "tool_calls": [
+  {
+   "id": "fc_4a6834b1-9595-4ae4-ae41-921681bad98f",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 806,
+  "completion": 81
+ }
+}

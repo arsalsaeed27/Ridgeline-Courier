@@ -14,6 +14,7 @@ import copy
 
 import numpy as np
 
+from oel.world.constraints import PlanConstraints
 from oel.world.grid import build_cost_map, build_fuel_map
 
 # action name -> (row change, col change). Row 0 is the top of the map, so N = row - 1.
@@ -58,18 +59,24 @@ def fuel_after(fuel: int, net_use: int, capacity: int, refuels: bool, reserve: i
 class DeliveryProblem:
     """Search problem for the delivery agent (see CLAUDE.md, "Shared interfaces")."""
 
-    def __init__(self, config, extra_blocked=(), start_state=None, fuel_reserve=None):
+    def __init__(self, config, extra_blocked=(), start_state=None, fuel_reserve=None,
+                 constraints=None):
         self.cfg = config
         self.n = config.n
         self.capacity = int(config.fuel_capacity)
+        # user constraints (stop order, avoided terrain/cells, tunnels, reserve, cost cap);
+        # PlanConstraints() = none = the normal problem
+        self.constraints = constraints if constraints is not None else PlanConstraints()
         # planning safety margin: never PLAN to drop below this much fuel (0 = the real limit).
-        # With the fuel twist off there is nothing to protect, so it is 0.
+        # Priority: explicit argument > constraint > config default. No fuel twist -> 0.
         if not config.use_fuel:
             self.reserve = 0
-        elif fuel_reserve is None:
-            self.reserve = int(config.fuel_reserve)
-        else:
+        elif fuel_reserve is not None:
             self.reserve = int(fuel_reserve)
+        elif self.constraints.fuel_reserve is not None:
+            self.reserve = int(self.constraints.fuel_reserve)
+        else:
+            self.reserve = int(config.fuel_reserve)
         self.start = tuple(config.start)
         self.stops = [tuple(s) for s in config.stops]
         self.goal_mask = (1 << len(self.stops)) - 1
@@ -88,10 +95,16 @@ class DeliveryProblem:
             self.elevation = np.zeros(config.grid.shape, dtype=int)
 
         self._stop_bit = {cell: 1 << i for i, cell in enumerate(self.stops)}
+        # stop i only counts as delivered once the stops in _prereq[i] are delivered
+        # (all zeros without a stop_order, i.e. deliver anything at any time)
+        self._prereq = {cell: need for cell, need in
+                        zip(self.stops, self.constraints.prerequisites(len(self.stops)))}
+        # cells the constraints turn into walls (avoided terrain / avoided cells)
+        self._avoid = frozenset(self.constraints.blocked_cells(config))
         self._stations = set(tuple(s) for s in config.stations)
         self._refuel = set(tuple(s) for s in config.refuel_cells())
         self._tunnel_exit = {}
-        if config.use_tunnels:
+        if config.use_tunnels and self.constraints.use_tunnels:
             for a, b in config.tunnels:  # tunnels work both ways
                 self._tunnel_exit[tuple(a)] = tuple(b)
                 self._tunnel_exit[tuple(b)] = tuple(a)
@@ -110,14 +123,14 @@ class DeliveryProblem:
             options = {}
             for action, (dr, dc) in MOVES.items():
                 nxt = (cell[0] + dr, cell[1] + dc)
-                if not cfg.is_free(nxt):
+                if not cfg.is_free(nxt) or nxt in self._avoid:
                     continue
                 dh = int(self.elevation[nxt] - self.elevation[cell])
                 # path cost = terrain of the cell ENTERED + extra for climbing (climbing is slower)
                 cost = float(self.cost_map[nxt]) + cfg.up_cost * max(dh, 0)
                 use = move_fuel_use(int(self.fuel_map[nxt]), dh, cfg.up_fuel, cfg.regen)
                 options[action] = (nxt, cost, use if cfg.use_fuel else 0)
-            if cell in self._tunnel_exit:
+            if cell in self._tunnel_exit and self._tunnel_exit[cell] not in self._avoid:
                 # a jump ignores elevation: you go through the tunnel, not over the hill
                 use = int(cfg.tunnel_fuel) if cfg.use_fuel else 0
                 options[TUNNEL] = (self._tunnel_exit[cell], float(cfg.tunnel_cost), use)
@@ -157,8 +170,11 @@ class DeliveryProblem:
         new_fuel = fuel_after(fuel, use, self.capacity, nxt in self._refuel, self.reserve)
         if new_fuel is None or nxt in self.extra_blocked:
             raise ValueError(f"{action} from {(r, c)} is illegal (fuel {fuel}, needs {use})")
-        # entering a stop delivers its parcel (OR keeps already-set bits set)
-        new_mask = mask | self._stop_bit.get(nxt, 0)
+        # entering a stop delivers its parcel (OR keeps already-set bits set), but only if
+        # the stops that must come first are already delivered; otherwise we just drive through
+        new_mask = mask
+        if nxt in self._stop_bit and mask & self._prereq[nxt] == self._prereq[nxt]:
+            new_mask = mask | self._stop_bit[nxt]
         return (nxt[0], nxt[1], new_mask, new_fuel)
 
     def step_cost(self, state, action, next_state) -> float:

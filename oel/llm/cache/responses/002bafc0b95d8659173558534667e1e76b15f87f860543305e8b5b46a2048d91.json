@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to plan route delivering all parcels (stops 0-4) with constraint fuel_reserve >=30. Use default algorithm ucs. Must call get_instance_info first? The request depends on facts about map? Possibly need to know fuel capacity to ensure 30 is feasible. We should call get_instance_info to see fuel capacity.",
+ "tool_calls": [
+  {
+   "id": "fc_11424030-252a-472c-a678-e37feb3b7423",
+   "name": "get_instance_info",
+   "arguments": "{}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 811,
+  "completion": 90
+ }
+}

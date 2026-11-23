@@ -1,0 +1,16 @@
+{
+ "content": "",
+ "reasoning": "We need to deliver all parcels with total cost below 100. Use plan_route with max_cost 100. Use default algorithm ucs. No other constraints. So call plan_route with max_cost 100.",
+ "tool_calls": [
+  {
+   "id": "fc_96d64511-754e-4ab7-9b13-ed9fb6ca8e4f",
+   "name": "plan_route",
+   "arguments": "{\"algorithm\":\"ucs\",\"max_cost\":100}"
+  }
+ ],
+ "finish_reason": "tool_calls",
+ "usage": {
+  "prompt": 1374,
+  "completion": 78
+ }
+}

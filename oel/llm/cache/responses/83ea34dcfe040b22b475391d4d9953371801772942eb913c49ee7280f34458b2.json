@@ -1,0 +1,10 @@
+{
+ "content": "The request cannot be satisfied because even the cheapest possible route that delivers all parcels exceeds a total cost of\u202f100.\n\nRESULT: infeasible",
+ "reasoning": "",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 1561,
+  "completion": 31
+ }
+}

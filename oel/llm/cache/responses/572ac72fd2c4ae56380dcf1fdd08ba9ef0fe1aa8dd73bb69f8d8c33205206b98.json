@@ -1,0 +1,10 @@
+{
+ "content": "The robot will first go to stop\u202f4 (the closest to the depot) and then deliver the remaining stops in the order found feasible.  \nRESULT: plan_id=e329e03d5273",
+ "reasoning": "",
+ "tool_calls": [],
+ "finish_reason": "stop",
+ "usage": {
+  "prompt": 1539,
+  "completion": 44
+ }
+}
