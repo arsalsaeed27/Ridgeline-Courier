@@ -51,3 +51,11 @@ def test_bad_values_rejected():
         parse_cli(["--stop", "9=1,1"])
     with pytest.raises(ValueError):
         parse_cli(["--stop", "2=100,100"])
+
+
+def test_fuel_reserve_flag():
+    assert parse_cli(["--fuel-reserve", "15"]).fuel_reserve == 15
+    with pytest.raises(ValueError):
+        parse_cli(["--fuel-reserve", "-1"])
+    with pytest.raises(ValueError):
+        parse_cli(["--fuel-reserve", "98"])   # must leave room in a 98 tank

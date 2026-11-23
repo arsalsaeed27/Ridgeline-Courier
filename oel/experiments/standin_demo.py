@@ -30,9 +30,9 @@ def run(cfg, log):
     report = sim.run_plan(plan.actions, replan_fn=replanner)
     for r in report.replans:
         log.info("replan at step %d: %s (%d nodes, %.2f s)", r["step"], r["kind"], r["nodes"], r["runtime_s"])
-    log.info("simulation: %s (%s), cost %.0f (planned %.0f, extra %+.0f), %d steps, %d slips",
+    log.info("simulation: %s (%s), cost %.0f (planned %.0f, extra %s), %d steps, %d slips",
              report.outcome, report.end_reason, report.total_cost, report.planned_cost,
-             report.extra_cost, report.steps, report.slips)
+             report.extra_cost_text(), report.steps, report.slips)
 
     planned_cells = [s[:2] for s in plan.path]
     title = (f"Stand-in UCS route: planned cost {plan.cost:.0f}; simulated (slip {cfg.slip}) "
@@ -42,12 +42,12 @@ def run(cfg, log):
     row = {
         "planner": "stand-in UCS",
         "hills": cfg.use_hills, "fuel": cfg.use_fuel, "tunnels": cfg.use_tunnels,
-        "slip": cfg.slip, "seed": cfg.seed,
+        "slip": cfg.slip, "seed": cfg.seed, "fuel_reserve": cfg.fuel_reserve,
         "planned_cost": plan.cost, "nodes_expanded": plan.nodes_expanded,
         "max_frontier": plan.max_frontier, "plan_runtime_s": round(plan.runtime_s, 2),
         "peak_mem_kb": round(plan.peak_mem_kb) if not cfg.quick else "not measured (--quick)",
         "outcome": report.outcome, "end_reason": report.end_reason,
-        "actual_cost": report.total_cost, "extra_cost": report.extra_cost,
+        "actual_cost": report.total_cost, "extra_cost": report.extra_cost_text(),
         "steps": report.steps, "slips": report.slips, "failed_moves": report.failed_moves,
         "waits": report.waits, "replans_rejoin": report.n_rejoin, "replans_full": report.n_full,
     }

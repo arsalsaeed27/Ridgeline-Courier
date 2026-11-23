@@ -45,11 +45,11 @@ BLOCKED = -1
 # dh = h(next) - h(current) for a normal move.
 #   path cost = terrain_cost(next) + UP_COST * max(dh, 0)
 #   fuel      = fuel_burn(next)    + UP_FUEL * max(dh, 0) - REGEN * max(-dh, 0)
-UP_COST = 1   # extra path cost per height unit climbed
-UP_FUEL = 2   # extra fuel burned per height unit climbed
+UP_COST = 2   # extra path cost per height unit climbed
+UP_FUEL = 3   # extra fuel burned per height unit climbed
 REGEN = 1     # fuel recovered per height unit descended (regenerative braking)
 
-# Why REGEN < UP_FUEL: climbing k units costs 2k fuel and coming back down returns only k,
+# Why REGEN < UP_FUEL: climbing k units costs 3k fuel and coming back down returns only k,
 # so any up-and-down loop LOSES fuel overall. If REGEN >= UP_FUEL the agent could gain
 # fuel for free by bouncing between two cells, which breaks the idea of a fuel limit and
 # could let a search keep finding "better" fuel states forever.
@@ -90,6 +90,9 @@ class Config:
     failed_move_cost: float = 1.0  # a move that fails (slip into a wall/rival) still wastes one time step
     max_steps: int = 600           # step limit for one simulated run -> outcome "draw"
     rejoin_radius: int = 4         # after a slip, look this far (Manhattan) for a way back onto the plan
+    # planning safety margin: the PLANNER never lets fuel drop below this (the real world's
+    # limit stays 0). Chosen with oel/experiments/fuel_reserve.py, see docs/viva_notes.md.
+    fuel_reserve: int = 20
     # twist on/off flags
     use_fuel: bool = True
     use_tunnels: bool = True
@@ -164,7 +167,7 @@ class Config:
             f"terrain cost: {self.terrain_cost}",
             f"slip {self.slip} | rival {self.rival_type} depth {self.rival_depth} | seed {self.seed}",
             f"fuel {on(self.use_fuel)}: capacity {self.fuel_capacity}, burn {self.fuel_burn}, "
-            f"stations {self.stations}",
+            f"stations {self.stations}, planning reserve {self.fuel_reserve}",
             f"tunnels {on(self.use_tunnels)}: {self.tunnels} (cost {self.tunnel_cost}, fuel {self.tunnel_fuel})",
             f"hills {on(self.use_hills)}: UP_COST {self.up_cost}, UP_FUEL {self.up_fuel}, REGEN {self.regen}",
             f"quick mode: {self.quick}",
@@ -183,6 +186,8 @@ def build_arg_parser() -> argparse.ArgumentParser:
                    help="move delivery stop IDX to cell (R,C); repeatable")
     p.add_argument("--rival-depth", type=int, help="rival search depth (>= 1)")
     p.add_argument("--fuel-capacity", type=int, help="fuel tank size (>= 1)")
+    p.add_argument("--fuel-reserve", type=int,
+                   help="planning safety margin: plans never go below this fuel (0..capacity-1)")
     p.add_argument("--no-fuel", action="store_true", help="turn off the fuel twist")
     p.add_argument("--no-tunnels", action="store_true", help="turn off the tunnel twist")
     p.add_argument("--no-hills", action="store_true", help="turn off the hills twist")
@@ -224,6 +229,13 @@ def parse_cli(argv=None, data_dir: Path = DATA_DIR) -> Config:
             raise ValueError("--fuel-capacity must be >= 1")
         cfg.fuel_capacity = args.fuel_capacity
         cfg.overrides.append(f"fuel_capacity={args.fuel_capacity}")
+
+    if args.fuel_reserve is not None:
+        cfg.fuel_reserve = args.fuel_reserve
+        cfg.overrides.append(f"fuel_reserve={args.fuel_reserve}")
+    # checked even without the flag: a smaller --fuel-capacity could make the default too big
+    if not 0 <= cfg.fuel_reserve < cfg.fuel_capacity:
+        raise ValueError(f"--fuel-reserve must be in 0..{cfg.fuel_capacity - 1}, got {cfg.fuel_reserve}")
 
     if args.seed is not None:
         cfg.seed = args.seed

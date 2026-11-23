@@ -32,7 +32,7 @@ tools, and a UI with reproducible, stamped experiments.
 
 1. **Fuel limit with charging stations** (assigned). Capacity 98. Fuel burned per move: road 1, grass 1, mud 2, ford 3. Stations at (23,11), (0,25), (21,28), (31,20); the depot also recharges.
 2. **Teleport tunnels** (assigned). These are bidirectional: (26,14)↔(22,35), (10,36)↔(4,2), (19,6)↔(38,12). A jump costs 2 and burns 1 fuel.
-3. **Hills with regenerative braking** (ours). Each cell has an integer height from 0 to 9. Climbing `dh` units adds `1·dh` to the path cost and `2·dh` to the fuel burned. Descending `dh` units recovers `1·dh` fuel. Because regen (1) is less than the uphill fuel cost (2), no loop can create fuel.
+3. **Hills with regenerative braking** (ours). Each cell has an integer height from 0 to 9. Climbing `dh` units adds `2·dh` to the path cost and `3·dh` to the fuel burned. Descending `dh` units recovers `1·dh` fuel. Because regen (1) is less than the uphill fuel cost (3), no loop can create fuel.
 
 ![instance map](results/figures/instance_map.png)
 ![elevation map](results/figures/elevation_map.png)

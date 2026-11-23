@@ -8,7 +8,9 @@ Differences from DeliveryProblem:
   * a move that fails (slip into a wall/rival, or blocked plan step) leaves the agent where it
     is, burns no fuel but still costs cfg.failed_move_cost (a wasted time step).
 Successful moves go through problem.result(), i.e. the SAME fuel/hill/tunnel rules the planner
-uses, so the two can never disagree. Every random draw uses the rng passed in (reproducible).
+uses, so the two can never disagree. The only difference is the fuel reserve: the planner keeps
+a safety margin (cfg.fuel_reserve), the real world only forbids a negative tank, so the simulator
+executes moves with self.world = problem.with_reserve(0). Every random draw uses the rng passed in.
 """
 from __future__ import annotations
 
@@ -53,13 +55,20 @@ class RunReport:
     agent_path: list = field(default_factory=list)  # cells visited by the agent
     rival_path: list = field(default_factory=list)  # cells visited by the rival
 
+    def extra_cost_text(self) -> str:
+        """Extra cost for printing: a number for a win, 'n/a (stranded)' etc. otherwise
+        (a run that stopped early paid LESS than the plan, so a number would mislead)."""
+        if self.outcome == "win":
+            return f"{self.extra_cost:+.0f}"
+        return "n/a (stranded)" if self.outcome == "loss" else f"n/a ({self.outcome})"
+
     @property
     def n_rejoin(self) -> int:
         return sum(1 for r in self.replans if r["kind"] == "rejoin")
 
     @property
     def n_full(self) -> int:
-        return sum(1 for r in self.replans if r["kind"] == "full")
+        return sum(1 for r in self.replans if r["kind"].startswith("full"))
 
 
 # ---------------------------------------------------------------- rival
@@ -96,7 +105,8 @@ class Simulator:
 
     def __init__(self, config, problem, rng, rival_policy=greedy_blocker, use_rival=True):
         self.cfg = config
-        self.problem = problem
+        self.problem = problem                # planning view (with the fuel reserve): for replans
+        self.world = problem.with_reserve(0)  # real-world view: the tank may go down to 0
         self.rng = rng
         self.rival_policy = rival_policy
         self.use_rival = use_rival
@@ -140,11 +150,11 @@ class Simulator:
         return cell
 
     def legal_actions(self, state=None) -> list:
-        """Planning-model actions that are also not blocked by the rival right now."""
+        """Real-world legal actions (fuel down to 0) that the rival isn't blocking right now."""
         state = self.state if state is None else state
         legal = []
-        for action in self.problem.actions(state):
-            nxt, _cost, _use = self.problem.transition(state[:2], action)
+        for action in self.world.actions(state):
+            nxt, _cost, _use = self.world.transition(state[:2], action)
             if nxt != self.rival_pos:
                 legal.append(action)
         return legal
@@ -162,9 +172,9 @@ class Simulator:
 
         old = self.state
         if actual in self.legal_actions():
-            new = self.problem.result(old, actual)   # same rules as the planner
-            cost = self.problem.step_cost(old, actual, new)
-            fuel_used = self.problem.transition(old[:2], actual)[2]
+            new = self.world.result(old, actual)   # same rules as the planner (reserve 0)
+            cost = self.world.step_cost(old, actual, new)
+            fuel_used = self.world.transition(old[:2], actual)[2]
             failed = False
         else:
             # wall, map edge, rival, or not enough fuel: stay put, burn nothing, lose a step
@@ -192,7 +202,7 @@ class Simulator:
 
         if self.problem.is_goal(new):
             self.outcome, self.end_reason = "win", "all parcels delivered"
-        elif not self.problem.actions(new):
+        elif not self.world.actions(new):
             # stuck even if the rival left (e.g. empty tank away from a station): a loss.
             # Being boxed in ONLY by the rival is not a loss: the rival moves and we can wait.
             self.outcome, self.end_reason = "loss", "no legal move (out of fuel)"
@@ -207,15 +217,16 @@ class Simulator:
 
     # ------------------------------------------------------------ executing a whole plan
     def predict(self, actions, state=None) -> list:
-        """States the PLANNING model expects after each action: [state, s1, s2, ...]."""
+        """States a plan leads to if nothing goes wrong: [state, s1, s2, ...]. Uses the real
+        limit (reserve 0) so a fallback plan made without the reserve can be predicted too."""
         states = [self.state if state is None else state]
         for action in actions:
-            states.append(self.problem.result(states[-1], action))
+            states.append(self.world.result(states[-1], action))
         return states
 
     def plan_cost(self, actions, state=None) -> float:
         states = self.predict(actions, state)
-        return sum(self.problem.step_cost(s, a, n) for s, a, n in zip(states, actions, states[1:]))
+        return sum(self.world.step_cost(s, a, n) for s, a, n in zip(states, actions, states[1:]))
 
     def run_plan(self, actions, replan_fn=None) -> RunReport:
         """Execute a plan until win/loss/draw.
@@ -278,20 +289,21 @@ class Simulator:
 
 
 # ---------------------------------------------------------------- replanning strategy
-def fuel_needed(problem, plan, plan_states) -> list:
+def fuel_needed(problem, plan, plan_states, reserve: int = 0) -> list:
     """need[k] = the least fuel the agent must have at plan step k for the REST of the plan
-    (plan[k:]) to never run out. Computed backwards from the end of the plan:
+    (plan[k:]) to stay legal, never dropping below `reserve`. Computed backwards:
       - at the end nothing more is needed: need[last] = 0;
-      - a move into a refuel point only needs its own net use (the tank is full afterwards);
-      - any other move needs its own net use PLUS what is needed after it.
-    need[k] is never more than the fuel the plan itself had at step k."""
+      - a move into a refuel point needs its own net use + the reserve (full tank afterwards);
+      - any other move needs its own net use + whichever is larger: the reserve or what is
+        needed after it.
+    For a plan made with the same reserve, need[k] is never more than the plan's own fuel."""
     need = [0] * (len(plan) + 1)
     for k in range(len(plan) - 1, -1, -1):
         nxt, _cost, use = problem.transition(plan_states[k][:2], plan[k])
         if problem.is_refuel_point(nxt):
-            need[k] = max(use, 0)
+            need[k] = max(use + reserve, 0)
         else:
-            need[k] = max(use + need[k + 1], 0)
+            need[k] = max(use + max(reserve, need[k + 1]), 0)
     return need
 
 
@@ -307,6 +319,9 @@ class RejoinReplanner:
     detour exists), stay put one step; the rival moves every step. Cheaper than a full replan.
     Full replan: full_planner on the whole map from the current state (rival = wall).
     full_planner is pluggable (stand-in UCS now; Laiba's A* later) to compare strategies.
+    Fuel reserve: replans keep the planner's reserve. If that is impossible (e.g. slips already
+    pushed the tank below the reserve), they fall back to the real limit of 0 rather than give
+    up: kind "full_no_reserve". Only if even that fails is the agent truly stranded.
     """
 
     def __init__(self, full_planner, rejoin_planner, radius: int, rejoin_max_nodes: int = 20000):
@@ -329,7 +344,13 @@ class RejoinReplanner:
         # If the next step is blocked (agent still ON the plan), we must rejoin at least one
         # step further along, otherwise "rejoin where I am" would repeat the blocked step.
         first_k = i + 1 if on_plan else i
-        need = fuel_needed(sim.problem, plan, plan_states)
+        # judge rejoins with the planner's reserve, unless the current plan was itself a
+        # fallback made without it (then it breaks the reserve somewhere): use the real limit 0
+        planning = sim.problem
+        need = fuel_needed(planning, plan, plan_states, planning.reserve)
+        if any(need[k] > plan_states[k][3] for k in range(first_k, len(plan_states))):
+            planning = sim.world
+            need = fuel_needed(planning, plan, plan_states, 0)
         # (row, col, mask) -> list of (k, fuel needed at step k)
         targets = {}
         for k in range(first_k, len(plan_states)):
@@ -345,7 +366,7 @@ class RejoinReplanner:
         far = {(int(r), int(c)) for r, c in np.argwhere(sim.cfg.grid != -1)
                if abs(r - ar) + abs(c - ac) > self.radius}
         walls = far | ({sim.rival_pos} if sim.rival_pos else set())
-        local = sim.problem.replan_from(sim.state, extra_blocked=walls)
+        local = planning.replan_from(sim.state, extra_blocked=walls)
         res = self.rejoin_planner(local, is_goal=back_on_plan, max_nodes=self.rejoin_max_nodes)
         if not res.solved:
             return None
@@ -356,10 +377,14 @@ class RejoinReplanner:
 
     def _full(self, sim):
         walls = {sim.rival_pos} if sim.rival_pos else set()
-        res = self.full_planner(sim.problem.replan_from(sim.state, extra_blocked=walls))
-        if not res.solved and walls:
-            # the rival may be sealing a corridor: plan as if it will move away (it will)
-            res = self.full_planner(sim.problem.replan_from(sim.state))
-        if not res.solved:
-            return None
-        return list(res.actions), "full", res.nodes_expanded
+        # 1) with the reserve, 2) with the real limit 0. For each: rival = wall first; if the
+        # rival seals a corridor, plan as if it will move away (it will).
+        attempts = [(sim.problem, "full"), (sim.world, "full_no_reserve")]
+        for problem, kind in attempts:
+            if kind == "full_no_reserve" and sim.problem.reserve == 0:
+                break   # same problem as attempt 1, which already failed
+            for blocked in ([walls, set()] if walls else [set()]):
+                res = self.full_planner(problem.replan_from(sim.state, extra_blocked=blocked))
+                if res.solved:
+                    return list(res.actions), kind, res.nodes_expanded
+        return None

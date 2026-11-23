@@ -34,19 +34,21 @@ def move_fuel_use(base_burn: int, dh: int, up_fuel: int, regen: int) -> int:
     return base_burn + up_fuel * climb - regen * drop
 
 
-def fuel_after(fuel: int, net_use: int, capacity: int, refuels: bool):
+def fuel_after(fuel: int, net_use: int, capacity: int, refuels: bool, reserve: int = 0):
     """THE fuel rule, used for every move by both the planner and the simulator.
 
     Returns the fuel after the move, or None if the move is illegal.
-    1. Pay the net use of the move. If that would go below 0, the move is illegal
-       (we check the NET use, so with an empty tank you can still coast downhill into a road
-       cell: burn 1, regen 1, net 0).
+    1. Pay the net use of the move. If that would leave less than `reserve`, the move is
+       illegal. The real world uses reserve 0 (the tank can't go negative). The PLANNER uses
+       cfg.fuel_reserve > 0 as a safety margin, so a few slips can't strand the agent.
+       (We check the NET use, so with an empty tank you can still coast downhill into a road
+       cell: burn 1, regen 1, net 0.)
     2. Never above capacity: regen can't overfill the tank.
     3. Entering a charging station or the depot refills to capacity (AFTER paying for the move,
-       so you must be able to reach the station first).
+       so you must be able to reach the station first, with the reserve still in the tank).
     """
     left = fuel - net_use
-    if left < 0:
+    if left < reserve:
         return None
     if refuels:
         return capacity
@@ -56,10 +58,18 @@ def fuel_after(fuel: int, net_use: int, capacity: int, refuels: bool):
 class DeliveryProblem:
     """Search problem for the delivery agent (see CLAUDE.md, "Shared interfaces")."""
 
-    def __init__(self, config, extra_blocked=(), start_state=None):
+    def __init__(self, config, extra_blocked=(), start_state=None, fuel_reserve=None):
         self.cfg = config
         self.n = config.n
         self.capacity = int(config.fuel_capacity)
+        # planning safety margin: never PLAN to drop below this much fuel (0 = the real limit).
+        # With the fuel twist off there is nothing to protect, so it is 0.
+        if not config.use_fuel:
+            self.reserve = 0
+        elif fuel_reserve is None:
+            self.reserve = int(config.fuel_reserve)
+        else:
+            self.reserve = int(fuel_reserve)
         self.start = tuple(config.start)
         self.stops = [tuple(s) for s in config.stops]
         self.goal_mask = (1 << len(self.stops)) - 1
@@ -133,7 +143,7 @@ class DeliveryProblem:
         for action, (nxt, _cost, use) in self._trans[(r, c)].items():
             if nxt in self.extra_blocked:
                 continue
-            if fuel_after(fuel, use, self.capacity, nxt in self._refuel) is None:
+            if fuel_after(fuel, use, self.capacity, nxt in self._refuel, self.reserve) is None:
                 continue
             legal.append(action)
         return legal
@@ -144,7 +154,7 @@ class DeliveryProblem:
         if action not in self._trans[(r, c)]:
             raise ValueError(f"{action} is not possible from {(r, c)}")
         nxt, _cost, use = self._trans[(r, c)][action]
-        new_fuel = fuel_after(fuel, use, self.capacity, nxt in self._refuel)
+        new_fuel = fuel_after(fuel, use, self.capacity, nxt in self._refuel, self.reserve)
         if new_fuel is None or nxt in self.extra_blocked:
             raise ValueError(f"{action} from {(r, c)} is illegal (fuel {fuel}, needs {use})")
         # entering a stop delivers its parcel (OR keeps already-set bits set)
@@ -172,10 +182,18 @@ class DeliveryProblem:
 
     def replan_from(self, state, extra_blocked=()):
         """Copy of this problem that starts at `state` and treats `extra_blocked` as walls.
-        Shares the precomputed tables, so it's cheap. Used by the simulator to replan."""
+        Keeps the same fuel reserve. Shares the precomputed tables, so it's cheap.
+        Used by the simulator to replan."""
         clone = copy.copy(self)
         clone._start_state = tuple(state)
         clone.extra_blocked = frozenset(extra_blocked)
+        return clone
+
+    def with_reserve(self, reserve: int):
+        """Copy of this problem with a different fuel reserve (shares the tables).
+        The simulator uses with_reserve(0) as the REAL world's rule."""
+        clone = copy.copy(self)
+        clone.reserve = int(reserve) if self.cfg.use_fuel else 0
         return clone
 
     def stop_index(self, cell):

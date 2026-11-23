@@ -88,10 +88,36 @@ def test_fuel_needed_never_exceeds_plan_fuel():
     """Rejoin rule: the fuel the rest of a plan needs is <= the fuel the plan had there."""
     # all stops near the depot + a small tank: a quick instance whose plan refuels 3 times
     cfg = parse_cli(["--stop", "0=2,12", "--stop", "2=8,3", "--stop", "3=3,6", "--stop", "4=1,0",
-                     "--fuel-capacity", "30"])
+                     "--fuel-capacity", "30", "--fuel-reserve", "0"])
     problem = DeliveryProblem(cfg)
     res = ucs(problem)
     assert res.solved
     need = fuel_needed(problem, res.actions, res.path)
     for k, state in enumerate(res.path):
         assert 0 <= need[k] <= state[3]
+
+
+def test_simulator_executes_with_real_limit():
+    """The planner's reserve is a safety margin; the simulated world only forbids < 0."""
+    cfg = parse_cli(["--fuel-reserve", "10"])
+    sim = Simulator(cfg, DeliveryProblem(cfg), np.random.default_rng(0), use_rival=False)
+    assert sim.problem.reserve == 10 and sim.world.reserve == 0
+
+
+def test_plan_with_reserve_keeps_margin_and_fuel_needed_fits():
+    cfg = parse_cli(["--stop", "0=2,12", "--stop", "2=8,3", "--stop", "3=3,6", "--stop", "4=1,0",
+                     "--fuel-capacity", "40", "--fuel-reserve", "5"])
+    problem = DeliveryProblem(cfg)
+    res = ucs(problem)
+    assert res.solved
+    assert all(state[3] >= 5 for state in res.path)
+    need = fuel_needed(problem, res.actions, res.path, reserve=5)
+    assert all(need[k] <= state[3] for k, state in enumerate(res.path))
+
+
+def test_extra_cost_text():
+    from oel.world.simulator import RunReport
+    win = RunReport("win", 330, 318, 12, 140, 30, 2, 0)
+    loss = RunReport("loss", 266, 318, float("nan"), 112, 33, 5, 0)
+    assert win.extra_cost_text() == "+12"
+    assert loss.extra_cost_text() == "n/a (stranded)"

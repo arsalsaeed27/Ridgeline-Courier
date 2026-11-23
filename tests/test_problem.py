@@ -6,13 +6,14 @@ from oel.search.standin import ucs
 from oel.world.problem import TUNNEL, DeliveryProblem
 
 HILLS_OFF_OPTIMUM = 307   # reference from CLAUDE.md (brute-force UCS, hills OFF)
-HILLS_ON_OPTIMUM = 318    # recorded from the stand-in UCS (Turn 1), also in CLAUDE.md
+HILLS_ON_OPTIMUM = 329    # stand-in UCS with UP_COST=2, UP_FUEL=3, REGEN=1; also in CLAUDE.md
+# Both references are TRUE optima, so they are computed with --fuel-reserve 0.
 
 
 @pytest.fixture(scope="module")
 def flat_plan():
     """Optimal plan with hills OFF (about 35 s, so it is computed once for the module)."""
-    problem = DeliveryProblem(parse_cli(["--no-hills"]))
+    problem = DeliveryProblem(parse_cli(["--no-hills", "--fuel-reserve", "0"]))
     return problem, ucs(problem)
 
 
@@ -59,7 +60,7 @@ def test_fuel_never_negative_along_plan(flat_plan):
 
 @pytest.mark.slow
 def test_hills_on_optimum():
-    res = ucs(DeliveryProblem(parse_cli([])))
+    res = ucs(DeliveryProblem(parse_cli(["--fuel-reserve", "0"])))
     assert res.cost == HILLS_ON_OPTIMUM
 
 
@@ -71,7 +72,7 @@ def test_station_refuels_to_capacity():
         if t is not None:
             neighbour = t[0]
             break
-    state = (neighbour[0], neighbour[1], 0, 10)
+    state = (neighbour[0], neighbour[1], 0, 40)
     after = problem.result(state, _action_into(problem, neighbour, station))
     assert after[:2] == tuple(station)
     assert after[3] == problem.capacity == 98
@@ -146,8 +147,9 @@ def test_move_that_empties_tank_is_not_offered():
 
 
 def test_downhill_coasting_with_empty_tank():
-    """Net fuel rule: an empty tank can still roll downhill if the regen pays for the move."""
-    problem = DeliveryProblem(parse_cli([]))
+    """Net fuel rule: an empty tank can still roll downhill if the regen pays for the move.
+    This is the REAL limit, so check it with reserve 0 (a planning reserve forbids it)."""
+    problem = DeliveryProblem(parse_cli([])).with_reserve(0)
     for cell, moves in problem._trans.items():
         for action, (_nxt, _cost, use) in moves.items():
             if use <= 0:
@@ -178,3 +180,39 @@ def test_stop_delivered_on_entry_and_helpers():
     assert problem.is_station(problem.cfg.stations[0]) and not problem.is_station(problem.start)
     assert problem.is_refuel_point(problem.start)
     assert "delivered [3]" in problem.describe(after)
+
+
+# ---------------------------------------------------------------- planning fuel reserve
+def test_reserve_blocks_planning_but_not_the_real_world():
+    """Reserve 5: a move that would leave 2 fuel is illegal for the PLANNER, legal in the world."""
+    problem = DeliveryProblem(parse_cli(["--fuel-reserve", "5"]))
+    world = problem.with_reserve(0)
+    assert problem.reserve == 5 and world.reserve == 0
+    for cell, moves in problem._trans.items():
+        for action, (nxt, _cost, use) in moves.items():
+            if use >= 1 and not problem.is_refuel_point(nxt):
+                state = (cell[0], cell[1], 0, use + 2)   # 2 fuel left after the move
+                assert action not in problem.actions(state)
+                assert action in world.actions(state)
+                return
+    raise AssertionError("no fuel-burning move found")
+
+
+def test_reserve_still_refuels_to_capacity():
+    problem = DeliveryProblem(parse_cli(["--fuel-reserve", "5"]))
+    station = problem.cfg.stations[0]
+    for action in ("N", "S", "E", "W"):
+        t = problem.transition(station, action)
+        if t is not None:
+            neighbour = t[0]
+            break
+    move = _action_into(problem, neighbour, station)
+    use = problem.transition(neighbour, move)[2]
+    after = problem.result((neighbour[0], neighbour[1], 0, use + 5), move)
+    assert after[3] == problem.capacity
+    # arriving with less than the reserve left is not planned, even at a station
+    assert move not in problem.actions((neighbour[0], neighbour[1], 0, use + 4))
+
+
+def test_reserve_ignored_without_fuel_twist():
+    assert DeliveryProblem(parse_cli(["--no-fuel", "--fuel-reserve", "10"])).reserve == 0

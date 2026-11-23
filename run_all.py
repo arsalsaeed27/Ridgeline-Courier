@@ -8,7 +8,7 @@ import sys
 import time
 
 from oel.config import parse_cli
-from oel.experiments import standin_demo
+from oel.experiments import fuel_reserve, standin_demo
 from oel.stamp import get_logger, stamp
 from oel.world.plots import plot_elevation_map, plot_instance_map
 
@@ -30,6 +30,14 @@ def main(argv=None):
     # TEMPORARY: plan with the stand-in UCS, execute it in the simulator (slip + rival,
     # rejoin/full replanning), save standin_route.png + standin_summary. Swap in Laiba's A*.
     standin_demo.run(cfg, log)
+
+    # fuel-reserve experiment (Turn 1): 5 reserves x 30 seeds, ~28 min with the stand-in UCS.
+    # Skipped in --quick (even 10 seeds take ~10 min, over the 5-minute limit); run it alone
+    # with:  python -m oel.experiments.fuel_reserve --quick   (10 seeds per reserve)
+    if cfg.quick:
+        log.info("fuel_reserve experiment skipped in --quick (kept from the last full run)")
+    else:
+        fuel_reserve.run(cfg, log)
 
     # ------------------------------------------------------------ Part A (Turn 4: M. Rayyan)
     # TODO: vectorised cost map + loop benchmark table, PEAS / environment tables.
