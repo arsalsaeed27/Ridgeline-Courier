@@ -5,10 +5,11 @@ Plain uniform-cost search (UCS) on a DeliveryProblem.
 """
 from __future__ import annotations
 
+import dataclasses
 import heapq
 import itertools
 
-from oel.search.result import SearchResult, failed_result
+from oel.search.result import EXPANDED_ORDER_CAP, SearchResult, failed_result
 
 
 def ucs(problem, is_goal=None, max_nodes=None) -> SearchResult:
@@ -25,6 +26,7 @@ def ucs(problem, is_goal=None, max_nodes=None) -> SearchResult:
     best = {start: (0.0, None, None)}   # state -> (cheapest cost found, parent state, action)
     expanded = 0
     max_frontier = 1
+    order = []   # cell of each expanded state (for the UI's search animation), capped
 
     while frontier:
         g, _, state = heapq.heappop(frontier)
@@ -33,10 +35,13 @@ def ucs(problem, is_goal=None, max_nodes=None) -> SearchResult:
         # Goal test when POPPING (not when pushing): only then is g guaranteed to be the
         # cheapest cost, because every cheaper path would have been popped first.
         if goal_test(state):
-            return _build(best, state, g, expanded, max_frontier)
+            return dataclasses.replace(_build(best, state, g, expanded, max_frontier),
+                                       expanded_order=order)
         if max_nodes is not None and expanded >= max_nodes:
             break
         expanded += 1
+        if len(order) < EXPANDED_ORDER_CAP:
+            order.append((state[0], state[1]))
         for action, nxt, cost in problem.successors(state):
             new_g = g + cost
             if nxt not in best or new_g < best[nxt][0]:
@@ -45,7 +50,7 @@ def ucs(problem, is_goal=None, max_nodes=None) -> SearchResult:
         if len(frontier) > max_frontier:
             max_frontier = len(frontier)
 
-    return failed_result(expanded, max_frontier)
+    return dataclasses.replace(failed_result(expanded, max_frontier), expanded_order=order)
 
 
 def _build(best, goal, cost, expanded, max_frontier) -> SearchResult:

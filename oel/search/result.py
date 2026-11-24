@@ -6,6 +6,9 @@ import time
 import tracemalloc
 from dataclasses import dataclass
 
+# Planners record at most this many expanded cells in expanded_order (memory: ~15 MB of tuples).
+EXPANDED_ORDER_CAP = 200_000
+
 
 @dataclass
 class SearchResult:
@@ -17,6 +20,9 @@ class SearchResult:
     runtime_s: float
     peak_mem_kb: float    # measured with tracemalloc
     solved: bool
+    # OPTIONAL: the CELL (row, col) of each expanded state, in expansion order, capped at
+    # EXPANDED_ORDER_CAP entries. Used by the UI's search visualisation. None = not recorded.
+    expanded_order: list | None = None
 
 
 def failed_result(nodes_expanded: int = 0, max_frontier: int = 0) -> SearchResult:

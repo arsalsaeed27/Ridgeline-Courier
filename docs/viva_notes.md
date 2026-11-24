@@ -96,6 +96,22 @@ A: Every LLM reply is cached under a hash of (model, temperature, messages, tool
 
 ## Part E: UI and experiments
 
+**Q: Does the UI have its own logic?**
+A: No. The sidebar widgets are turned into the same command-line arguments `run_all.py` takes and passed to `parse_cli`, so the UI and the report use the same validated `Config`. Plans come from the shared plan cache, simulations from the same `Simulator` and `RejoinReplanner`, and LLM runs from the same agent. The sidebar shows the equivalent command line.
+
+**Q: How does the live change work in the viva?**
+A: Either from the CLI (`python run_all.py --quick --slip 0.5 ...`, about 1.5 min, under the 5-minute limit) or in the UI sidebar. Invalid changes, such as moving a stop onto a wall, show an error message instead of crashing (`parse_cli` raises `ValueError`; the UI catches it).
+
+**Q: How does the search visualisation work?**
+A: Planners can fill `SearchResult.expanded_order` (the cell of each expanded state, capped at 200,000). The plan cache condenses it into two 40×40 grids: when each cell was first expanded (shown as an animation) and how many states were expanded in it (a log heatmap). Two planners can be shown side by side, e.g. UCS against A*, where A*'s heuristic should focus the expansion towards the goal.
+
+**Q: Why doesn't the UI freeze?**
+A: Nothing expensive runs on page load. Planning (25–50 s with the stand-in UCS), recording a search and simulating (10–90 s) only start when you press a button; they show a spinner with a time estimate, and the results are cached (on disk for plans, `st.cache_data` for simulations).
+
+**Q: How is the UI tested?**
+A: `tests/test_ui.py` uses Streamlit's AppTest to run the app headlessly: it loads, all 7 tabs render, the stamp is on the page, the slip slider changes the config, an invalid stop shows an error, reset works, and a cached LLM request replays.
+
+
 ## Twists
 
 ### Twist 1: Fuel limit with charging stations

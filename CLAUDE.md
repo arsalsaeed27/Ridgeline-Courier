@@ -126,11 +126,14 @@ class SearchResult:
     runtime_s: float
     peak_mem_kb: float    # measured with tracemalloc
     solved: bool
+    expanded_order: list | None = None   # OPTIONAL: cell (row, col) of each expanded state, in order,
+                                          # capped at EXPANDED_ORDER_CAP (200k); drives the UI search animation
 ```
 Planners: `planner(problem, **kwargs) -> SearchResult`. Heuristics: `h(state, problem) -> float`.
+Register them in `oel/search/registry.py` (`register_planner(name, fn, uses_heuristic=...)`, `register_heuristic(name, h)`); the UI, the LLM tools and the plan cache read the registries. `DeliveryProblem(config, constraints=PlanConstraints(...))` adds user constraints (`oel/world/constraints.py`); `verify_plan(actions, constraints, cfg)` checks a plan independently.
 
 ## Correctness checks (keep `pytest -q` passing)
-- UCS cost == A* cost (any admissible heuristic), with hills ON and OFF (hills OFF must give 307).
+- UCS cost == A* cost (any admissible heuristic), with hills ON and OFF (hills OFF must give 307, hills ON 329; both with `--fuel-reserve 0`).
 - Our heuristic: h(s) <= true cost-to-go on sampled states (true cost from UCS).
 - Every file in `results/` contains the stamp text (`tests/test_stamp.py`).
 

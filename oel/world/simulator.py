@@ -54,6 +54,9 @@ class RunReport:
     replans: list = field(default_factory=list)   # one dict per replan: step, kind, nodes, runtime_s
     agent_path: list = field(default_factory=list)  # cells visited by the agent
     rival_path: list = field(default_factory=list)  # cells visited by the rival
+    # one dict per step for the UI animation: step, cell, fuel, rival, event, total_cost
+    # (event: start / move / slip / slip_failed / failed / wait)
+    timeline: list = field(default_factory=list)
 
     def extra_cost_text(self) -> str:
         """Extra cost for printing: a number for a win, 'n/a (stranded)' etc. otherwise
@@ -118,8 +121,15 @@ class Simulator:
         self.rival_pos = self._place_rival() if use_rival else None
         self.agent_path = [self.cell]
         self.rival_path = [self.rival_pos] if use_rival else []
+        self.timeline = [self._snapshot("start")]
 
     # ------------------------------------------------------------ small helpers
+    def _snapshot(self, event: str) -> dict:
+        """One timeline entry (what the UI animates)."""
+        return {"step": self.steps, "cell": list(self.cell), "fuel": self.state[3],
+                "rival": list(self.rival_pos) if self.rival_pos else None,
+                "event": event, "total_cost": self.total_cost}
+
     @property
     def cell(self) -> tuple:
         return (self.state[0], self.state[1])
@@ -182,7 +192,11 @@ class Simulator:
 
         self.state = new
         delivered_now = self.problem.delivered(new[2] & ~old[2])
-        self._end_step(cost)
+        if slipped:
+            event = "slip_failed" if failed else "slip"
+        else:
+            event = "failed" if failed else "move"
+        self._end_step(cost, event)
         return StepInfo(new, action, actual, slipped, failed, cost, fuel_used,
                         delivered_now, self.rival_pos, self.done, self.outcome)
 
@@ -191,9 +205,9 @@ class Simulator:
         no fuel burned, but it costs failed_move_cost and counts toward the step limit."""
         if self.done:
             raise RuntimeError(f"run is over ({self.outcome})")
-        self._end_step(self.cfg.failed_move_cost)
+        self._end_step(self.cfg.failed_move_cost, "wait")
 
-    def _end_step(self, cost) -> None:
+    def _end_step(self, cost, event: str) -> None:
         """Book-keeping shared by step() and wait(): cost, step count, outcome, rival move."""
         new = self.state
         self.total_cost += cost
@@ -214,6 +228,7 @@ class Simulator:
             if move is not None and self.rival_target(move) is not None:
                 self.rival_pos = self.rival_target(move)
             self.rival_path.append(self.rival_pos)
+        self.timeline.append(self._snapshot(event))
 
     # ------------------------------------------------------------ executing a whole plan
     def predict(self, actions, state=None) -> list:
@@ -285,7 +300,7 @@ class Simulator:
         extra = total - planned_cost if self.outcome == "win" else float("nan")
         return RunReport(self.outcome, total, planned_cost, extra,
                          self.steps - steps_before, slips, failed, waits, self.end_reason, replans,
-                         list(self.agent_path), list(self.rival_path))
+                         list(self.agent_path), list(self.rival_path), list(self.timeline))
 
 
 # ---------------------------------------------------------------- replanning strategy

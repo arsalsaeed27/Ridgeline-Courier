@@ -1,3 +1,3 @@
 # Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) | M. Rayyan (534733) | instance 38bfda97
 planner,hills,fuel,tunnels,slip,seed,fuel_reserve,planned_cost,nodes_expanded,max_frontier,plan_runtime_s,peak_mem_kb,outcome,end_reason,actual_cost,extra_cost,steps,slips,failed_moves,waits,replans_rejoin,replans_full
-stand-in UCS,True,True,True,0.25,952097431,20,353.0,1326200,30970,23.39,not measured (--quick),win,all parcels delivered,877.0,+524,345,98,20,0,93,8
+stand-in UCS,True,True,True,0.25,952097431,20,353.0,1326200,30970,28.83,not measured (--quick),win,all parcels delivered,877.0,+524,345,98,20,0,93,8

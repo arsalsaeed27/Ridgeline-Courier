@@ -6,15 +6,35 @@
 """
 import sys
 import time
+from collections import defaultdict
 
-from oel.config import parse_cli
+from oel.config import RESULTS_DIR, parse_cli
 from oel.experiments import fuel_reserve, llm_eval, standin_demo, validator_fault_injection
 from oel.stamp import get_logger, stamp
 from oel.world.plots import plot_elevation_map, plot_instance_map
 
 
+def output_summary(since: float) -> str:
+    """Every file under results/ written during this run, grouped by folder. Figures and
+    tables are listed by name; folders with many files (logs, LLM traces) are counted."""
+    groups = defaultdict(list)
+    for path in sorted(RESULTS_DIR.rglob("*")):
+        if path.is_file() and path.name != ".gitkeep" and path.stat().st_mtime >= since:
+            groups[path.parent.relative_to(RESULTS_DIR).as_posix()].append(path.name)
+    lines = [f"output files written in this run: {sum(len(v) for v in groups.values())}"]
+    for folder in sorted(groups):
+        names = groups[folder]
+        where = "results/" if folder == "." else f"results/{folder}/"
+        if folder in ("figures", "tables") or len(names) <= 6:
+            lines.append(f"  {where} ({len(names)}): " + ", ".join(names))
+        else:
+            lines.append(f"  {where} ({len(names)} files)")
+    return "\n".join(lines)
+
+
 def main(argv=None):
     t0 = time.perf_counter()
+    started = time.time() - 1   # wall clock, for "files written during this run"
     try:
         cfg = parse_cli(argv)
     except ValueError as err:   # bad live-change value: short message, no traceback
@@ -58,8 +78,9 @@ def main(argv=None):
     validator_fault_injection.run(cfg, log, compute=not cfg.quick)
 
     # ------------------------------------------------------------ Part E (Turn 1: M. Arsal Saeed)
-    # TODO: summary figures for the UI / report.
+    # The Streamlit UI (streamlit run ui/app.py) shows everything above; it needs no extra outputs.
 
+    log.info("%s", output_summary(started))
     log.info("total runtime %.2f s", time.perf_counter() - t0)
     print(stamp())
 

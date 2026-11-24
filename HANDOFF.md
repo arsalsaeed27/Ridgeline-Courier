@@ -127,3 +127,56 @@ _Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) |
 - **Third model:** `openai/gpt-oss-safeguard-20b`. The smaller models in Groq's tool-use docs are not usable with our key: `llama-3.1-8b-instant` returns 404 (no access) and `allam-2-7b` (7B) rejects tool calling. So the smallest usable tool-calling models are the two 20B gpt-oss models. Result: 13/13 graded requests correct + 1 `ambiguous_reading` (H1, straight-line reading like 20b), **0 validator rejections**, and **6 of 20 runs lost to API errors**: our tier allows this model only **2,000 tokens/minute** and a request needs about 2,400 (HTTP 413). API failures are now cached (so replays are exact), reported in `runs_lost_to_api_errors` and NOT graded as LLM mistakes.
 - `report/sections/part_d_traces.md`: (1) a successful run, (2) "no failure was fixed by validation" (no model had a validator rejection), (3) H1 for all three models: 120b reads "closest" by path cost (stop 4, 353); both 20B models read it as straight-line (stop 1, 391).
 - Final honest summary for Part D: *none of the three models needed validation on our 20 requests; the smaller models differ only in how they read a vague request; fault injection shows what the validator prevents regardless of model.*
+
+---
+
+## Turn 1: M. Arsal Saeed (506676), 2026-11-23 (FINAL, all sessions)
+### What I built
+- **Shared base:** repo layout; `oel/config.py` (MEMBERS, INSTANCE_ID, BASE_SEED, hill constants, `Config`, `parse_cli` with validation; LLM settings); `oel/stamp.py` (stamp, save_fig, save_table, get_logger, manifest); data files incl. the elevation map (`scripts/make_elevation.py`); `oel/world/plots.py`.
+- **World model:** `oel/world/grid.py` (vectorised cost/fuel maps; loop version left for Rayyan), `oel/world/problem.py` (DeliveryProblem; one fuel rule `fuel_after`; planning fuel reserve; constraints), `oel/world/constraints.py` (PlanConstraints, verify_plan), `oel/world/simulator.py` (slip, placeholder rival, failed moves/waits, RejoinReplanner, per-step timeline).
+- **Search plumbing:** `SearchResult` (+ optional `expanded_order`), `run_timed`, `oel/search/registry.py` (planner + heuristic registries), TEMPORARY `oel/search/standin.py` (plain UCS).
+- **Twist 3 (hills):** UP_COST 2, UP_FUEL 3, REGEN 1 (REGEN < UP_FUEL asserted).
+- **Experiments:** `standin_demo.py`, `fuel_reserve.py` (+ `stats.py` with `wilson_ci`), `llm_eval.py`, `validator_fault_injection.py`.
+- **Part D:** `oel/llm/` (plans + caches, tools, validator, agent, 20 requests), `docs/llm_gold_answers.md`, `report/sections/part_d.md`, `part_d_traces.md`.
+- **Part E:** `ui/app.py` + `ui/views.py` (Streamlit + Plotly, 7 tabs), `tests/test_ui.py`, `report/sections/part_e.md`; `run_all.py` with a final list of every output file.
+### How to run it
+- `pip install -r requirements.txt`; `pytest -q` (64 tests, ~2 min; `-m "not slow"` skips the two full-map UCS tests); `python run_all.py --quick` (~1.5 min); `python run_all.py` (full, adds the 28-min fuel-reserve experiment and recomputes fault injection if needed); `streamlit run ui/app.py`.
+- Live LLM calls: put `GROQ_API_KEY` in `.env`, then `python -m oel.experiments.llm_eval --live`. Without a key everything replays from `oel/llm/cache/`.
+### Key results / numbers
+- **Reference optima** (stand-in UCS, `--fuel-reserve 0`): hills OFF **307** (1.84M nodes, 2 recharges), hills OFF no tunnels **400**, hills OFF no fuel **296**, **hills ON 329** (+7.2%; same route as hills OFF because fuel/stations pin it; with `--no-fuel` the hills do reroute, 296 -> 320).
+- **Fuel reserve** (30 seeds each, slip 0.25): win rate 13% / 47% / 47% / 53% / 63% for reserve 0 / 5 / 10 / 15 / 20; planned cost 329 -> 353. Default reserve **20** (no reserve reached 80%; the best one was chosen by the rule fixed in advance).
+- **Default simulation** (seed 952097431, reserve 20): win, real cost 877 vs planned 353, 345 steps, 98 slips, 93 rejoins + 8 full replans.
+- **LLM:** gpt-oss-120b 20/20; gpt-oss-20b 19/19 + 1 ambiguous (H1); gpt-oss-safeguard-20b 13/13 + 1 ambiguous + 6 lost to API limits (2,000 TPM). 0 validator rejections for all models.
+- **Fault injection:** 180 corrupted calls, validator catches 100%; without it 53 crash, 30 silently ignored, 15 silently wrong plans, 18 wasted searches, 39 misleading "infeasible", 25 correct errors (671 s of planning avoided).
+- Map fact: avoiding mud cuts the depot off from stops 0-3.
+### Files I created or changed
+- Everything in the repo except `scripts/oel_instance.py`, `scripts/make_twists.py` and the placeholder files of later turns (`oel/search/uninformed.py`, `informed.py`, `heuristics.py`, `oel/game/*`). `CLAUDE.md` edited: references, twist constants, interfaces.
+### Changes to other people's code (if any)
+- `oel/world/grid.py` (Rayyan, Part A): only the vectorised maps; `# TODO(Rayyan): loop version + benchmark` is left for him.
+- `CLAUDE.md`: SearchResult gained the optional `expanded_order`; registries and constraints documented; hills-ON reference 329.
+### Known issues / TODOs
+- The stand-in UCS is slow: 25-50 s and ~360 MB per full-map plan (tracemalloc makes it 5-8x slower). So the fuel-reserve experiment is skipped in `--quick`, and live changes that alter planning skip the cached Part D in `--quick`.
+- The placeholder rival (`greedy_blocker`) can park on the last undelivered stop -> the agent waits -> "draw".
+- The hills do not change the optimal route while the fuel limit is ON (they change its cost).
+- The LLM benchmark did not separate validation ON/OFF (no model made argument errors); the fault injection shows the validator's value.
+- The UI search animation shows only the first 200,000 expansions of a big search (`EXPANDED_ORDER_CAP`).
+### What the next person needs to know
+- See **"Laiba, start here"** right below.
+
+## Laiba, start here (Turn 2)
+**Your part:** BFS, UCS, DLS, IDS, Greedy, A*, weighted A* from scratch; our MST-based, hill-aware heuristic + admissibility proof + consistency test; 2 baseline heuristics; IDS vs A* under a memory limit; the 30-seed experiments framework with 95% CIs and an ablation; the evaluation function for Ali's rival game.
+
+**Use these, don't rebuild them:**
+- `DeliveryProblem` (`oel/world/problem.py`): `initial_state / is_goal / actions / result / step_cost`, plus the fast helper `successors(state)` (same rules). State = `(row, col, delivered_mask, fuel)`. **Always start from `problem.initial_state()`**: the simulator replans mid-route through `problem.replan_from(state, extra_blocked)`, and user constraints and the fuel reserve live inside the problem, so your planners need no extra code for them.
+- `SearchResult` (`oel/search/result.py`): fill every field, and also **`expanded_order`** (append `(row, col)` of each expanded state while `len < EXPANDED_ORDER_CAP`); the UI's search tab uses it. Measure time and memory with `run_timed(planner, problem)`.
+- **Registries** (`oel/search/registry.py`): `register_planner("astar", astar, uses_heuristic=True)` and `register_heuristic("mst", h_mst)`. Your planners then appear in the UI dropdowns, the LLM tools and the plan cache automatically. Replace the stand-in line at the bottom with your own `register_planner("ucs", ucs)`.
+- `verify_plan(actions, constraints, cfg)` checks any plan independently; `oel/experiments/stats.py` has `wilson_ci`.
+- **Hills make moves direction-dependent** (A->B != B->A): compute heuristic distance fields BACKWARDS over reversed edges from each stop. Fuel can rise without a station (regen), so don't assume fuel only goes down. Ignoring fuel in a heuristic is a valid relaxation (it can only make the true cost higher).
+
+**Tests you must keep passing:** all of `pytest -q` (64 now), especially `tests/test_problem.py`: UCS **307** (hills OFF) and **329** (hills ON), both with `--fuel-reserve 0`. Add UCS == A* == 307 / 329 tests and the heuristic admissibility test (h <= true cost-to-go on sampled states).
+
+**Delete the stand-in** `oel/search/standin.py` once your UCS works, and switch everything that imports it to your `oel.search.uninformed.ucs`: `oel/search/registry.py`, `oel/llm/plans.py`, `oel/llm/tools.py`, `oel/experiments/standin_demo.py`, `oel/experiments/fuel_reserve.py`, `ui/app.py`, `tests/test_problem.py`, `tests/test_simulator.py`, `tests/test_llm.py` (`grep -rn standin --include=*.py .` lists them). Your UCS must accept `is_goal=` and `max_nodes=` (the simulator's rejoin uses them), or keep a small UCS for that.
+
+**Plan cache note:** cached plans are keyed by the algorithm NAME. If your UCS is registered as `"ucs"`, the cached stand-in plans are reused (same optimal costs), so Part D still replays from the cache. Only bump `CACHE_VERSION` in `oel/llm/plans.py` if the planning RULES change: that invalidates every cached plan id and the cached LLM conversations (they would then need a live re-run with a key).
+
+**Speed:** once A* is fast, move the fuel-reserve experiment back into `--quick` (see the comment in `run_all.py`) and use A* for the simulator's full replans (`RejoinReplanner(full_planner=astar, ...)`). Keep `python run_all.py --quick` under 5 minutes.

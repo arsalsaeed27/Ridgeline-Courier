@@ -14,7 +14,8 @@ from pathlib import Path
 
 import numpy as np
 
-from oel.search.result import run_timed
+from oel.search import registry
+from oel.search.result import EXPANDED_ORDER_CAP, run_timed
 from oel.search.standin import ucs
 from oel.stamp import get_logger
 from oel.world.constraints import PlanConstraints
@@ -26,12 +27,9 @@ PLAN_DIR = CACHE_DIR / "plans"
 SIM_DIR = CACHE_DIR / "sims"
 CACHE_VERSION = 1   # bump if the planning rules change, so old cached plans are not reused
 
-# name -> planner(problem) -> SearchResult. Laiba adds hers with register_planner("astar", astar).
-PLANNERS = {"ucs": ucs}
-
-
-def register_planner(name: str, planner) -> None:
-    PLANNERS[name] = planner
+# the shared registry (oel/search/registry.py): name -> planner(problem, **kwargs) -> SearchResult
+PLANNERS = registry.PLANNERS
+register_planner = registry.register_planner
 
 
 def _log():
@@ -58,10 +56,28 @@ def config_fingerprint(cfg) -> dict:
     }
 
 
-def plan_key(cfg, constraints: PlanConstraints, algorithm: str) -> str:
+def plan_key(cfg, constraints: PlanConstraints, algorithm: str, heuristic: str | None = None) -> str:
     resolved = constraints.resolved(cfg).to_dict()   # defaults filled in -> same request, same key
-    return _hash({"v": CACHE_VERSION, "algorithm": algorithm, "constraints": resolved,
-                  "config": config_fingerprint(cfg)})[:12]
+    blob = {"v": CACHE_VERSION, "algorithm": algorithm, "constraints": resolved,
+            "config": config_fingerprint(cfg)}
+    if heuristic:                                    # (keeps the old keys valid when None)
+        blob["heuristic"] = heuristic
+    return _hash(blob)[:12]
+
+
+def expansion_grids(cfg, expanded_order) -> dict:
+    """Condense expanded_order into two small n x n grids for the UI:
+    first[r][c] = index of the first expansion of a state in that cell (-1 = never),
+    count[r][c] = how many states in that cell were expanded (among the recorded ones)."""
+    first = np.full((cfg.n, cfg.n), -1, dtype=int)
+    count = np.zeros((cfg.n, cfg.n), dtype=int)
+    for i, (r, c) in enumerate(expanded_order):
+        if first[r, c] < 0:
+            first[r, c] = i
+        count[r, c] += 1
+    return {"expansion_first": first.tolist(), "expansion_count": count.tolist(),
+            "expansion_recorded": len(expanded_order),
+            "expansion_capped": len(expanded_order) >= EXPANDED_ORDER_CAP}
 
 
 def _summarise(problem, res) -> dict:
@@ -74,13 +90,21 @@ def _summarise(problem, res) -> dict:
             "tunnels_used": res.actions.count(TUNNEL), "delivery_order": order}
 
 
-def plan(cfg, constraints: PlanConstraints, algorithm: str = "ucs") -> dict:
+def plan(cfg, constraints: PlanConstraints, algorithm: str = "ucs", heuristic: str | None = None,
+         refresh: bool = False, measure_memory: bool = False) -> dict:
     """Plan (or load from the cache) and return the plan record. Raises KeyError for an
-    unknown algorithm: the validator should catch that first."""
+    unknown algorithm/heuristic: the validator should catch that first.
+    refresh=True re-plans even if cached (e.g. to record the search for the UI);
+    measure_memory=True also measures peak memory with tracemalloc (several times slower)."""
     planner = PLANNERS[algorithm]
-    plan_id = plan_key(cfg, constraints, algorithm)
+    kwargs = {"heuristic": registry.HEURISTICS[heuristic]} if heuristic else {}
+    plan_id = plan_key(cfg, constraints, algorithm, heuristic)
     path = PLAN_DIR / f"{plan_id}.json"
-    if path.exists():
+    if path.exists() and not refresh:
+        cached = json.loads(path.read_text())
+        if measure_memory and not cached.get("peak_mem_kb"):
+            refresh = True          # asked for memory, but it was never measured: re-plan
+    if path.exists() and not refresh:
         _log().info("plan cache HIT  %s (%s, %s)", plan_id, algorithm, constraints.to_dict())
         record = json.loads(path.read_text())
         record["from_cache"] = True
@@ -88,7 +112,8 @@ def plan(cfg, constraints: PlanConstraints, algorithm: str = "ucs") -> dict:
 
     _log().info("plan cache MISS %s (%s, %s): planning...", plan_id, algorithm, constraints.to_dict())
     resolved = constraints.resolved(cfg)
-    record = {"plan_id": plan_id, "algorithm": algorithm, "constraints": constraints.to_dict(),
+    record = {"plan_id": plan_id, "algorithm": algorithm, "heuristic": heuristic,
+              "constraints": constraints.to_dict(),
               "resolved_constraints": resolved.to_dict(), "feasible": False, "reason": "",
               "cost": None, "actions": [], "path": [], "nodes_expanded": 0, "runtime_s": 0.0}
 
@@ -99,8 +124,11 @@ def plan(cfg, constraints: PlanConstraints, algorithm: str = "ucs") -> dict:
         record["reason"] = f"stop(s) {on_wall} lie on avoided cells/terrain, so they can't be delivered"
     else:
         problem = DeliveryProblem(cfg, constraints=constraints)
-        res = run_timed(planner, problem, measure_memory=False)
-        record.update(nodes_expanded=res.nodes_expanded, runtime_s=round(res.runtime_s, 2))
+        res = run_timed(planner, problem, measure_memory=measure_memory, **kwargs)
+        record.update(nodes_expanded=res.nodes_expanded, runtime_s=round(res.runtime_s, 2),
+                      peak_mem_kb=round(res.peak_mem_kb) if measure_memory else None)
+        if res.expanded_order is not None:
+            record.update(expansion_grids(cfg, res.expanded_order))
         if not res.solved:
             record["reason"] = "no route satisfies the constraints (search space exhausted)"
         else:
