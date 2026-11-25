@@ -9,8 +9,8 @@ import time
 from collections import defaultdict
 
 from oel.config import RESULTS_DIR, parse_cli
-from oel.experiments import (fuel_reserve, llm_eval, search_small, standin_demo,
-                            validator_fault_injection)
+from oel.experiments import (fuel_reserve, heuristic_eval, llm_eval, search_small,
+                            standin_demo, validator_fault_injection)
 from oel.stamp import get_logger, stamp
 from oel.world.plots import plot_elevation_map, plot_instance_map
 
@@ -66,8 +66,11 @@ def main(argv=None):
     # ------------------------------------------------------------ Part B (Turn 2: Laiba Rehman)
     # all six algorithms on 30 small instances (7x7 window, ~6 s, so also in --quick)
     search_small.run(cfg, log)
-    # TODO (Turn 2, next sessions): heuristics (MST + baselines), full-map A* comparison,
-    #       weighted A*, IDS vs A* under a memory limit, 30-seed experiments + ablation.
+    # heuristics: admissibility + consistency checks, full-map comparison, ablation
+    # (~100 s in --quick; the full run also measures peak memory, which is 5-8x slower for UCS)
+    heuristic_eval.run(cfg, log)
+    # TODO (Turn 2, next sessions): weighted A*, IDS vs A* under a memory limit,
+    #       30-seed experiments + ablation.
 
     # ------------------------------------------------------------ Part C (Turn 3: Ali Salman Mustafa)
     # TODO: minimax vs alpha-beta node counts, weight tuning, 100-game tournament (Wilson CIs).

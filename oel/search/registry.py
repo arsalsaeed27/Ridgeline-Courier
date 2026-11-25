@@ -10,7 +10,8 @@ plan cache all read these dicts, so a new planner appears everywhere after one l
 Planners: planner(problem, **kwargs) -> SearchResult. A planner registered with
 uses_heuristic=True is called as planner(problem, heuristic=h) with h(state, problem) -> float.
 """
-from oel.search.heuristics import h_zero
+from oel.search.heuristics import (h_farthest, h_manhattan, h_manhattan_raw, h_mst, h_ours,
+                                   h_zero)
 from oel.search.informed import astar, greedy, weighted_astar
 from oel.search.uninformed import bfs, dls, ids, ucs
 
@@ -41,3 +42,8 @@ register_planner("weighted_astar", weighted_astar, uses_heuristic=True,
                  description="weighted A*: f = g + 2h (faster, may cost more)")
 
 register_heuristic("h_zero", h_zero, description="always 0 (A* = UCS)")
+register_heuristic("h_ours", h_ours, description="OURS: max(MST over relaxed distances, farthest stop)")
+register_heuristic("h_mst", h_mst, description="MST over {cell} + undelivered stops (relaxed distances)")
+register_heuristic("h_farthest", h_farthest, description="baseline 2: relaxed distance to the farthest stop")
+register_heuristic("h_manhattan", h_manhattan, description="baseline 1: tunnel-aware Manhattan, nearest stop")
+register_heuristic("h_manhattan_raw", h_manhattan_raw, description="NOT admissible: Manhattan ignoring tunnels")

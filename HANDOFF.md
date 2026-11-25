@@ -207,3 +207,30 @@ _Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) |
 - `dls` / `ids` on the full map only stop on their budgets (expected).
 ### What the next person needs to know
 - All planners are registered (`bfs, ucs, dls, ids, greedy, astar, weighted_astar`) plus `h_zero`; they show up in the UI's Plan and Search tabs automatically.
+
+---
+
+## Turn 2 (session 2): Laiba's part, done by M. Arsal Saeed (506676), 2026-11-25
+### What I built
+- `oel/search/distance_fields.py`: relaxed distances D_i(cell) (same walls / terrain / hills / tunnels / avoided cells, NO fuel), by our own backward Dijkstra over reversed edges, cached per map + constraints.
+- `oel/search/heuristics.py`: `h_manhattan_raw` (inadmissible example), `h_manhattan` (baseline 1, tunnel-aware with any number of hops), `h_farthest` (baseline 2), `h_mst` (Prim), **`h_ours = max(h_mst, h_farthest)`**; all memoised on (cell, mask) and registered.
+- `FuelDominance` pruning (`prune_dominated=True`) in `ucs` and `astar` (`oel/search/common.py`).
+- `oel/experiments/heuristic_eval.py`: admissibility, consistency, full-map comparison + `heuristic_nodes.png`, ablation. `report/sections/part_b_heuristic.md`: the proof. `tests/test_heuristics.py`.
+- UI: the expansion grids for UCS and A*+h_ours on the default plan are recorded (Search tab, side by side).
+### How to run it
+- `python -m oel.experiments.heuristic_eval` (full run, measures peak memory) or `--quick` (~100 s, part of `run_all.py --quick`).
+### Key results / numbers
+- **Full map, reserve 0:** UCS 1,775,457 nodes; A*+h_manhattan 1,596,654; A*+h_farthest 686,321; A*+h_mst = A*+h_ours **29,542 (60x fewer than UCS)**, all with cost 329. A*+h_ours + fuel pruning: 2,752 nodes. Greedy+h_ours: 20,617 nodes but cost 485 (not optimal). Reserve 20: UCS 1,326,200 vs A*+h_ours 79,615 (cost 353).
+- h_ours(start) = 277 vs the true 329 (84% tight); mean h/h* = 0.91 (small instances), 0.88 (full-map samples).
+- **Admissibility:** 0 violations for h_manhattan / h_farthest / h_mst / h_ours (553 checked states); h_manhattan_raw: 2 violations next to tunnels (up to +34); h_ours without tunnel edges: 17/17 full-map states violated (up to +136).
+- **Consistency:** h_ours violates it on 15.5% of the 92,171 edges A* generated on the full map (largest 19) -> 4,525 reopenings, still optimal. h_farthest and h_manhattan: 0 violations.
+- **Ablation (nodes, reserve 0):** full 29,542; -tunnel edges 19,925 (inadmissible, happened to stay optimal); -hill costs 73,121; -MST (= h_farthest) 686,321; -farthest (= h_mst) 29,542. The MST term does almost all the work.
+### Files I created or changed
+- New: `oel/search/distance_fields.py`, `oel/experiments/heuristic_eval.py`, `tests/test_heuristics.py`, `report/sections/part_b_heuristic.md`. Changed: `heuristics.py`, `common.py`, `uninformed.py` / `informed.py` (pruning flag), `registry.py`, `run_all.py`, `docs/viva_notes.md`.
+### Changes to other people's code (if any)
+- None outside Part B.
+### Known issues / TODOs
+- Next: weighted A* study, IDS vs A* under a memory limit, the 30-seed experiments framework + ablation, the evaluation function for Ali.
+- Now that A* is fast: move the fuel-reserve experiment back into `--quick`, and use A*+h_ours for the simulator's full replans. Then do the deliberate live LLM re-run with A*+h_ours exposed (`cfg.llm_algorithms`).
+### What the next person needs to know
+- Use `astar(problem, heuristic=h_ours)` for anything big; add `prune_dominated=True` for another ~10x.

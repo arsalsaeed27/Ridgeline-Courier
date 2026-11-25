@@ -1,0 +1,11 @@
+_Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) | M. Rayyan (534733) | instance 38bfda97_
+
+| heuristic       | scope               |   edges_checked |   violations |   violation_pct |   largest_violation |
+|:----------------|:--------------------|----------------:|-------------:|----------------:|--------------------:|
+| h_manhattan_raw | small, fuel ON (30) |           22673 |            0 |           0     |                   0 |
+| h_manhattan     | small, fuel ON (30) |           22673 |            0 |           0     |                   0 |
+| h_farthest      | small, fuel ON (30) |            9213 |            0 |           0     |                   0 |
+| h_mst           | small, fuel ON (30) |            5389 |          373 |           6.922 |                   5 |
+| h_mst           | full map, reserve 0 |           92171 |        14313 |          15.529 |                  19 |
+| h_ours          | small, fuel ON (30) |            5321 |          373 |           7.01  |                   5 |
+| h_ours          | full map, reserve 0 |           92171 |        14313 |          15.529 |                  19 |

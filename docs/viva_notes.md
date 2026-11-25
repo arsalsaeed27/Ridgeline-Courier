@@ -98,6 +98,33 @@ A: We keep the real map but turn every cell outside a 7×7 window around the dep
 A: Node counts are very skewed (a few instances need far more nodes), and a t interval for DLS/IDS nodes even went below zero. The percentile bootstrap (resample the 30 values with replacement 10,000 times, seeded, and take the middle 95% of the means) handles skewed data. Solved % uses the Wilson interval.
 
 
+**Q: What is our heuristic, in one sentence?**
+A: h_ours = max(MST, farthest). Using relaxed distances (the real map but with no fuel limit), it takes the weight of a minimum spanning tree that connects the robot's cell to every undelivered stop, or the distance to the farthest undelivered stop if that is larger.
+
+**Q: Worked example?**
+A: At the start (depot (5,4), nothing delivered), the relaxed distances to stops 0–4 are 113, 59, 79, 58 and 14 (stop 4 is close thanks to the tunnel (4,2)→(10,36)). Prim picks depot→4 (14), depot→3 (58), 3→1 (51; 1→3 costs 55 because of the hills, and we take the cheaper direction), 4→2 (75) and 2→0 (79): 277. Farthest = 113. h_ours = 277; the true optimum is 329 (84% tight).
+
+**Q: Why is it admissible?**
+A: (a) Relaxed distances are lower bounds: every real route is also a relaxed route at the same cost, because fuel only removes routes. (b) Number the stops by when they are *delivered*. The rest of any route splits into segments cell→1st delivery→2nd→…, each costing at least the relaxed distance we used for that edge. Those edges form a path through all the nodes, and a path is a spanning tree, so it weighs at least the MST. (c) You must reach the farthest stop. (d) The max of two lower bounds is a lower bound. (e) Fuel, the reserve, stop order and the rival only remove or lengthen routes.
+
+**Q: Why compute the distance fields backwards?**
+A: Hills make A→B ≠ B→A (going up costs extra). We need the cost *from* every cell *to* a stop, so we run Dijkstra from the stop over reversed edges: one run per stop gives the cost-to-stop for all cells at once.
+
+**Q: Why is h_manhattan_raw not admissible, and how did the baseline fix it?**
+A: Tunnels jump across the map for cost 2. At (5,2) with only stop 4 left, Manhattan says 42, but the tunnel route costs 8. Our tunnel-aware baseline solves a tiny shortest-path problem over {cell, tunnel ends, stops}, with Manhattan × the cheapest terrain cost for walking and the tunnel cost for jumps. It allows *chains* of tunnels, because a min over a single tunnel could still overestimate when one tunnel drops you next to another.
+
+**Q: Is h_ours consistent? Does it matter?**
+A: No. Delivering a stop removes an MST node and can reshape the tree, so h can drop by more than one step's cost. We measured that on 15.5% of the edges A\* generated on the full map (largest gap 19). A\* stays optimal because it reopens a closed state when it finds a cheaper path (4,525 reopenings) and still gives 329.
+
+**Q: How much does it help?**
+A: On the full map (reserve 0), A\*+h_ours expands 29,542 states against UCS's 1,775,457 (60× fewer), in 0.3 s instead of 12 s, at the same cost of 329. The baselines help much less: tunnel-aware Manhattan 1.6M, farthest 686k. Greedy+h_ours is even faster but returns cost 485.
+
+**Q: What does the ablation show?**
+A: The MST term does almost all the work: without it (= h_farthest) A\* needs 686k nodes, while without the farthest term (= h_mst) the result is unchanged. Without hill costs in the fields it is still admissible but weaker (73k nodes). Without tunnel edges it becomes **inadmissible** (it overestimated on all 17 full-map states checked, by up to 136). It happened to return 329 anyway, but nothing guarantees that.
+
+**Q: What is fuel-dominance pruning, and why is it safe?**
+A: At the same (cell, delivered set), a state that arrived no cheaper and with no more fuel than one we've already seen can be dropped. More fuel is never worse in our model: every move legal with less fuel is legal with more, and after any move the fuller tank stays at least as full (the cap and refuelling treat both the same). Costs and deliveries don't depend on fuel. It keeps 307/329 and cuts A\*+h_ours from 29,542 to 2,752 nodes.
+
 ## Part C: Adversarial search (rival blocker)
 
 ## Part D: LLM dispatcher

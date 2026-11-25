@@ -7,8 +7,8 @@ from __future__ import annotations
 import heapq
 import itertools
 
-from oel.search.common import (path_cost, reconstruct, record_expansion, solved_result,
-                               unsolved_result)
+from oel.search.common import (FuelDominance, path_cost, reconstruct, record_expansion,
+                               solved_result, unsolved_result)
 from oel.search.heuristics import h_zero
 from oel.search.result import SearchResult
 
@@ -44,7 +44,8 @@ def greedy(problem, heuristic=h_zero, node_limit=None) -> SearchResult:
 
 
 # ---------------------------------------------------------------- A* (and weighted A*)
-def astar(problem, heuristic=h_zero, weight=1.0, is_goal=None, max_nodes=None) -> SearchResult:
+def astar(problem, heuristic=h_zero, weight=1.0, is_goal=None, max_nodes=None,
+          prune_dominated=False) -> SearchResult:
     """A*: expand the state with the lowest f = g + weight * h (cost so far + estimated cost to
     go). With weight 1 and an admissible h (never overestimates) the first goal popped is the
     cheapest one.
@@ -55,6 +56,9 @@ def astar(problem, heuristic=h_zero, weight=1.0, is_goal=None, max_nodes=None) -
       i.e. pushed again and later re-expanded. With a consistent h this never happens; our MST
       heuristic may not be consistent, so A* must allow it to stay optimal. Counted in
       stats["reopened"].
+    - prune_dominated=True skips a state reached no cheaper and with no more fuel than an earlier
+      one at the same (cell, mask) (FuelDominance in common.py explains why that is safe; our
+      heuristics ignore fuel, so the two states also have the same h).
     """
     goal_test = is_goal if is_goal is not None else problem.is_goal
     start = problem.initial_state()
@@ -66,7 +70,10 @@ def astar(problem, heuristic=h_zero, weight=1.0, is_goal=None, max_nodes=None) -
     # heap entries: (f, -g, tie, state): smallest f first; among equal f, largest g first
     frontier = [(weight * h0, -0.0, next(tie), start)]
     expanded, max_frontier, order, reopened = 0, 1, [], 0
-    stats = {"goal_test": "on pop", "weight": weight}
+    stats = {"goal_test": "on pop", "weight": weight, "prune_dominated": prune_dominated}
+    dominance = FuelDominance() if prune_dominated else None
+    if dominance:
+        dominance.add(start, 0.0)
     while frontier:
         _f, neg_g, _, state = heapq.heappop(frontier)
         g = -neg_g
@@ -74,6 +81,8 @@ def astar(problem, heuristic=h_zero, weight=1.0, is_goal=None, max_nodes=None) -
             continue                # stale entry
         if goal_test(state):
             path, actions = reconstruct(parent, state)
+            if dominance:
+                stats["pruned"] = dominance.pruned
             return solved_result(path, actions, g, expanded, max_frontier, order,
                                  {**stats, "steps": len(actions), "reopened": reopened})
         if max_nodes is not None and expanded >= max_nodes:
@@ -86,6 +95,10 @@ def astar(problem, heuristic=h_zero, weight=1.0, is_goal=None, max_nodes=None) -
             new_g = g + cost
             if nxt in best_g and new_g >= best_g[nxt]:
                 continue            # not a better way to reach nxt
+            if dominance:
+                if dominance.dominated(nxt, new_g):
+                    continue        # an earlier state here is no costlier and has more fuel
+                dominance.add(nxt, new_g)
             if nxt in closed:
                 reopened += 1       # cheaper path to an expanded state: it will be expanded again
                 closed.discard(nxt)

@@ -39,3 +39,38 @@ def unsolved_result(expanded, max_frontier, order, stats) -> SearchResult:
     """No plan. stats["reason"] says why: failure, cutoff, node_limit, time_limit, max_depth."""
     return SearchResult([], [], float("inf"), expanded, max_frontier, 0.0, 0.0, False,
                         expanded_order=order, stats=stats)
+
+
+class FuelDominance:
+    """Optional pruning for UCS / A* (prune_dominated=True).
+
+    For each (cell, mask) we keep the (g, fuel) pairs already reached. A new state is DOMINATED,
+    and can be thrown away, if some stored pair has g' <= g AND fuel' >= fuel: it arrived no
+    cheaper and with no more fuel.
+
+    Why that is safe in our model (more fuel is never worse):
+      - every action legal with less fuel is legal with more (legal = fuel - use >= reserve);
+      - after a move, more fuel stays more (or equal): min(fuel - use, capacity) keeps the order;
+      - refuelling resets BOTH to capacity, and downhill regen is capped at capacity for both;
+      - path costs and deliveries do not depend on fuel at all.
+    So whatever the dominated state can still do, the dominating one can do at the same cost,
+    and the optimal cost is unchanged (tests: 307 / 329).
+    """
+
+    def __init__(self):
+        self.front = {}    # (row, col, mask) -> list of (g, fuel), none dominating another
+        self.pruned = 0
+
+    def dominated(self, state, g) -> bool:
+        for g2, fuel2 in self.front.get(state[:3], ()):
+            if g2 <= g and fuel2 >= state[3]:
+                self.pruned += 1
+                return True
+        return False
+
+    def add(self, state, g) -> None:
+        key, fuel = state[:3], state[3]
+        # drop stored pairs that the new one dominates, then store it
+        keep = [(g2, f2) for g2, f2 in self.front.get(key, ()) if not (g <= g2 and fuel >= f2)]
+        keep.append((g, fuel))
+        self.front[key] = keep

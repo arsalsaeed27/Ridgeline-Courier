@@ -11,8 +11,8 @@ import itertools
 import time
 from collections import deque
 
-from oel.search.common import (path_cost, reconstruct, record_expansion, solved_result,
-                               unsolved_result)
+from oel.search.common import (FuelDominance, path_cost, reconstruct, record_expansion,
+                               solved_result, unsolved_result)
 from oel.search.result import EXPANDED_ORDER_CAP, SearchResult
 
 
@@ -52,12 +52,14 @@ def bfs(problem, node_limit=None) -> SearchResult:
 
 
 # ---------------------------------------------------------------- UCS
-def ucs(problem, is_goal=None, max_nodes=None) -> SearchResult:
+def ucs(problem, is_goal=None, max_nodes=None, prune_dominated=False) -> SearchResult:
     """Uniform-cost search: expand the state with the LOWEST path cost g first (priority queue).
     It finds the CHEAPEST path (307 hills off / 329 hills on, reserve 0).
 
     is_goal:   optional goal test (default problem.is_goal); the simulator's "rejoin" uses its own
     max_nodes: optional expansion limit (unsolved result with reason "node_limit")
+    prune_dominated: skip states reached no cheaper and with no more fuel than an earlier one
+                     at the same (cell, mask); FuelDominance in common.py explains why it is safe
     """
     goal_test = is_goal if is_goal is not None else problem.is_goal
     start = problem.initial_state()
@@ -66,7 +68,10 @@ def ucs(problem, is_goal=None, max_nodes=None) -> SearchResult:
     best_g = {start: 0.0}               # cheapest cost found so far to each state
     parent = {start: None}
     expanded, max_frontier, order = 0, 1, []
-    stats = {"goal_test": "on pop"}
+    stats = {"goal_test": "on pop", "prune_dominated": prune_dominated}
+    dominance = FuelDominance() if prune_dominated else None
+    if dominance:
+        dominance.add(start, 0.0)
     while frontier:
         g, _, state = heapq.heappop(frontier)
         if g > best_g[state]:
@@ -75,6 +80,8 @@ def ucs(problem, is_goal=None, max_nodes=None) -> SearchResult:
         # popped before). Testing when pushing could return a more expensive path.
         if goal_test(state):
             path, actions = reconstruct(parent, state)
+            if dominance:
+                stats["pruned"] = dominance.pruned
             return solved_result(path, actions, g, expanded, max_frontier, order,
                                  {**stats, "steps": len(actions)})
         if max_nodes is not None and expanded >= max_nodes:
@@ -84,6 +91,10 @@ def ucs(problem, is_goal=None, max_nodes=None) -> SearchResult:
         for action, nxt, cost in problem.successors(state):
             new_g = g + cost
             if nxt not in best_g or new_g < best_g[nxt]:
+                if dominance:
+                    if dominance.dominated(nxt, new_g):
+                        continue      # an earlier state here is no costlier and has more fuel
+                    dominance.add(nxt, new_g)
                 best_g[nxt] = new_g
                 parent[nxt] = (state, action)
                 heapq.heappush(frontier, (new_g, next(tie), nxt))
