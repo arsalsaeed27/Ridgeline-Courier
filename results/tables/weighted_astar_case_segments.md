@@ -1,0 +1,6 @@
+_Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) | M. Rayyan (534733) | instance 38bfda97_
+
+| only_on        | from     | to       |   cells |
+|:---------------|:---------|:---------|--------:|
+| weighted route | (22, 21) | (27, 22) |       9 |
+| optimal route  | (23, 20) | (27, 20) |       7 |

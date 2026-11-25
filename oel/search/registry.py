@@ -12,7 +12,7 @@ uses_heuristic=True is called as planner(problem, heuristic=h) with h(state, pro
 """
 from oel.search.heuristics import (h_farthest, h_manhattan, h_manhattan_raw, h_mst, h_ours,
                                    h_zero)
-from oel.search.informed import astar, greedy, weighted_astar
+from oel.search.informed import astar, greedy, ida_star, weighted_astar
 from oel.search.uninformed import bfs, dls, ids, ucs
 
 PLANNERS = {}       # name -> planner function
@@ -40,6 +40,29 @@ register_planner("greedy", greedy, uses_heuristic=True, description="greedy best
 register_planner("astar", astar, uses_heuristic=True, description="A*: f = g + h")
 register_planner("weighted_astar", weighted_astar, uses_heuristic=True,
                  description="weighted A*: f = g + 2h (faster, may cost more)")
+
+
+def astar_pruned(problem, heuristic=h_ours, **kwargs):
+    """A* with fuel-dominance pruning (optimal, ~10x fewer nodes than plain A* on our map)."""
+    return astar(problem, heuristic=heuristic, prune_dominated=True, **kwargs)
+
+
+register_planner("astar_pruned", astar_pruned, uses_heuristic=True,
+                 description="A* + fuel-dominance pruning (optimal, fastest; the default)")
+register_planner("ida_star", ida_star, uses_heuristic=True,
+                 description="IDA*: iterative deepening on f = g + h (tiny memory, node/time budget)")
+
+# THE default planner (simulator full replans, run_all demo, fuel-reserve experiment, UI):
+# A* + h_ours + fuel pruning. Session 2: 2,752 nodes on the full map vs UCS 1,775,457, same cost.
+DEFAULT_PLANNER = "astar_pruned"
+DEFAULT_HEURISTIC = "h_ours"
+DEFAULT_LABEL = "A* + h_ours + fuel pruning"
+
+
+def default_planner(problem, **kwargs):
+    """Plan with the default planner. planner(problem, **kwargs) -> SearchResult like any other."""
+    return astar_pruned(problem, heuristic=h_ours, **kwargs)
+
 
 register_heuristic("h_zero", h_zero, description="always 0 (A* = UCS)")
 register_heuristic("h_ours", h_ours, description="OURS: max(MST over relaxed distances, farthest stop)")

@@ -146,3 +146,13 @@ def make_field_heuristic(name: str, use_mst: bool = True, use_farthest: bool = T
 h_farthest = make_field_heuristic("h_farthest", use_mst=False)
 h_mst = make_field_heuristic("h_mst", use_farthest=False)
 h_ours = make_field_heuristic("h_ours")
+
+# ablation variants of h_ours (same code, one component switched off). Not registered for the
+# UI: h_ours_no_tunnels is NOT admissible on our map (a tunnel can be a huge shortcut).
+h_ours_no_tunnels = make_field_heuristic("h_ours_no_tunnels", tunnels=False)
+h_ours_no_hills = make_field_heuristic("h_ours_no_hills", hills=False)
+
+# every heuristic by name (registered ones + the ablation variants), for experiment code that
+# runs in worker processes and must refer to a heuristic by its name
+ALL_HEURISTICS = {h.__name__: h for h in (h_zero, h_manhattan_raw, h_manhattan, h_farthest, h_mst,
+                                          h_ours, h_ours_no_tunnels, h_ours_no_hills)}

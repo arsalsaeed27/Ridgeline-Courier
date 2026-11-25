@@ -1,0 +1,10 @@
+# Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) | M. Rayyan (534733) | instance 38bfda97
+only_on,from,to,cells
+weighted route,"(5, 3)","(19, 6)",20
+weighted route,"(8, 8)","(5, 3)",13
+weighted route,"(9, 10)","(11, 13)",6
+weighted route,"(11, 13)","(9, 10)",6
+weighted route,"(16, 14)","(15, 14)",2
+optimal route,"(18, 14)","(30, 20)",33
+optimal route,"(3, 11)","(3, 10)",2
+optimal route,"(9, 14)","(10, 14)",2

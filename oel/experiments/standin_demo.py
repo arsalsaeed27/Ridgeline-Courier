@@ -1,4 +1,5 @@
-"""End-to-end pipeline demo (Turn 1): plan with UCS, then simulate. (File name kept from Turn 1.)
+"""End-to-end pipeline demo: plan with the default planner (A* + h_ours + fuel pruning; UCS until
+Turn 2 session 3), then simulate. (File name kept from Turn 1.)
 
 plan (perfect model) -> execute in the simulator (slip + rival) with rejoin/full replanning
 -> results/figures/standin_route.png and results/tables/standin_summary.{csv,md}
@@ -6,6 +7,7 @@ plan (perfect model) -> execute in the simulator (slip + rival) with rejoin/full
 import numpy as np
 import pandas as pd
 
+from oel.search.registry import DEFAULT_LABEL, default_planner
 from oel.search.result import run_timed
 from oel.search.uninformed import ucs
 from oel.stamp import save_table
@@ -18,15 +20,17 @@ def run(cfg, log):
     problem = DeliveryProblem(cfg)
 
     # tracemalloc makes search ~2-3x slower, so the quick run skips the memory measurement
-    plan = run_timed(ucs, problem, measure_memory=not cfg.quick)
+    plan = run_timed(default_planner, problem, measure_memory=not cfg.quick)
     if not plan.solved:
-        log.warning("UCS found no plan")
+        log.warning("%s found no plan", DEFAULT_LABEL)
         return None
-    log.info("UCS: cost %.0f, %d actions, %d nodes, %.1f s",
+    log.info("%s: cost %.0f, %d actions, %d nodes, %.2f s", DEFAULT_LABEL,
              plan.cost, len(plan.actions), plan.nodes_expanded, plan.runtime_s)
 
     sim = Simulator(cfg, problem, np.random.default_rng(cfg.seed))
-    replanner = RejoinReplanner(full_planner=ucs, rejoin_planner=ucs, radius=cfg.rejoin_radius)
+    # full replans: the default planner. Rejoin stays UCS: its goal is "back on the plan", for
+    # which h_ours (an estimate of delivering everything) is not a valid heuristic.
+    replanner = RejoinReplanner(full_planner=default_planner, rejoin_planner=ucs, radius=cfg.rejoin_radius)
     report = sim.run_plan(plan.actions, replan_fn=replanner)
     for r in report.replans:
         log.info("replan at step %d: %s (%d nodes, %.2f s)", r["step"], r["kind"], r["nodes"], r["runtime_s"])
@@ -35,12 +39,12 @@ def run(cfg, log):
              report.extra_cost_text(), report.steps, report.slips)
 
     planned_cells = [s[:2] for s in plan.path]
-    title = (f"UCS route: planned cost {plan.cost:.0f}; simulated (slip {cfg.slip}) "
+    title = (f"{DEFAULT_LABEL} route: planned cost {plan.cost:.0f}; simulated (slip {cfg.slip}) "
              f"{report.outcome}, cost {report.total_cost:.0f}")
     fig_path = plot_route(cfg, report.agent_path, report.rival_path, planned_cells, title)
 
     row = {
-        "planner": "UCS",
+        "planner": DEFAULT_LABEL,
         "hills": cfg.use_hills, "fuel": cfg.use_fuel, "tunnels": cfg.use_tunnels,
         "slip": cfg.slip, "seed": cfg.seed, "fuel_reserve": cfg.fuel_reserve,
         "planned_cost": plan.cost, "nodes_expanded": plan.nodes_expanded,

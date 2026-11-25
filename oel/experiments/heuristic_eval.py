@@ -26,16 +26,14 @@ import pandas as pd
 from oel.config import BASE_SEED, parse_cli
 from oel.experiments.small_instances import small_instances
 from oel.search.heuristics import (h_farthest, h_manhattan, h_manhattan_raw, h_mst, h_ours,
-                                   make_field_heuristic)
+                                   h_ours_no_hills, h_ours_no_tunnels)
 from oel.search.informed import astar, greedy
 from oel.search.result import run_timed
 from oel.search.uninformed import ucs
 from oel.stamp import save_fig, save_table
 from oel.world.problem import DeliveryProblem
 
-# ablation variants (same code, one component switched off)
-h_ours_no_tunnels = make_field_heuristic("h_ours_no_tunnels", tunnels=False)
-h_ours_no_hills = make_field_heuristic("h_ours_no_hills", hills=False)
+# ablation variants (h_ours_no_tunnels, h_ours_no_hills) live in heuristics.py
 
 CHECKED = {"h_manhattan_raw": h_manhattan_raw, "h_manhattan": h_manhattan, "h_farthest": h_farthest,
            "h_mst": h_mst, "h_ours": h_ours, "h_ours_no_tunnels": h_ours_no_tunnels,

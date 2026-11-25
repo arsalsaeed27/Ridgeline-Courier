@@ -89,7 +89,8 @@ oel/
     tournament.py   # N games, W/D/L, Wilson CIs
   llm/              # Part D
     tools.py, validator.py, agent.py, requests.json, cache/
-  experiments/      # one script per report table/figure
+  experiments/      # one script per report table/figure; framework.py (scenarios, run_experiment,
+                    # summarise) + cache/ (cached runs, committed so reruns are instant)
 ui/app.py           # Streamlit
 scripts/            # oel_instance.py, make_twists.py, make_elevation.py
 data/               # grid, instance, twists, elevation (read-only)
@@ -128,9 +129,13 @@ class SearchResult:
     solved: bool
     expanded_order: list | None = None   # OPTIONAL: cell (row, col) of each expanded state, in order,
                                           # capped at EXPANDED_ORDER_CAP (200k); drives the UI search animation
-    stats: dict = {}      # OPTIONAL planner facts: reason (failure/cutoff/node_limit/time_limit/max_depth),
-                          # goal_test, steps, IDS iterations + re_expansions, A* reopened, weight
+    stats: dict = {}      # OPTIONAL planner facts: reason (failure/cutoff/node_limit/time_limit/max_depth/
+                          # memory_limit), goal_test, steps, IDS iterations + re_expansions, A* reopened,
+                          # weight, stored_states (A*/UCS/IDA*: states held in memory)
 ```
+- `ucs` / `astar` accept `max_states=` (memory cap -> reason `"memory_limit"`); `ida_star` (informed.py) is registered.
+- **Default planner:** `oel.search.registry.default_planner` = A* + h_ours + fuel pruning (registered as `"astar_pruned"`). Used by the simulator's full replans, the run_all demo, the fuel-reserve experiment and the UI. The rejoin search stays UCS (its goal is not "deliver everything", so h_ours is not a valid heuristic for it).
+- **Experiment framework:** `oel/experiments/framework.py`: `make_scenarios(n)` (30 seeded stop layouts on our map), `run_experiment(variants, n)` -> tidy DataFrame (parallel, cached in `oel/experiments/cache/`), `summarise()` -> mean + 95% bootstrap CI. Bump `FRAMEWORK_VERSION` if planner results change.
 Planners: `planner(problem, **kwargs) -> SearchResult`. Heuristics: `h(state, problem) -> float`.
 Register them in `oel/search/registry.py` (`register_planner(name, fn, uses_heuristic=...)`, `register_heuristic(name, h)`); the UI, the LLM tools and the plan cache read the registries. `DeliveryProblem(config, constraints=PlanConstraints(...))` adds user constraints (`oel/world/constraints.py`); `verify_plan(actions, constraints, cfg)` checks a plan independently.
 

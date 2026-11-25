@@ -68,6 +68,33 @@ def plot_elevation_map(cfg, name="elevation_map"):
     return path
 
 
+def plot_route_comparison(cfg, routes, highlight=(), highlight_label="", title="", name="route_comparison"):
+    """Two (or more) planned routes on one map, e.g. optimal vs weighted A*.
+    routes: list of (cells, label, colour, line style). highlight: cells to circle (where the
+    routes differ). Same terrain + contour background as plot_route."""
+    fig, ax = plt.subplots(figsize=(9, 7.5))
+    ax.imshow(cfg.grid + 1, cmap=ListedColormap(TERRAIN_COLOURS), vmin=0, vmax=4,
+              origin="upper", alpha=0.55)
+    if cfg.use_hills:
+        contours = ax.contour(cfg.elevation, levels=range(1, 10), colors="#5d4037",
+                              linewidths=0.6, alpha=0.5)
+        ax.clabel(contours, fontsize=6, fmt="%d")
+    widths = [3.0, 1.8, 1.4, 1.2]
+    for k, (cells, label, colour, style) in enumerate(routes):
+        if cells:
+            rr, cc = zip(*cells)
+            ax.plot(cc, rr, ls=style, lw=widths[min(k, 3)], color=colour, alpha=0.9, label=label)
+    if highlight:
+        hr, hc = zip(*highlight)
+        ax.plot(hc, hr, ls="", marker="o", ms=9, mfc="none", mec="#212121", mew=1.0,
+                label=highlight_label or "cells where the routes differ")
+    _overlay(ax, cfg)
+    ax.set_title(title or "Route comparison", fontsize=10)
+    path = save_fig(fig, name)
+    plt.close(fig)
+    return path
+
+
 def plot_route(cfg, agent_path, rival_path, planned_path=None, title="", name="standin_route"):
     """Terrain + elevation contours + the agent's actual route, the planned route (dashed) and
     the rival's path. Paths are lists of (row, col) cells."""

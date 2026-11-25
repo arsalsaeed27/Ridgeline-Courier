@@ -1,15 +1,16 @@
 """Experiment: how big should the planner's fuel reserve be?
 
 The optimal plan has zero fuel slack, so slips (which burn extra fuel) can strand the agent.
-For each reserve in RESERVES: plan once with UCS (the plan doesn't depend on the
+For each reserve in RESERVES: plan once with the default planner (A* + h_ours + fuel pruning;
+it was UCS before Turn 2 session 3, same optimal costs) (the plan doesn't depend on the
 seed), then simulate it with slip + rival + rejoin/full replanning for N seeds
 (BASE_SEED + i). Record win/draw/loss, the mean cost of won runs and replans.
 
 Outputs: results/tables/fuel_reserve.{csv,md}, results/figures/fuel_reserve.png
-Runs in a small process pool (3 workers: one UCS needs ~360 MB of RAM).
+Runs in a small process pool (3 workers). With A* the whole thing takes minutes, not ~28 min.
 
     python -m oel.experiments.fuel_reserve            # 30 seeds per reserve
-    python -m oel.experiments.fuel_reserve --quick    # 10 seeds per reserve
+    python -m oel.experiments.fuel_reserve --quick    # the same 30 seeds (A* replans make it ~1 min)
 """
 import dataclasses
 import sys
@@ -24,6 +25,7 @@ import numpy as np
 import pandas as pd
 
 from oel.experiments.stats import wilson_ci
+from oel.search.registry import default_planner
 from oel.search.uninformed import ucs
 from oel.stamp import save_fig, save_table
 from oel.world.problem import DeliveryProblem
@@ -31,7 +33,9 @@ from oel.world.simulator import RejoinReplanner, Simulator
 
 RESERVES = [0, 5, 10, 15, 20]
 SEEDS_FULL = 30
-SEEDS_QUICK = 10
+# With A* full replans 30 seeds take ~1 min, so --quick runs the same 30 seeds as the full run:
+# a 10-seed quick table would overwrite the 30-seed one with a different answer.
+SEEDS_QUICK = 30
 WORKERS = 3
 TARGET_WIN_RATE = 0.80
 
@@ -44,10 +48,10 @@ GRID = "#e4e3df"
 # ---------------------------------------------------------------- work done in the pool
 # These are top-level functions so the worker processes can import them.
 def _plan(cfg, reserve):
-    """UCS plan with this reserve (the planned, no-slip cost)."""
+    """The default planner's plan with this reserve (the planned, no-slip cost)."""
     problem = DeliveryProblem(dataclasses.replace(cfg, fuel_reserve=reserve))
     t0 = time.perf_counter()
-    res = ucs(problem)
+    res = default_planner(problem)
     return reserve, res.actions if res.solved else None, res.cost, time.perf_counter() - t0
 
 
@@ -56,7 +60,8 @@ def _simulate(cfg, reserve, seed, actions):
     run_cfg = dataclasses.replace(cfg, fuel_reserve=reserve, seed=seed)
     problem = DeliveryProblem(run_cfg)
     sim = Simulator(run_cfg, problem, np.random.default_rng(seed))
-    replanner = RejoinReplanner(full_planner=ucs, rejoin_planner=ucs, radius=run_cfg.rejoin_radius)
+    # full replans with the default planner; rejoin stays UCS (its own goal test, see simulator)
+    replanner = RejoinReplanner(full_planner=default_planner, rejoin_planner=ucs, radius=run_cfg.rejoin_radius)
     t0 = time.perf_counter()
     rep = sim.run_plan(actions, replan_fn=replanner)
     return {

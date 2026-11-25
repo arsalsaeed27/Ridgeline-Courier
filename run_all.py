@@ -9,8 +9,9 @@ import time
 from collections import defaultdict
 
 from oel.config import RESULTS_DIR, parse_cli
-from oel.experiments import (fuel_reserve, heuristic_eval, llm_eval, search_small,
-                            standin_demo, validator_fault_injection)
+from oel.experiments import (fuel_reserve, heuristic_eval, heuristic_scenarios, llm_eval,
+                            memory_limit, search_small, standin_demo, validator_fault_injection,
+                            weighted_astar)
 from oel.stamp import get_logger, stamp
 from oel.world.plots import plot_elevation_map, plot_instance_map
 
@@ -48,17 +49,13 @@ def main(argv=None):
     log.info("saved %s", plot_elevation_map(cfg).name)
 
     # ------------------------------------------------------------ pipeline demo (Turn 1)
-    # plan with UCS, execute it in the simulator (slip + rival,
-    # rejoin/full replanning), save standin_route.png + standin_summary. Swap in Laiba's A*.
+    # plan with the default planner (A* + h_ours + fuel pruning), execute it in the simulator
+    # (slip + rival, rejoin/full replanning), save standin_route.png + standin_summary.
     standin_demo.run(cfg, log)
 
-    # fuel-reserve experiment (Turn 1): 5 reserves x 30 seeds, ~28 min with UCS.
-    # Skipped in --quick (even 10 seeds take ~10 min, over the 5-minute limit); run it alone
-    # with:  python -m oel.experiments.fuel_reserve --quick   (10 seeds per reserve)
-    if cfg.quick:
-        log.info("fuel_reserve experiment skipped in --quick (kept from the last full run)")
-    else:
-        fuel_reserve.run(cfg, log)
+    # fuel-reserve experiment (Turn 1): 5 reserves x 30 seeds (--quick: 10 seeds). It took
+    # ~28 min with UCS replans, so it was skipped in --quick; with A* replans it fits again.
+    fuel_reserve.run(cfg, log)
 
     # ------------------------------------------------------------ Part A (Turn 4: M. Rayyan)
     # TODO: vectorised cost map + loop benchmark table, PEAS / environment tables.
@@ -69,8 +66,16 @@ def main(argv=None):
     # heuristics: admissibility + consistency checks, full-map comparison, ablation
     # (~100 s in --quick; the full run also measures peak memory, which is 5-8x slower for UCS)
     heuristic_eval.run(cfg, log)
-    # TODO (Turn 2, next sessions): weighted A*, IDS vs A* under a memory limit,
-    #       30-seed experiments + ablation.
+    # The next three cache their runs in oel/experiments/cache/ (instant when nothing changed;
+    # a live change that alters planning recomputes them).
+    # weighted A* (w = 1..5) and inadmissible A* on the full map, pruning off/on (~35 s uncached)
+    weighted_astar.run(cfg, log)
+    # A* / UCS with a memory cap vs IDS vs IDA* on 30 small + 30 medium instances (~30 s uncached)
+    memory_limit.run(cfg, log)
+    # main comparison + ablation over 30 re-drawn scenarios, failure analysis. --quick runs only
+    # the fast variants and reads UCS / A*+h_manhattan / A*+h_farthest from the cache (computing
+    # them takes ~10 min on 4 processes: full mode only).
+    heuristic_scenarios.run(cfg, log)
 
     # ------------------------------------------------------------ Part C (Turn 3: Ali Salman Mustafa)
     # TODO: minimax vs alpha-beta node counts, weight tuning, 100-game tournament (Wilson CIs).

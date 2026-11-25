@@ -234,3 +234,87 @@ _Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) |
 - Now that A* is fast: move the fuel-reserve experiment back into `--quick`, and use A*+h_ours for the simulator's full replans. Then do the deliberate live LLM re-run with A*+h_ours exposed (`cfg.llm_algorithms`).
 ### What the next person needs to know
 - Use `astar(problem, heuristic=h_ours)` for anything big; add `prune_dominated=True` for another ~10x.
+
+---
+
+## Turn 2 (session 3): Laiba Rehman (505099), 2026-11-25
+### What I built
+- **Search additions:**
+  - `max_states=` memory cap in `ucs` and `astar` (reason `"memory_limit"`), plus `stats["stored_states"]`;
+  - `weighted_astar` now passes `prune_dominated` / `max_states` through;
+  - **IDA\*** (`ida_star` in `informed.py`: f-limit iterative deepening with the same on-path cycle check as DLS and total node/time budgets).
+- **Registry:**
+  - `astar_pruned` and `ida_star` registered;
+  - `DEFAULT_PLANNER` / `default_planner` = A* + h_ours + fuel pruning;
+  - the ablation heuristics (`h_ours_no_tunnels`, `h_ours_no_hills`) moved from `heuristic_eval.py` into `heuristics.py`, plus `ALL_HEURISTICS` (name -> h).
+- **Experiment framework** `oel/experiments/framework.py` (for Ali and Rayyan too):
+  - `make_scenarios(n=30, vary_start=False)`: our map with the 5 stops re-drawn, seeded from BASE_SEED + 5000 + i, feasible with reserve 20;
+  - `Variant(label, planner, heuristic, options, slow)`;
+  - `run_experiment(variants, n, name)` -> tidy DataFrame (4 processes, row cache in `oel/experiments/cache/`);
+  - `summarise()` / `readable()` -> mean [95% bootstrap CI];
+  - `run_cached(jobs, name)` for your own (config, variant) jobs.
+- `oel/experiments/routes.py` (route facts, differing segments); `plots.plot_route_comparison`.
+- **Experiments:**
+  - `weighted_astar.py` (w = 1..5 + h_manhattan_raw, pruning off/on, reserve 0/20);
+  - `memory_limit.py` (A*/UCS caps vs IDS vs IDA* on 30 small + 30 medium instances);
+  - `heuristic_scenarios.py` (main comparison + ablation over 30 scenarios, failure analysis).
+- **Default planner everywhere:** run_all demo, simulator full replans (`standin_demo`, `fuel_reserve`, `ui/app.py`), UI preselection. Rejoin stays UCS.
+- **Fuel-reserve experiment back in `--quick`,** with the full 30 seeds.
+- `tests/test_weighted_memory.py` (21 tests).
+- Report: `report/sections/part_b_weighted.md`, `part_b_memory.md`, `part_b_failures.md`.
+- Viva notes: session-3 block in Part B.
+### How to run it
+- `python run_all.py --quick`: **133 s**. A live change that recomputes everything (`--quick --no-hills`): **231 s**.
+- Alone:
+  - `python -m oel.experiments.weighted_astar` (~35 s uncached);
+  - `python -m oel.experiments.memory_limit` (~30 s uncached);
+  - `python -m oel.experiments.heuristic_scenarios` (full: ~10 min on 4 processes; `--quick`: fast variants only);
+  - `python -m oel.experiments.fuel_reserve` (~40 s).
+- **Full-mode only:** the slow scenario variants (UCS, A*+h_manhattan, A*+h_farthest over 30 scenarios x 2 reserves), peak-memory measurement in `heuristic_eval`, and fault-injection recomputation. Their cached rows are reused by `--quick`.
+- `pytest -q`: **105 passed** (73 s).
+### Key results / numbers
+- **Weighted A\*** (full map; every run within cost <= w x optimum):
+  - w = 1.2 saves 47-57% of the nodes for +2.3-2.4% cost (reserve 20: 34,454 vs 79,615 nodes, 361 vs 353).
+  - Bigger w is not monotonically faster: reserve 20, w = 5 expanded 66,563 nodes for 494 (+40%). It went for stop 3 first and recharged at the depot 3 times.
+  - h_manhattan_raw (inadmissible): 1.58M nodes and optimal by luck.
+- **Memory** (medium = 15x15, fuel on):
+  - A* + h_ours solves 10 / 47 / 80 / 100% with caps 25 / 100 / 1,000 / none (needs ~550 states on average); UCS needs ~4,000.
+  - IDS: ~13 states, 27% solved within 500k nodes, ~200 expansions per state, optimal in 57-62% of its solved runs.
+  - IDA*: ~18 states, 80% solved, always optimal, 102,900 nodes (small instances: 95 vs IDS 35,840).
+- **30 scenarios** (reserve 0):
+  - Mean nodes: UCS 1,476,045; A*+h_ours 43,974 (34x fewer; median per scenario 73x); + pruning 3,586 (~410x). All optimal, no limit hits.
+  - Greedy is never optimal (+54% mean, +131% worst).
+  - **Ablation:** without tunnel edges h_ours is non-optimal in 15/30 scenarios (up to +53%); on the default map this was hidden.
+- **Hardness:** nodes correlate with optimal cost (rho 0.82), h tightness (-0.69), mud (0.61), climbing (0.56) and recharges (0.49); not with tunnels (0.13).
+- **Pipeline:**
+  - Fuel-reserve experiment ~28 min -> 40 s.
+  - Its win rates changed with A* replans (equal-cost but different plans): 20 / 33 / 53 / 57 / 47% for reserve 0 / 5 / 10 / 15 / 20 (was 13 / 47 / 47 / 53 / 63%). The rule now picks 15, but the CIs of 10 / 15 / 20 overlap (~30-73%).
+  - Default simulation (seed 952097431, reserve 20) is now a **loss (stranded)** at real cost 785 after 321 steps and 92 slips (with UCS it was a win, 877).
+### Files I created or changed
+- New:
+  - `oel/experiments/{framework,routes,weighted_astar,memory_limit,heuristic_scenarios}.py`, `oel/experiments/cache/*.json`;
+  - `tests/test_weighted_memory.py`;
+  - `report/sections/part_b_{weighted,memory,failures}.md`;
+  - new tables and figures (`weighted_astar*`, `memory_limit*`, `scenarios_*`).
+- Changed:
+  - `oel/search/{informed,uninformed,heuristics,registry}.py`;
+  - `oel/experiments/{heuristic_eval,small_instances,standin_demo,fuel_reserve}.py`;
+  - `oel/world/plots.py`, `ui/app.py`, `run_all.py`, `CLAUDE.md`, `docs/viva_notes.md`.
+### Changes to other people's code (if any)
+- `oel/world/plots.py` (Arsal): **added** `plot_route_comparison` (nothing existing changed).
+- `oel/experiments/standin_demo.py`, `oel/experiments/fuel_reserve.py`, `ui/app.py` (Arsal): full replans and the demo plan use `default_planner`; rejoin stays `ucs`. Also:
+  - `fuel_reserve.SEEDS_QUICK` 10 -> 30, so `--quick` no longer overwrites the 30-seed table with a 10-seed one;
+  - the UI preselects `astar_pruned` + `h_ours`, and its time estimate was updated.
+- `run_all.py`: fuel reserve runs in `--quick` again; the three new Part B experiments were added.
+- **NOT changed:**
+  - `oel/llm/` (Part D still plans/simulates with `ucs`, so the cached conversations and sims replay exactly; `cfg.llm_algorithms` is still `("ucs",)`);
+  - `cfg.fuel_reserve` (still 20; see TODO).
+### Known issues / TODOs
+- **Decision for the group: the default fuel reserve.** With A* replans, 30 seeds can't separate 10 / 15 / 20 (overlapping CIs); the rule picks 15. Changing `cfg.fuel_reserve` changes plan ids, so the Part D caches would need a live re-run. Options: keep 20 and explain, or more seeds (e.g. 100, ~2 min now) before deciding.
+- The deliberate live LLM re-run exposing `astar_pruned` (widen `cfg.llm_algorithms`) still needs a Groq key.
+- Still in my turn: the evaluation function for Ali's rival game.
+- IDA* still re-expands states ~150x on medium instances (transpositions); a transposition table would fix that, but it is no longer "memory = one path".
+- The project's `venv/` folder is empty. This session ran on the global Python after `pip install -r requirements.txt`.
+### What the next person needs to know
+- **Ali:** use `framework.run_cached(jobs, "your_name")` or `run_experiment` for your tournament sweeps (caching + parallel + CIs), and `stats.wilson_ci` for W/D/L. A rival policy can plan with `registry.default_planner` (about 0.1 s on the full map).
+- Cached rows are keyed by the planning config, so live changes are recomputed automatically. If you change a planner's behaviour, bump `framework.FRAMEWORK_VERSION`.

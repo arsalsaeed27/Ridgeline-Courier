@@ -24,13 +24,14 @@ import views                          # noqa: E402
 from oel.config import TERRAINS, load_config, parse_cli   # noqa: E402
 from oel.llm import plans, tools      # noqa: E402
 from oel.search import registry       # noqa: E402
+from oel.search.registry import DEFAULT_HEURISTIC, DEFAULT_PLANNER, default_planner  # noqa: E402
 from oel.search.uninformed import ucs  # noqa: E402
 from oel.stamp import stamp           # noqa: E402
 from oel.world.constraints import PlanConstraints        # noqa: E402
 from oel.world.problem import DeliveryProblem            # noqa: E402
 from oel.world.simulator import RejoinReplanner, Simulator, greedy_blocker   # noqa: E402
 
-PLAN_ESTIMATE = "about 25-50 s with UCS on the full map"
+PLAN_ESTIMATE = "under 1 s with A* + h_ours + pruning; UCS / weak heuristics take 10-50 s on the full map"
 st.set_page_config(page_title="Ridgeline Courier", layout="wide")
 
 # ---------------------------------------------------------------- banner (on every page)
@@ -55,6 +56,8 @@ WIDGET_DEFAULTS = {
     "capacity": int(DEF.fuel_capacity), "use_fuel": True, "use_tunnels": True, "use_hills": True,
     "seed": int(DEF.seed), "move_stop": False, "move_idx": 0,
     "move_row": int(DEF.stops[0][0]), "move_col": int(DEF.stops[0][1]),
+    # Plan tab: the default planner (A* + h_ours + fuel pruning) is preselected
+    "algo": DEFAULT_PLANNER, "heur": DEFAULT_HEURISTIC,
 }
 for key, value in WIDGET_DEFAULTS.items():
     st.session_state.setdefault(key, value)
@@ -134,7 +137,8 @@ def simulate_run(argv: tuple, plan_id: str) -> dict:
     rec = plans.load_plan(plan_id)
     problem = DeliveryProblem(run_cfg, constraints=PlanConstraints.from_dict(rec["constraints"]))
     sim = Simulator(run_cfg, problem, np.random.default_rng(run_cfg.seed))
-    rep = sim.run_plan(rec["actions"], RejoinReplanner(ucs, ucs, run_cfg.rejoin_radius))
+    # full replans with the default planner; the local rejoin search stays UCS
+    rep = sim.run_plan(rec["actions"], RejoinReplanner(default_planner, ucs, run_cfg.rejoin_radius))
     return {"outcome": rep.outcome, "end_reason": rep.end_reason, "total_cost": rep.total_cost,
             "planned_cost": rep.planned_cost, "extra": rep.extra_cost_text(), "steps": rep.steps,
             "slips": rep.slips, "failed": rep.failed_moves, "waits": rep.waits,

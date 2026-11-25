@@ -52,7 +52,7 @@ def bfs(problem, node_limit=None) -> SearchResult:
 
 
 # ---------------------------------------------------------------- UCS
-def ucs(problem, is_goal=None, max_nodes=None, prune_dominated=False) -> SearchResult:
+def ucs(problem, is_goal=None, max_nodes=None, prune_dominated=False, max_states=None) -> SearchResult:
     """Uniform-cost search: expand the state with the LOWEST path cost g first (priority queue).
     It finds the CHEAPEST path (307 hills off / 329 hills on, reserve 0).
 
@@ -60,6 +60,8 @@ def ucs(problem, is_goal=None, max_nodes=None, prune_dominated=False) -> SearchR
     max_nodes: optional expansion limit (unsolved result with reason "node_limit")
     prune_dominated: skip states reached no cheaper and with no more fuel than an earlier one
                      at the same (cell, mask); FuelDominance in common.py explains why it is safe
+    max_states: optional MEMORY limit on the states held (frontier + expanded = keys of best_g);
+                above it: unsolved result with reason "memory_limit"
     """
     goal_test = is_goal if is_goal is not None else problem.is_goal
     start = problem.initial_state()
@@ -83,9 +85,10 @@ def ucs(problem, is_goal=None, max_nodes=None, prune_dominated=False) -> SearchR
             if dominance:
                 stats["pruned"] = dominance.pruned
             return solved_result(path, actions, g, expanded, max_frontier, order,
-                                 {**stats, "steps": len(actions)})
+                                 {**stats, "steps": len(actions), "stored_states": len(best_g)})
         if max_nodes is not None and expanded >= max_nodes:
-            return unsolved_result(expanded, max_frontier, order, {**stats, "reason": "node_limit"})
+            return unsolved_result(expanded, max_frontier, order,
+                                   {**stats, "reason": "node_limit", "stored_states": len(best_g)})
         expanded += 1
         record_expansion(order, state)
         for action, nxt, cost in problem.successors(state):
@@ -99,7 +102,11 @@ def ucs(problem, is_goal=None, max_nodes=None, prune_dominated=False) -> SearchR
                 parent[nxt] = (state, action)
                 heapq.heappush(frontier, (new_g, next(tie), nxt))
         max_frontier = max(max_frontier, len(frontier))
-    return unsolved_result(expanded, max_frontier, order, {**stats, "reason": "failure"})
+        if max_states is not None and len(best_g) > max_states:
+            return unsolved_result(expanded, max_frontier, order,
+                                   {**stats, "reason": "memory_limit", "stored_states": len(best_g)})
+    return unsolved_result(expanded, max_frontier, order,
+                           {**stats, "reason": "failure", "stored_states": len(best_g)})
 
 
 # ---------------------------------------------------------------- DLS

@@ -33,10 +33,11 @@ def masked_window(cfg, radius: int):
 
 def make_small_instance(index: int, radius: int = 3, n_stops=(1, 3), use_fuel: bool = False,
                         use_hills: bool = True, use_tunnels: bool = True, capacity: int = 15,
-                        base_cfg=None):
-    """Instance number `index` (seed BASE_SEED + 1000 + index): a Config for a small problem."""
+                        base_cfg=None, seed_offset: int = SEED_OFFSET):
+    """Instance number `index` (seed BASE_SEED + seed_offset + index): a Config for a small problem.
+    The medium instances of the memory experiment use their own seed_offset (2000)."""
     base = base_cfg if base_cfg is not None else load_config()
-    rng = np.random.default_rng(BASE_SEED + SEED_OFFSET + index)
+    rng = np.random.default_rng(BASE_SEED + seed_offset + index)
     grid = masked_window(base, radius)
     small = dataclasses.replace(base, grid=grid, use_fuel=use_fuel, use_hills=use_hills,
                                 use_tunnels=use_tunnels, fuel_reserve=0, overrides=[])

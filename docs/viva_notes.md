@@ -89,7 +89,7 @@ A: Fuel is part of the state, so returning to a cell with a different fuel level
 A: Among states with equal f, the one with larger g is further along its path, so it usually reaches the goal sooner without hurting optimality. *Reopening* means finding a cheaper path to an already-expanded state; A\* then pushes it again. That never happens with a consistent heuristic (h_zero reopened 0 times), but our MST heuristic may be inconsistent, so A\* allows it and counts it.
 
 **Q: Why does A\*(h_zero) give exactly the UCS result?**
-A: With h = 0, f = g, so A\* orders states exactly like UCS. The tests check UCS == A\*(h_zero) == 307 (hills off) and 329 (hills on). Weighted A\* (f = g + w·h) trades optimality for speed; with an admissible h its cost is at most w × the optimum (checked with w = 2).
+A: With h = 0, f = g, so A\* orders states exactly like UCS. The tests check UCS == A\*(h_zero) == 307 (hills off) and 329 (hills on). Weighted A\* (f = g + w·h) trades optimality for speed; with an admissible h its cost is at most w × the optimum (checked for w = 1.2–5 in session 3, see below).
 
 **Q: How were the small instances made, and why masking?**
 A: We keep the real map but turn every cell outside a 7×7 window around the depot into a wall, and put 1–3 stops on random reachable cells inside (seeded from BASE_SEED + 1000 + i, redrawn if infeasible). Masking keeps the real terrain, heights and coordinates, so `verify_plan`, the plots and the UI work unchanged; cropping would renumber every cell.
@@ -124,6 +124,91 @@ A: The MST term does almost all the work: without it (= h_farthest) A\* needs 68
 
 **Q: What is fuel-dominance pruning, and why is it safe?**
 A: At the same (cell, delivered set), a state that arrived no cheaper and with no more fuel than one we've already seen can be dropped. More fuel is never worse in our model: every move legal with less fuel is legal with more, and after any move the fuller tank stays at least as full (the cap and refuelling treat both the same). Costs and deliveries don't depend on fuel. It keeps 307/329 and cuts A\*+h_ours from 29,542 to 2,752 nodes.
+
+### Session 3: weighted A\*, memory limits, IDA\*, the 30-scenario framework
+
+**Q: What is weighted A\*, in simple words?**
+A: Normal A\* ranks states by f = g + h: what we have paid plus what we still expect to pay. Weighted A\* uses f = g + w·h with w > 1, so it trusts the estimate more than the cost already paid. It rushes towards states that *look* close to the goal, so it expands fewer states, but it may settle for a slightly worse route.
+
+**Q: Why is weighted A\*'s cost at most w × optimal?**
+A: While the optimal path is unfinished, some state n on it waits in the frontier with its optimal g. Its f = g + w·h ≤ w·(g + h) ≤ w·C\*, because h is admissible, so g + h ≤ C\*. The goal we return was popped before n, so its cost (h = 0 at a goal) is ≤ f(n) ≤ w·C\*. All 24 weighted runs on the full map satisfied the bound, and the tests check it on 20 small instances.
+
+**Q: What did the weighted A\* experiment show?**
+A: Three things:
+- **A small weight gives most of the gain.** w = 1.2 expands 47–57% fewer nodes for a route only 2.3–2.4% worse (reserve 20: 34,454 vs 79,615 nodes, cost 361 vs 353; the routes differ in one 7–9-cell stretch near (23–27, 20–22)).
+- **A bigger weight is NOT always faster.** At reserve 20, w = 5 expanded 66,563 nodes (more than w = 1.2) and returned 494 (+40%). It went for stop 3 first, ran low on fuel and drove back to the depot three times. Our h ignores fuel, so over-trusting it causes fuel detours that h cannot see.
+- **The bound w·C\* is a worst-case guarantee, not a prediction.**
+
+**Q: Is an inadmissible heuristic always faster?**
+A: No. h_manhattan_raw overestimates only next to tunnels, and everywhere else it is weak, so A\* with it expanded 1.58M nodes (54× more than h_ours). It returned the optimum here by luck: there is no guarantee.
+
+**Q: What does `max_states` do?**
+A: It is a memory limit for A\* and UCS. Both keep every state they have generated (the frontier plus the expanded states, i.e. the keys of `best_g`). If that number goes above `max_states`, the search stops with `solved=False` and reason `memory_limit`.
+
+**Q: What did the memory experiment show?**
+A: Four things:
+- **A\* runs out of memory below a cap.** On 30 medium instances (15×15 window, fuel on) A\* solves 10% with 25 states, 47% with 100 and 80% with 1,000. It needs about 550 on average. UCS needs about 4,000, so the same caps hurt it much more: 17% solved at 1,000.
+- **IDS fits in about 13 states but repeats huge amounts of work.** Each state is expanded about 200 times, it solved only 27% of the medium instances within 500k nodes, and its routes were optimal only 57–62% of the time (it finds the fewest moves).
+- **IDA\* also fits in 11–18 states.** It needs 95 nodes instead of IDS's 35,840 on small instances, solves 80% of the medium ones, and every answer is optimal.
+- **IDA\* still repeats work** (about 148 expansions per state on medium instances), so A\* is much faster whenever memory allows.
+
+**Q: How does IDA\* work?**
+A: It is IDS with an f-limit instead of a depth limit:
+1. Set the limit to h(start).
+2. Go depth-first. A child with f = g + h above the limit is not entered, but remember the smallest such f.
+3. If no goal was found, raise the limit to that smallest f and start again.
+
+The first goal found is optimal: any cheaper path has every f ≤ its cost (h never overestimates), so a smaller limit would already have found it. Unlike A\*, IDA\* doesn't need a *consistent* h, because it keeps no closed set that could hold a too-expensive copy of a state.
+
+**Q: How do IDS / IDA\* avoid going round in circles without a visited set?**
+A: With an **on-path set**. When the search steps down into a child, the child is added to the set (and to the path). When it comes back up (backtracks), the child is removed. A child already in the set is skipped, because entering it would close a loop on the current path. The set never holds more than one path, which is why the memory is tiny (11–18 states in our runs).
+
+**Q: Then why do they expand the same state many times?**
+A: The on-path set only knows the **current** path. Two situations are not caught:
+- **Transpositions.** Two different branches reach the same state by different routes, e.g. N-then-E and E-then-N. The second branch has forgotten the first (its states were removed on backtrack), so it searches everything below that state again.
+- **Iterations.** Every new limit starts again from the depot and redoes all the shallower work.
+
+A grid has a huge number of different paths to each (cell, mask, fuel), and fuel makes "the same cell" a new state, so this repeated work is what costs IDS/IDA\* their time: about 200× and 150× per state on medium instances. A\* avoids it by remembering every state (`best_g`), which is exactly the memory that IDS/IDA\* save.
+
+**Q: What is the experiment framework, and why 30 scenarios?**
+A: One map can mislead, so `framework.py` re-draws the 5 stops on our real map 30 times. Each stop is a free cell reachable from the depot, not a station, tunnel end or the start, seeded from BASE_SEED + 5000 + i. A draw is redrawn if no plan exists with reserve 20. All twists stay on.
+- `run_experiment(variants, n=30)` runs every planner on every scenario in 4 processes and returns a tidy table: one row per (scenario, planner).
+- `summarise()` gives each metric's mean with a 95% bootstrap CI.
+- Every row is cached under a hash of (scenario, planner settings, planning config). A rerun is instant, and a live change gives new keys and is recomputed.
+
+**Q: Did session 2's heuristic result hold on other stop layouts?**
+A: Yes. Over 30 scenarios (reserve 0):
+- UCS expanded 1,476,045 nodes on average, A\* + h_ours 43,974 (34× fewer on average; the per-scenario median ratio is 73×, the range 10×–2,507×), and A\* + h_ours + pruning 3,586 (about 410× fewer).
+- All optimal, with no memory or budget limits hit.
+- Greedy was **never** optimal: on average 54% worse, at worst 131%.
+
+**Q: What did the 30-scenario ablation change?**
+A: Without the tunnel edges, h_ours is inadmissible. On our default map it happened to return 329 anyway. Over 30 scenarios it returned a non-optimal route **15 times out of 30**, up to 53% too expensive, and its h(start) was above the optimum on average (1.07×). A single map hid that; the scenarios show why the proof needs tunnel edges. Removing the hill costs keeps h admissible but looser (0.77 vs 0.83 of the optimum), so it needs 82% more nodes.
+
+**Q: Which scenarios are hard for A\* + h_ours, and why?**
+A: The ones where the real route is long and expensive in ways h can't see:
+- **Nodes rise with:** optimal cost (Spearman ρ = +0.82), mud cells (+0.61), height climbed (+0.56) and recharges (+0.49). They fall as h gets tighter (−0.69).
+- **Tunnels don't matter** (ρ = 0.13, not significant), because h models them exactly.
+- **Fuel is the blind spot:** every detour to a station is invisible to h. All six scenarios above 100k nodes need recharges.
+- **Hardest: scenario 19.** Stops spread over three corners, cost 468, 30 mud and 7 ford cells, 2 recharges. A\* + h_ours needs 179,899 nodes; with pruning, 12,339.
+
+**Q: Why is greedy so bad, e.g. in scenario 16?**
+A: Greedy looks only at h, never at the cost already paid, and returns the first goal it reaches. In scenario 16 it delivered stop 4, then went for stop 0 and down to stop 3, skipping stop 1, which lies right next to stop 4. Then it had to walk 39 cells back north for stop 1, recharge at the depot, and take a tunnel to stop 2. Result: 395 instead of 171 (+131%), 133 moves instead of 64.
+
+**Q: What changed in the pipeline now that A\* is fast?**
+A: A\* + h_ours + fuel pruning (`registry.default_planner`, registered as `astar_pruned`) is now the default for four things:
+- the `run_all` demo plan;
+- the simulator's full replans;
+- the fuel-reserve experiment;
+- the UI's preselected planner.
+
+The fuel-reserve experiment (150 simulations) went from about 28 min to about 40 s, so it is back in `--quick` with all 30 seeds. `--quick` takes about 133 s in total, and a live change that recomputes everything (e.g. `--no-hills`) takes about 231 s.
+
+**Q: The fuel-reserve numbers changed. Why?**
+A: The plan changed, not the rules. A\* breaks ties between routes of exactly the same cost differently from UCS. For example, the reserve-20 plan still costs 353, but A\*'s route has 147 moves and UCS's had 145 (4 cells differ). So each seeded slip sequence plays out differently. With 30 seeds per reserve the win rates for reserve 10, 15 and 20 (53%, 57%, 47%) have overlapping 95% CIs (about 30–73%), so the data can't separate them. The rule now picks 15. We kept the default reserve at 20, because changing it would also invalidate the cached Part D plans.
+
+**Q: Why is UCS kept for the simulator's "rejoin" search, even though A\* is the default now?**
+A: The rejoin search has a different goal: "get back onto my planned route", not "deliver every parcel". h_ours estimates the cost of delivering everything, which can be far more than the few moves back to the route. So for that goal it is not a lower bound, and A\* could return a worse rejoin. The rejoin searches are small (radius 4, at most 20k nodes), so UCS is fine there. Full replans use A\* + h_ours + pruning.
 
 ## Part C: Adversarial search (rival blocker)
 

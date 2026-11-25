@@ -1,0 +1,962 @@
+# Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) | M. Rayyan (534733) | instance 38bfda97
+set,instance,stops,variant,solved,reason,cost,optimal_cost,optimal,nodes,distinct_expanded,expansions_per_state,stored_states,runtime_s
+"small (7x7, fuel off)",0,1,A* (cap 25),True,solved,10.0,10.0,True,4,4,1.0,9,0.0009
+"small (7x7, fuel off)",0,1,A* (cap 50),True,solved,10.0,10.0,True,4,4,1.0,9,0.0005
+"small (7x7, fuel off)",0,1,A* (cap 100),True,solved,10.0,10.0,True,4,4,1.0,9,0.0004
+"small (7x7, fuel off)",0,1,A* (cap 250),True,solved,10.0,10.0,True,4,4,1.0,9,0.0004
+"small (7x7, fuel off)",0,1,"A* (cap 1,000)",True,solved,10.0,10.0,True,4,4,1.0,9,0.0004
+"small (7x7, fuel off)",0,1,"A* (cap 10,000)",True,solved,10.0,10.0,True,4,4,1.0,9,0.0004
+"small (7x7, fuel off)",0,1,A* (no cap),True,solved,10.0,10.0,True,4,4,1.0,9,0.0005
+"small (7x7, fuel off)",0,1,UCS (cap 25),True,solved,10.0,10.0,True,10,10,1.0,16,0.0001
+"small (7x7, fuel off)",0,1,UCS (cap 50),True,solved,10.0,10.0,True,10,10,1.0,16,0.0001
+"small (7x7, fuel off)",0,1,UCS (cap 100),True,solved,10.0,10.0,True,10,10,1.0,16,0.0001
+"small (7x7, fuel off)",0,1,UCS (cap 250),True,solved,10.0,10.0,True,10,10,1.0,16,0.0001
+"small (7x7, fuel off)",0,1,"UCS (cap 1,000)",True,solved,10.0,10.0,True,10,10,1.0,16,0.0001
+"small (7x7, fuel off)",0,1,"UCS (cap 10,000)",True,solved,10.0,10.0,True,10,10,1.0,16,0.0001
+"small (7x7, fuel off)",0,1,UCS (no cap),True,solved,10.0,10.0,True,10,10,1.0,16,0.0001
+"small (7x7, fuel off)",0,1,IDS,True,solved,10.0,10.0,True,20,10,2.0,5,0.0002
+"small (7x7, fuel off)",0,1,IDA*,True,solved,10.0,10.0,True,4,4,1.0,5,0.0002
+"small (7x7, fuel off)",1,2,A* (cap 25),True,solved,21.0,21.0,True,5,5,1.0,12,0.0003
+"small (7x7, fuel off)",1,2,A* (cap 50),True,solved,21.0,21.0,True,5,5,1.0,12,0.0004
+"small (7x7, fuel off)",1,2,A* (cap 100),True,solved,21.0,21.0,True,5,5,1.0,12,0.0023
+"small (7x7, fuel off)",1,2,A* (cap 250),True,solved,21.0,21.0,True,5,5,1.0,12,0.0006
+"small (7x7, fuel off)",1,2,"A* (cap 1,000)",True,solved,21.0,21.0,True,5,5,1.0,12,0.0006
+"small (7x7, fuel off)",1,2,"A* (cap 10,000)",True,solved,21.0,21.0,True,5,5,1.0,12,0.0013
+"small (7x7, fuel off)",1,2,A* (no cap),True,solved,21.0,21.0,True,5,5,1.0,12,0.0006
+"small (7x7, fuel off)",1,2,UCS (cap 25),False,memory_limit,,21.0,False,15,15,1.0,27,0.0001
+"small (7x7, fuel off)",1,2,UCS (cap 50),False,memory_limit,,21.0,False,38,38,1.0,51,0.0003
+"small (7x7, fuel off)",1,2,UCS (cap 100),True,solved,21.0,21.0,True,46,46,1.0,53,0.0003
+"small (7x7, fuel off)",1,2,UCS (cap 250),True,solved,21.0,21.0,True,46,46,1.0,53,0.0004
+"small (7x7, fuel off)",1,2,"UCS (cap 1,000)",True,solved,21.0,21.0,True,46,46,1.0,53,0.0003
+"small (7x7, fuel off)",1,2,"UCS (cap 10,000)",True,solved,21.0,21.0,True,46,46,1.0,53,0.0016
+"small (7x7, fuel off)",1,2,UCS (no cap),True,solved,21.0,21.0,True,46,46,1.0,53,0.0004
+"small (7x7, fuel off)",1,2,IDS,True,solved,21.0,21.0,True,41,17,2.411764705882353,6,0.0005
+"small (7x7, fuel off)",1,2,IDA*,True,solved,21.0,21.0,True,5,5,1.0,6,0.0006
+"small (7x7, fuel off)",2,3,A* (cap 25),True,solved,27.0,27.0,True,11,11,1.0,21,0.0015
+"small (7x7, fuel off)",2,3,A* (cap 50),True,solved,27.0,27.0,True,11,11,1.0,21,0.0008
+"small (7x7, fuel off)",2,3,A* (cap 100),True,solved,27.0,27.0,True,11,11,1.0,21,0.001
+"small (7x7, fuel off)",2,3,A* (cap 250),True,solved,27.0,27.0,True,11,11,1.0,21,0.0012
+"small (7x7, fuel off)",2,3,"A* (cap 1,000)",True,solved,27.0,27.0,True,11,11,1.0,21,0.0008
+"small (7x7, fuel off)",2,3,"A* (cap 10,000)",True,solved,27.0,27.0,True,11,11,1.0,21,0.0011
+"small (7x7, fuel off)",2,3,A* (no cap),True,solved,27.0,27.0,True,11,11,1.0,21,0.0008
+"small (7x7, fuel off)",2,3,UCS (cap 25),False,memory_limit,,27.0,False,15,15,1.0,26,0.0001
+"small (7x7, fuel off)",2,3,UCS (cap 50),False,memory_limit,,27.0,False,32,32,1.0,51,0.0003
+"small (7x7, fuel off)",2,3,UCS (cap 100),False,memory_limit,,27.0,False,77,77,1.0,101,0.0003
+"small (7x7, fuel off)",2,3,UCS (cap 250),True,solved,27.0,27.0,True,95,95,1.0,123,0.0011
+"small (7x7, fuel off)",2,3,"UCS (cap 1,000)",True,solved,27.0,27.0,True,95,95,1.0,123,0.0006
+"small (7x7, fuel off)",2,3,"UCS (cap 10,000)",True,solved,27.0,27.0,True,95,95,1.0,123,0.0009
+"small (7x7, fuel off)",2,3,UCS (no cap),True,solved,27.0,27.0,True,95,95,1.0,123,0.0005
+"small (7x7, fuel off)",2,3,IDS,True,solved,27.0,27.0,True,904,88,10.272727272727273,10,0.0061
+"small (7x7, fuel off)",2,3,IDA*,True,solved,27.0,27.0,True,20,11,1.8181818181818181,10,0.0009
+"small (7x7, fuel off)",3,3,A* (cap 25),False,memory_limit,,55.0,False,15,15,1.0,27,0.0009
+"small (7x7, fuel off)",3,3,A* (cap 50),True,solved,55.0,55.0,True,24,24,1.0,44,0.0012
+"small (7x7, fuel off)",3,3,A* (cap 100),True,solved,55.0,55.0,True,24,24,1.0,44,0.0017
+"small (7x7, fuel off)",3,3,A* (cap 250),True,solved,55.0,55.0,True,24,24,1.0,44,0.0022
+"small (7x7, fuel off)",3,3,"A* (cap 1,000)",True,solved,55.0,55.0,True,24,24,1.0,44,0.0016
+"small (7x7, fuel off)",3,3,"A* (cap 10,000)",True,solved,55.0,55.0,True,24,24,1.0,44,0.0013
+"small (7x7, fuel off)",3,3,A* (no cap),True,solved,55.0,55.0,True,24,24,1.0,44,0.0022
+"small (7x7, fuel off)",3,3,UCS (cap 25),False,memory_limit,,55.0,False,14,14,1.0,27,0.0001
+"small (7x7, fuel off)",3,3,UCS (cap 50),False,memory_limit,,55.0,False,31,31,1.0,53,0.0002
+"small (7x7, fuel off)",3,3,UCS (cap 100),False,memory_limit,,55.0,False,88,88,1.0,102,0.0008
+"small (7x7, fuel off)",3,3,UCS (cap 250),True,solved,55.0,55.0,True,154,154,1.0,163,0.0007
+"small (7x7, fuel off)",3,3,"UCS (cap 1,000)",True,solved,55.0,55.0,True,154,154,1.0,163,0.0009
+"small (7x7, fuel off)",3,3,"UCS (cap 10,000)",True,solved,55.0,55.0,True,154,154,1.0,163,0.0006
+"small (7x7, fuel off)",3,3,UCS (no cap),True,solved,55.0,55.0,True,154,154,1.0,163,0.0006
+"small (7x7, fuel off)",3,3,IDS,True,solved,59.0,55.0,False,9370,152,61.64473684210526,14,0.0555
+"small (7x7, fuel off)",3,3,IDA*,True,solved,55.0,55.0,True,70,23,3.0434782608695654,16,0.002
+"small (7x7, fuel off)",4,3,A* (cap 25),False,memory_limit,,65.0,False,14,14,1.0,26,0.0012
+"small (7x7, fuel off)",4,3,A* (cap 50),False,memory_limit,,65.0,False,27,27,1.0,51,0.0021
+"small (7x7, fuel off)",4,3,A* (cap 100),True,solved,65.0,65.0,True,34,34,1.0,62,0.0022
+"small (7x7, fuel off)",4,3,A* (cap 250),True,solved,65.0,65.0,True,34,34,1.0,62,0.0025
+"small (7x7, fuel off)",4,3,"A* (cap 1,000)",True,solved,65.0,65.0,True,34,34,1.0,62,0.002
+"small (7x7, fuel off)",4,3,"A* (cap 10,000)",True,solved,65.0,65.0,True,34,34,1.0,62,0.003
+"small (7x7, fuel off)",4,3,A* (no cap),True,solved,65.0,65.0,True,34,34,1.0,62,0.0029
+"small (7x7, fuel off)",4,3,UCS (cap 25),False,memory_limit,,65.0,False,14,14,1.0,26,0.0001
+"small (7x7, fuel off)",4,3,UCS (cap 50),False,memory_limit,,65.0,False,30,30,1.0,51,0.0002
+"small (7x7, fuel off)",4,3,UCS (cap 100),False,memory_limit,,65.0,False,90,90,1.0,101,0.0004
+"small (7x7, fuel off)",4,3,UCS (cap 250),True,solved,65.0,65.0,True,158,158,1.0,166,0.0008
+"small (7x7, fuel off)",4,3,"UCS (cap 1,000)",True,solved,65.0,65.0,True,158,158,1.0,166,0.001
+"small (7x7, fuel off)",4,3,"UCS (cap 10,000)",True,solved,65.0,65.0,True,158,158,1.0,166,0.0006
+"small (7x7, fuel off)",4,3,UCS (no cap),True,solved,65.0,65.0,True,158,158,1.0,166,0.0005
+"small (7x7, fuel off)",4,3,IDS,True,solved,77.0,65.0,False,203267,165,1231.9212121212122,20,1.1276
+"small (7x7, fuel off)",4,3,IDA*,True,solved,65.0,65.0,True,114,36,3.1666666666666665,22,0.0023
+"small (7x7, fuel off)",5,2,A* (cap 25),False,memory_limit,,34.0,False,14,14,1.0,27,0.0007
+"small (7x7, fuel off)",5,2,A* (cap 50),True,solved,34.0,34.0,True,18,18,1.0,32,0.0008
+"small (7x7, fuel off)",5,2,A* (cap 100),True,solved,34.0,34.0,True,18,18,1.0,32,0.0008
+"small (7x7, fuel off)",5,2,A* (cap 250),True,solved,34.0,34.0,True,18,18,1.0,32,0.0008
+"small (7x7, fuel off)",5,2,"A* (cap 1,000)",True,solved,34.0,34.0,True,18,18,1.0,32,0.0012
+"small (7x7, fuel off)",5,2,"A* (cap 10,000)",True,solved,34.0,34.0,True,18,18,1.0,32,0.0015
+"small (7x7, fuel off)",5,2,A* (no cap),True,solved,34.0,34.0,True,18,18,1.0,32,0.0015
+"small (7x7, fuel off)",5,2,UCS (cap 25),False,memory_limit,,34.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",5,2,UCS (cap 50),False,memory_limit,,34.0,False,43,43,1.0,51,0.0003
+"small (7x7, fuel off)",5,2,UCS (cap 100),True,solved,34.0,34.0,True,65,65,1.0,74,0.0004
+"small (7x7, fuel off)",5,2,UCS (cap 250),True,solved,34.0,34.0,True,65,65,1.0,74,0.0004
+"small (7x7, fuel off)",5,2,"UCS (cap 1,000)",True,solved,34.0,34.0,True,65,65,1.0,74,0.0004
+"small (7x7, fuel off)",5,2,"UCS (cap 10,000)",True,solved,34.0,34.0,True,65,65,1.0,74,0.0004
+"small (7x7, fuel off)",5,2,UCS (no cap),True,solved,34.0,34.0,True,65,65,1.0,74,0.0004
+"small (7x7, fuel off)",5,2,IDS,True,solved,46.0,34.0,False,3770,72,52.361111111111114,13,0.021
+"small (7x7, fuel off)",5,2,IDA*,True,solved,34.0,34.0,True,18,18,1.0,13,0.0007
+"small (7x7, fuel off)",6,2,A* (cap 25),True,solved,7.0,7.0,True,3,3,1.0,9,0.0008
+"small (7x7, fuel off)",6,2,A* (cap 50),True,solved,7.0,7.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",6,2,A* (cap 100),True,solved,7.0,7.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",6,2,A* (cap 250),True,solved,7.0,7.0,True,3,3,1.0,9,0.0004
+"small (7x7, fuel off)",6,2,"A* (cap 1,000)",True,solved,7.0,7.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",6,2,"A* (cap 10,000)",True,solved,7.0,7.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",6,2,A* (no cap),True,solved,7.0,7.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",6,2,UCS (cap 25),True,solved,7.0,7.0,True,4,4,1.0,10,0.0
+"small (7x7, fuel off)",6,2,UCS (cap 50),True,solved,7.0,7.0,True,4,4,1.0,10,0.0
+"small (7x7, fuel off)",6,2,UCS (cap 100),True,solved,7.0,7.0,True,4,4,1.0,10,0.0001
+"small (7x7, fuel off)",6,2,UCS (cap 250),True,solved,7.0,7.0,True,4,4,1.0,10,0.0001
+"small (7x7, fuel off)",6,2,"UCS (cap 1,000)",True,solved,7.0,7.0,True,4,4,1.0,10,0.0
+"small (7x7, fuel off)",6,2,"UCS (cap 10,000)",True,solved,7.0,7.0,True,4,4,1.0,10,0.0001
+"small (7x7, fuel off)",6,2,UCS (no cap),True,solved,7.0,7.0,True,4,4,1.0,10,0.0
+"small (7x7, fuel off)",6,2,IDS,True,solved,7.0,7.0,True,9,6,1.5,4,0.0001
+"small (7x7, fuel off)",6,2,IDA*,True,solved,7.0,7.0,True,3,3,1.0,4,0.0003
+"small (7x7, fuel off)",7,1,A* (cap 25),True,solved,26.0,26.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",7,1,A* (cap 50),True,solved,26.0,26.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",7,1,A* (cap 100),True,solved,26.0,26.0,True,6,6,1.0,11,0.0005
+"small (7x7, fuel off)",7,1,A* (cap 250),True,solved,26.0,26.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",7,1,"A* (cap 1,000)",True,solved,26.0,26.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",7,1,"A* (cap 10,000)",True,solved,26.0,26.0,True,6,6,1.0,11,0.0004
+"small (7x7, fuel off)",7,1,A* (no cap),True,solved,26.0,26.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",7,1,UCS (cap 25),False,memory_limit,,26.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",7,1,UCS (cap 50),True,solved,26.0,26.0,True,31,31,1.0,32,0.0001
+"small (7x7, fuel off)",7,1,UCS (cap 100),True,solved,26.0,26.0,True,31,31,1.0,32,0.0002
+"small (7x7, fuel off)",7,1,UCS (cap 250),True,solved,26.0,26.0,True,31,31,1.0,32,0.0002
+"small (7x7, fuel off)",7,1,"UCS (cap 1,000)",True,solved,26.0,26.0,True,31,31,1.0,32,0.0001
+"small (7x7, fuel off)",7,1,"UCS (cap 10,000)",True,solved,26.0,26.0,True,31,31,1.0,32,0.0002
+"small (7x7, fuel off)",7,1,UCS (no cap),True,solved,26.0,26.0,True,31,31,1.0,32,0.0001
+"small (7x7, fuel off)",7,1,IDS,True,solved,26.0,26.0,True,102,26,3.923076923076923,7,0.0007
+"small (7x7, fuel off)",7,1,IDA*,True,solved,26.0,26.0,True,6,6,1.0,7,0.0003
+"small (7x7, fuel off)",8,3,A* (cap 25),False,memory_limit,,59.0,False,15,15,1.0,26,0.0013
+"small (7x7, fuel off)",8,3,A* (cap 50),False,memory_limit,,59.0,False,32,32,1.0,53,0.0014
+"small (7x7, fuel off)",8,3,A* (cap 100),True,solved,59.0,59.0,True,38,38,1.0,61,0.0016
+"small (7x7, fuel off)",8,3,A* (cap 250),True,solved,59.0,59.0,True,38,38,1.0,61,0.0028
+"small (7x7, fuel off)",8,3,"A* (cap 1,000)",True,solved,59.0,59.0,True,38,38,1.0,61,0.0016
+"small (7x7, fuel off)",8,3,"A* (cap 10,000)",True,solved,59.0,59.0,True,38,38,1.0,61,0.0016
+"small (7x7, fuel off)",8,3,A* (no cap),True,solved,59.0,59.0,True,38,38,1.0,61,0.0017
+"small (7x7, fuel off)",8,3,UCS (cap 25),False,memory_limit,,59.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",8,3,UCS (cap 50),False,memory_limit,,59.0,False,41,41,1.0,51,0.0002
+"small (7x7, fuel off)",8,3,UCS (cap 100),False,memory_limit,,59.0,False,85,85,1.0,101,0.0005
+"small (7x7, fuel off)",8,3,UCS (cap 250),True,solved,59.0,59.0,True,203,203,1.0,218,0.0008
+"small (7x7, fuel off)",8,3,"UCS (cap 1,000)",True,solved,59.0,59.0,True,203,203,1.0,218,0.0008
+"small (7x7, fuel off)",8,3,"UCS (cap 10,000)",True,solved,59.0,59.0,True,203,203,1.0,218,0.0012
+"small (7x7, fuel off)",8,3,UCS (no cap),True,solved,59.0,59.0,True,203,203,1.0,218,0.0009
+"small (7x7, fuel off)",8,3,IDS,True,solved,59.0,59.0,True,385935,207,1864.4202898550725,22,1.9749
+"small (7x7, fuel off)",8,3,IDA*,True,solved,59.0,59.0,True,153,44,3.477272727272727,22,0.0022
+"small (7x7, fuel off)",9,1,A* (cap 25),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",9,1,A* (cap 50),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",9,1,A* (cap 100),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",9,1,A* (cap 250),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",9,1,"A* (cap 1,000)",True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",9,1,"A* (cap 10,000)",True,solved,11.0,11.0,True,3,3,1.0,9,0.0003
+"small (7x7, fuel off)",9,1,A* (no cap),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",9,1,UCS (cap 25),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",9,1,UCS (cap 50),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",9,1,UCS (cap 100),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",9,1,UCS (cap 250),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",9,1,"UCS (cap 1,000)",True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",9,1,"UCS (cap 10,000)",True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",9,1,UCS (no cap),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",9,1,IDS,True,solved,11.0,11.0,True,13,7,1.8571428571428572,4,0.0001
+"small (7x7, fuel off)",9,1,IDA*,True,solved,11.0,11.0,True,3,3,1.0,4,0.0002
+"small (7x7, fuel off)",10,2,A* (cap 25),True,solved,15.0,15.0,True,5,5,1.0,16,0.0007
+"small (7x7, fuel off)",10,2,A* (cap 50),True,solved,15.0,15.0,True,5,5,1.0,16,0.0004
+"small (7x7, fuel off)",10,2,A* (cap 100),True,solved,15.0,15.0,True,5,5,1.0,16,0.0006
+"small (7x7, fuel off)",10,2,A* (cap 250),True,solved,15.0,15.0,True,5,5,1.0,16,0.0004
+"small (7x7, fuel off)",10,2,"A* (cap 1,000)",True,solved,15.0,15.0,True,5,5,1.0,16,0.0004
+"small (7x7, fuel off)",10,2,"A* (cap 10,000)",True,solved,15.0,15.0,True,5,5,1.0,16,0.0006
+"small (7x7, fuel off)",10,2,A* (no cap),True,solved,15.0,15.0,True,5,5,1.0,16,0.0004
+"small (7x7, fuel off)",10,2,UCS (cap 25),False,memory_limit,,15.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",10,2,UCS (cap 50),True,solved,15.0,15.0,True,31,31,1.0,49,0.0002
+"small (7x7, fuel off)",10,2,UCS (cap 100),True,solved,15.0,15.0,True,31,31,1.0,49,0.0001
+"small (7x7, fuel off)",10,2,UCS (cap 250),True,solved,15.0,15.0,True,31,31,1.0,49,0.0001
+"small (7x7, fuel off)",10,2,"UCS (cap 1,000)",True,solved,15.0,15.0,True,31,31,1.0,49,0.0002
+"small (7x7, fuel off)",10,2,"UCS (cap 10,000)",True,solved,15.0,15.0,True,31,31,1.0,49,0.0001
+"small (7x7, fuel off)",10,2,UCS (no cap),True,solved,15.0,15.0,True,31,31,1.0,49,0.0001
+"small (7x7, fuel off)",10,2,IDS,True,solved,15.0,15.0,True,66,22,3.0,6,0.0005
+"small (7x7, fuel off)",10,2,IDA*,True,solved,15.0,15.0,True,7,7,1.0,8,0.0003
+"small (7x7, fuel off)",11,2,A* (cap 25),False,memory_limit,,46.0,False,15,15,1.0,26,0.0006
+"small (7x7, fuel off)",11,2,A* (cap 50),True,solved,46.0,46.0,True,21,21,1.0,34,0.0015
+"small (7x7, fuel off)",11,2,A* (cap 100),True,solved,46.0,46.0,True,21,21,1.0,34,0.0008
+"small (7x7, fuel off)",11,2,A* (cap 250),True,solved,46.0,46.0,True,21,21,1.0,34,0.0008
+"small (7x7, fuel off)",11,2,"A* (cap 1,000)",True,solved,46.0,46.0,True,21,21,1.0,34,0.0015
+"small (7x7, fuel off)",11,2,"A* (cap 10,000)",True,solved,46.0,46.0,True,21,21,1.0,34,0.0009
+"small (7x7, fuel off)",11,2,A* (no cap),True,solved,46.0,46.0,True,21,21,1.0,34,0.0015
+"small (7x7, fuel off)",11,2,UCS (cap 25),False,memory_limit,,46.0,False,15,15,1.0,26,0.0001
+"small (7x7, fuel off)",11,2,UCS (cap 50),False,memory_limit,,46.0,False,38,38,1.0,51,0.0002
+"small (7x7, fuel off)",11,2,UCS (cap 100),True,solved,46.0,46.0,True,74,74,1.0,76,0.0003
+"small (7x7, fuel off)",11,2,UCS (cap 250),True,solved,46.0,46.0,True,74,74,1.0,76,0.0003
+"small (7x7, fuel off)",11,2,"UCS (cap 1,000)",True,solved,46.0,46.0,True,74,74,1.0,76,0.0004
+"small (7x7, fuel off)",11,2,"UCS (cap 10,000)",True,solved,46.0,46.0,True,74,74,1.0,76,0.0003
+"small (7x7, fuel off)",11,2,UCS (no cap),True,solved,46.0,46.0,True,74,74,1.0,76,0.0003
+"small (7x7, fuel off)",11,2,IDS,True,solved,50.0,46.0,False,6903,75,92.04,15,0.0347
+"small (7x7, fuel off)",11,2,IDA*,True,solved,46.0,46.0,True,59,20,2.95,15,0.001
+"small (7x7, fuel off)",12,1,A* (cap 25),True,solved,20.0,20.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",12,1,A* (cap 50),True,solved,20.0,20.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",12,1,A* (cap 100),True,solved,20.0,20.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",12,1,A* (cap 250),True,solved,20.0,20.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",12,1,"A* (cap 1,000)",True,solved,20.0,20.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",12,1,"A* (cap 10,000)",True,solved,20.0,20.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",12,1,A* (no cap),True,solved,20.0,20.0,True,6,6,1.0,11,0.0003
+"small (7x7, fuel off)",12,1,UCS (cap 25),False,memory_limit,,20.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",12,1,UCS (cap 50),True,solved,20.0,20.0,True,28,28,1.0,32,0.0001
+"small (7x7, fuel off)",12,1,UCS (cap 100),True,solved,20.0,20.0,True,28,28,1.0,32,0.0001
+"small (7x7, fuel off)",12,1,UCS (cap 250),True,solved,20.0,20.0,True,28,28,1.0,32,0.0001
+"small (7x7, fuel off)",12,1,"UCS (cap 1,000)",True,solved,20.0,20.0,True,28,28,1.0,32,0.0001
+"small (7x7, fuel off)",12,1,"UCS (cap 10,000)",True,solved,20.0,20.0,True,28,28,1.0,32,0.0001
+"small (7x7, fuel off)",12,1,UCS (no cap),True,solved,20.0,20.0,True,28,28,1.0,32,0.0001
+"small (7x7, fuel off)",12,1,IDS,True,solved,26.0,20.0,False,82,23,3.5652173913043477,7,0.0004
+"small (7x7, fuel off)",12,1,IDA*,True,solved,20.0,20.0,True,6,6,1.0,7,0.0002
+"small (7x7, fuel off)",13,3,A* (cap 25),False,memory_limit,,76.0,False,16,16,1.0,26,0.0007
+"small (7x7, fuel off)",13,3,A* (cap 50),False,memory_limit,,76.0,False,35,35,1.0,51,0.0013
+"small (7x7, fuel off)",13,3,A* (cap 100),True,solved,76.0,76.0,True,36,36,1.0,53,0.0013
+"small (7x7, fuel off)",13,3,A* (cap 250),True,solved,76.0,76.0,True,36,36,1.0,53,0.0014
+"small (7x7, fuel off)",13,3,"A* (cap 1,000)",True,solved,76.0,76.0,True,36,36,1.0,53,0.0014
+"small (7x7, fuel off)",13,3,"A* (cap 10,000)",True,solved,76.0,76.0,True,36,36,1.0,53,0.0014
+"small (7x7, fuel off)",13,3,A* (no cap),True,solved,76.0,76.0,True,36,36,1.0,53,0.0013
+"small (7x7, fuel off)",13,3,UCS (cap 25),False,memory_limit,,76.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",13,3,UCS (cap 50),False,memory_limit,,76.0,False,42,42,1.0,51,0.0001
+"small (7x7, fuel off)",13,3,UCS (cap 100),False,memory_limit,,76.0,False,88,88,1.0,101,0.0003
+"small (7x7, fuel off)",13,3,UCS (cap 250),True,solved,76.0,76.0,True,168,168,1.0,174,0.0006
+"small (7x7, fuel off)",13,3,"UCS (cap 1,000)",True,solved,76.0,76.0,True,168,168,1.0,174,0.0006
+"small (7x7, fuel off)",13,3,"UCS (cap 10,000)",True,solved,76.0,76.0,True,168,168,1.0,174,0.0006
+"small (7x7, fuel off)",13,3,UCS (no cap),True,solved,76.0,76.0,True,168,168,1.0,174,0.0006
+"small (7x7, fuel off)",13,3,IDS,True,solved,80.0,76.0,False,27044,150,180.29333333333332,21,0.1202
+"small (7x7, fuel off)",13,3,IDA*,True,solved,76.0,76.0,True,250,37,6.756756756756757,21,0.0023
+"small (7x7, fuel off)",14,2,A* (cap 25),True,solved,25.0,25.0,True,13,13,1.0,25,0.0006
+"small (7x7, fuel off)",14,2,A* (cap 50),True,solved,25.0,25.0,True,13,13,1.0,25,0.0006
+"small (7x7, fuel off)",14,2,A* (cap 100),True,solved,25.0,25.0,True,13,13,1.0,25,0.0006
+"small (7x7, fuel off)",14,2,A* (cap 250),True,solved,25.0,25.0,True,13,13,1.0,25,0.0006
+"small (7x7, fuel off)",14,2,"A* (cap 1,000)",True,solved,25.0,25.0,True,13,13,1.0,25,0.0006
+"small (7x7, fuel off)",14,2,"A* (cap 10,000)",True,solved,25.0,25.0,True,13,13,1.0,25,0.0006
+"small (7x7, fuel off)",14,2,A* (no cap),True,solved,25.0,25.0,True,13,13,1.0,25,0.0008
+"small (7x7, fuel off)",14,2,UCS (cap 25),False,memory_limit,,25.0,False,15,15,1.0,26,0.0001
+"small (7x7, fuel off)",14,2,UCS (cap 50),False,memory_limit,,25.0,False,37,37,1.0,51,0.0001
+"small (7x7, fuel off)",14,2,UCS (cap 100),True,solved,25.0,25.0,True,56,56,1.0,66,0.0002
+"small (7x7, fuel off)",14,2,UCS (cap 250),True,solved,25.0,25.0,True,56,56,1.0,66,0.0002
+"small (7x7, fuel off)",14,2,"UCS (cap 1,000)",True,solved,25.0,25.0,True,56,56,1.0,66,0.0002
+"small (7x7, fuel off)",14,2,"UCS (cap 10,000)",True,solved,25.0,25.0,True,56,56,1.0,66,0.0002
+"small (7x7, fuel off)",14,2,UCS (no cap),True,solved,25.0,25.0,True,56,56,1.0,66,0.0002
+"small (7x7, fuel off)",14,2,IDS,True,solved,29.0,25.0,False,246,47,5.23404255319149,8,0.0017
+"small (7x7, fuel off)",14,2,IDA*,True,solved,25.0,25.0,True,14,14,1.0,10,0.0007
+"small (7x7, fuel off)",15,3,A* (cap 25),False,memory_limit,,62.0,False,15,15,1.0,26,0.0009
+"small (7x7, fuel off)",15,3,A* (cap 50),False,memory_limit,,62.0,False,35,35,1.0,51,0.0014
+"small (7x7, fuel off)",15,3,A* (cap 100),True,solved,62.0,62.0,True,37,37,1.0,54,0.0023
+"small (7x7, fuel off)",15,3,A* (cap 250),True,solved,62.0,62.0,True,37,37,1.0,54,0.0023
+"small (7x7, fuel off)",15,3,"A* (cap 1,000)",True,solved,62.0,62.0,True,37,37,1.0,54,0.0024
+"small (7x7, fuel off)",15,3,"A* (cap 10,000)",True,solved,62.0,62.0,True,37,37,1.0,54,0.0027
+"small (7x7, fuel off)",15,3,A* (no cap),True,solved,62.0,62.0,True,37,37,1.0,54,0.0023
+"small (7x7, fuel off)",15,3,UCS (cap 25),False,memory_limit,,62.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",15,3,UCS (cap 50),False,memory_limit,,62.0,False,40,40,1.0,51,0.0002
+"small (7x7, fuel off)",15,3,UCS (cap 100),False,memory_limit,,62.0,False,90,90,1.0,102,0.0005
+"small (7x7, fuel off)",15,3,UCS (cap 250),True,solved,62.0,62.0,True,166,166,1.0,185,0.0009
+"small (7x7, fuel off)",15,3,"UCS (cap 1,000)",True,solved,62.0,62.0,True,166,166,1.0,185,0.0009
+"small (7x7, fuel off)",15,3,"UCS (cap 10,000)",True,solved,62.0,62.0,True,166,166,1.0,185,0.0009
+"small (7x7, fuel off)",15,3,UCS (no cap),True,solved,62.0,62.0,True,166,166,1.0,185,0.0009
+"small (7x7, fuel off)",15,3,IDS,True,solved,62.0,62.0,True,20114,128,157.140625,15,0.1139
+"small (7x7, fuel off)",15,3,IDA*,True,solved,62.0,62.0,True,333,42,7.928571428571429,19,0.0044
+"small (7x7, fuel off)",16,3,A* (cap 25),False,memory_limit,,28.0,False,14,14,1.0,26,0.0011
+"small (7x7, fuel off)",16,3,A* (cap 50),True,solved,28.0,28.0,True,24,24,1.0,47,0.0019
+"small (7x7, fuel off)",16,3,A* (cap 100),True,solved,28.0,28.0,True,24,24,1.0,47,0.0019
+"small (7x7, fuel off)",16,3,A* (cap 250),True,solved,28.0,28.0,True,24,24,1.0,47,0.0019
+"small (7x7, fuel off)",16,3,"A* (cap 1,000)",True,solved,28.0,28.0,True,24,24,1.0,47,0.0019
+"small (7x7, fuel off)",16,3,"A* (cap 10,000)",True,solved,28.0,28.0,True,24,24,1.0,47,0.0012
+"small (7x7, fuel off)",16,3,A* (no cap),True,solved,28.0,28.0,True,24,24,1.0,47,0.0012
+"small (7x7, fuel off)",16,3,UCS (cap 25),False,memory_limit,,28.0,False,16,16,1.0,28,0.0001
+"small (7x7, fuel off)",16,3,UCS (cap 50),False,memory_limit,,28.0,False,30,30,1.0,51,0.0001
+"small (7x7, fuel off)",16,3,UCS (cap 100),False,memory_limit,,28.0,False,79,79,1.0,101,0.0003
+"small (7x7, fuel off)",16,3,UCS (cap 250),True,solved,28.0,28.0,True,106,106,1.0,129,0.0004
+"small (7x7, fuel off)",16,3,"UCS (cap 1,000)",True,solved,28.0,28.0,True,106,106,1.0,129,0.0004
+"small (7x7, fuel off)",16,3,"UCS (cap 10,000)",True,solved,28.0,28.0,True,106,106,1.0,129,0.0004
+"small (7x7, fuel off)",16,3,UCS (no cap),True,solved,28.0,28.0,True,106,106,1.0,129,0.0004
+"small (7x7, fuel off)",16,3,IDS,True,solved,28.0,28.0,True,4385,131,33.47328244274809,13,0.0232
+"small (7x7, fuel off)",16,3,IDA*,True,solved,28.0,28.0,True,92,24,3.8333333333333335,13,0.0021
+"small (7x7, fuel off)",17,2,A* (cap 25),False,memory_limit,,52.0,False,12,12,1.0,26,0.0011
+"small (7x7, fuel off)",17,2,A* (cap 50),True,solved,52.0,52.0,True,20,20,1.0,40,0.001
+"small (7x7, fuel off)",17,2,A* (cap 100),True,solved,52.0,52.0,True,20,20,1.0,40,0.0016
+"small (7x7, fuel off)",17,2,A* (cap 250),True,solved,52.0,52.0,True,20,20,1.0,40,0.001
+"small (7x7, fuel off)",17,2,"A* (cap 1,000)",True,solved,52.0,52.0,True,20,20,1.0,40,0.001
+"small (7x7, fuel off)",17,2,"A* (cap 10,000)",True,solved,52.0,52.0,True,20,20,1.0,40,0.0016
+"small (7x7, fuel off)",17,2,A* (no cap),True,solved,52.0,52.0,True,20,20,1.0,40,0.0009
+"small (7x7, fuel off)",17,2,UCS (cap 25),False,memory_limit,,52.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",17,2,UCS (cap 50),False,memory_limit,,52.0,False,45,45,1.0,51,0.0002
+"small (7x7, fuel off)",17,2,UCS (cap 100),True,solved,52.0,52.0,True,76,76,1.0,79,0.0004
+"small (7x7, fuel off)",17,2,UCS (cap 250),True,solved,52.0,52.0,True,76,76,1.0,79,0.0004
+"small (7x7, fuel off)",17,2,"UCS (cap 1,000)",True,solved,52.0,52.0,True,76,76,1.0,79,0.0004
+"small (7x7, fuel off)",17,2,"UCS (cap 10,000)",True,solved,52.0,52.0,True,76,76,1.0,79,0.0003
+"small (7x7, fuel off)",17,2,UCS (no cap),True,solved,52.0,52.0,True,76,76,1.0,79,0.0003
+"small (7x7, fuel off)",17,2,IDS,True,solved,52.0,52.0,True,11158,77,144.9090909090909,15,0.0472
+"small (7x7, fuel off)",17,2,IDA*,True,solved,52.0,52.0,True,67,24,2.7916666666666665,15,0.0012
+"small (7x7, fuel off)",18,2,A* (cap 25),False,memory_limit,,38.0,False,15,15,1.0,26,0.0011
+"small (7x7, fuel off)",18,2,A* (cap 50),True,solved,38.0,38.0,True,21,21,1.0,35,0.001
+"small (7x7, fuel off)",18,2,A* (cap 100),True,solved,38.0,38.0,True,21,21,1.0,35,0.0009
+"small (7x7, fuel off)",18,2,A* (cap 250),True,solved,38.0,38.0,True,21,21,1.0,35,0.0008
+"small (7x7, fuel off)",18,2,"A* (cap 1,000)",True,solved,38.0,38.0,True,21,21,1.0,35,0.0008
+"small (7x7, fuel off)",18,2,"A* (cap 10,000)",True,solved,38.0,38.0,True,21,21,1.0,35,0.0009
+"small (7x7, fuel off)",18,2,A* (no cap),True,solved,38.0,38.0,True,21,21,1.0,35,0.0008
+"small (7x7, fuel off)",18,2,UCS (cap 25),False,memory_limit,,38.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",18,2,UCS (cap 50),False,memory_limit,,38.0,False,44,44,1.0,52,0.0002
+"small (7x7, fuel off)",18,2,UCS (cap 100),True,solved,38.0,38.0,True,73,73,1.0,84,0.0004
+"small (7x7, fuel off)",18,2,UCS (cap 250),True,solved,38.0,38.0,True,73,73,1.0,84,0.0003
+"small (7x7, fuel off)",18,2,"UCS (cap 1,000)",True,solved,38.0,38.0,True,73,73,1.0,84,0.0003
+"small (7x7, fuel off)",18,2,"UCS (cap 10,000)",True,solved,38.0,38.0,True,73,73,1.0,84,0.0003
+"small (7x7, fuel off)",18,2,UCS (no cap),True,solved,38.0,38.0,True,73,73,1.0,84,0.0003
+"small (7x7, fuel off)",18,2,IDS,True,solved,52.0,38.0,False,8564,80,107.05,15,0.0475
+"small (7x7, fuel off)",18,2,IDA*,True,solved,38.0,38.0,True,36,22,1.6363636363636365,15,0.001
+"small (7x7, fuel off)",19,1,A* (cap 25),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",19,1,A* (cap 50),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",19,1,A* (cap 100),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",19,1,A* (cap 250),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",19,1,"A* (cap 1,000)",True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",19,1,"A* (cap 10,000)",True,solved,11.0,11.0,True,3,3,1.0,9,0.0003
+"small (7x7, fuel off)",19,1,A* (no cap),True,solved,11.0,11.0,True,3,3,1.0,9,0.0002
+"small (7x7, fuel off)",19,1,UCS (cap 25),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",19,1,UCS (cap 50),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",19,1,UCS (cap 100),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",19,1,UCS (cap 250),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",19,1,"UCS (cap 1,000)",True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",19,1,"UCS (cap 10,000)",True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",19,1,UCS (no cap),True,solved,11.0,11.0,True,12,12,1.0,18,0.0001
+"small (7x7, fuel off)",19,1,IDS,True,solved,11.0,11.0,True,13,7,1.8571428571428572,4,0.0001
+"small (7x7, fuel off)",19,1,IDA*,True,solved,11.0,11.0,True,3,3,1.0,4,0.0002
+"small (7x7, fuel off)",20,3,A* (cap 25),False,memory_limit,,51.0,False,13,13,1.0,26,0.0012
+"small (7x7, fuel off)",20,3,A* (cap 50),True,solved,51.0,51.0,True,21,21,1.0,37,0.0016
+"small (7x7, fuel off)",20,3,A* (cap 100),True,solved,51.0,51.0,True,21,21,1.0,37,0.0018
+"small (7x7, fuel off)",20,3,A* (cap 250),True,solved,51.0,51.0,True,21,21,1.0,37,0.0016
+"small (7x7, fuel off)",20,3,"A* (cap 1,000)",True,solved,51.0,51.0,True,21,21,1.0,37,0.0011
+"small (7x7, fuel off)",20,3,"A* (cap 10,000)",True,solved,51.0,51.0,True,21,21,1.0,37,0.0009
+"small (7x7, fuel off)",20,3,A* (no cap),True,solved,51.0,51.0,True,21,21,1.0,37,0.0017
+"small (7x7, fuel off)",20,3,UCS (cap 25),False,memory_limit,,51.0,False,14,14,1.0,27,0.0001
+"small (7x7, fuel off)",20,3,UCS (cap 50),False,memory_limit,,51.0,False,30,30,1.0,52,0.0002
+"small (7x7, fuel off)",20,3,UCS (cap 100),False,memory_limit,,51.0,False,83,83,1.0,101,0.0007
+"small (7x7, fuel off)",20,3,UCS (cap 250),True,solved,51.0,51.0,True,145,145,1.0,153,0.0009
+"small (7x7, fuel off)",20,3,"UCS (cap 1,000)",True,solved,51.0,51.0,True,145,145,1.0,153,0.0008
+"small (7x7, fuel off)",20,3,"UCS (cap 10,000)",True,solved,51.0,51.0,True,145,145,1.0,153,0.0008
+"small (7x7, fuel off)",20,3,UCS (no cap),True,solved,51.0,51.0,True,145,145,1.0,153,0.0005
+"small (7x7, fuel off)",20,3,IDS,True,solved,55.0,51.0,False,18547,156,118.89102564102564,16,0.0836
+"small (7x7, fuel off)",20,3,IDA*,True,solved,51.0,51.0,True,43,20,2.15,16,0.001
+"small (7x7, fuel off)",21,2,A* (cap 25),True,solved,16.0,16.0,True,6,6,1.0,17,0.0004
+"small (7x7, fuel off)",21,2,A* (cap 50),True,solved,16.0,16.0,True,6,6,1.0,17,0.0004
+"small (7x7, fuel off)",21,2,A* (cap 100),True,solved,16.0,16.0,True,6,6,1.0,17,0.0004
+"small (7x7, fuel off)",21,2,A* (cap 250),True,solved,16.0,16.0,True,6,6,1.0,17,0.0004
+"small (7x7, fuel off)",21,2,"A* (cap 1,000)",True,solved,16.0,16.0,True,6,6,1.0,17,0.0004
+"small (7x7, fuel off)",21,2,"A* (cap 10,000)",True,solved,16.0,16.0,True,6,6,1.0,17,0.0004
+"small (7x7, fuel off)",21,2,A* (no cap),True,solved,16.0,16.0,True,6,6,1.0,17,0.0004
+"small (7x7, fuel off)",21,2,UCS (cap 25),False,memory_limit,,16.0,False,16,16,1.0,28,0.0001
+"small (7x7, fuel off)",21,2,UCS (cap 50),True,solved,16.0,16.0,True,31,31,1.0,47,0.0001
+"small (7x7, fuel off)",21,2,UCS (cap 100),True,solved,16.0,16.0,True,31,31,1.0,47,0.0001
+"small (7x7, fuel off)",21,2,UCS (cap 250),True,solved,16.0,16.0,True,31,31,1.0,47,0.0001
+"small (7x7, fuel off)",21,2,"UCS (cap 1,000)",True,solved,16.0,16.0,True,31,31,1.0,47,0.0001
+"small (7x7, fuel off)",21,2,"UCS (cap 10,000)",True,solved,16.0,16.0,True,31,31,1.0,47,0.0001
+"small (7x7, fuel off)",21,2,UCS (no cap),True,solved,16.0,16.0,True,31,31,1.0,47,0.0001
+"small (7x7, fuel off)",21,2,IDS,True,solved,16.0,16.0,True,123,30,4.1,7,0.0005
+"small (7x7, fuel off)",21,2,IDA*,True,solved,16.0,16.0,True,10,6,1.6666666666666667,7,0.0004
+"small (7x7, fuel off)",22,2,A* (cap 25),False,memory_limit,,70.0,False,13,13,1.0,26,0.0015
+"small (7x7, fuel off)",22,2,A* (cap 50),True,solved,70.0,70.0,True,24,24,1.0,46,0.0011
+"small (7x7, fuel off)",22,2,A* (cap 100),True,solved,70.0,70.0,True,24,24,1.0,46,0.0011
+"small (7x7, fuel off)",22,2,A* (cap 250),True,solved,70.0,70.0,True,24,24,1.0,46,0.0012
+"small (7x7, fuel off)",22,2,"A* (cap 1,000)",True,solved,70.0,70.0,True,24,24,1.0,46,0.0011
+"small (7x7, fuel off)",22,2,"A* (cap 10,000)",True,solved,70.0,70.0,True,24,24,1.0,46,0.0012
+"small (7x7, fuel off)",22,2,A* (no cap),True,solved,70.0,70.0,True,24,24,1.0,46,0.0014
+"small (7x7, fuel off)",22,2,UCS (cap 25),False,memory_limit,,70.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",22,2,UCS (cap 50),False,memory_limit,,70.0,False,44,44,1.0,51,0.0002
+"small (7x7, fuel off)",22,2,UCS (cap 100),True,solved,70.0,70.0,True,82,82,1.0,84,0.0003
+"small (7x7, fuel off)",22,2,UCS (cap 250),True,solved,70.0,70.0,True,82,82,1.0,84,0.0003
+"small (7x7, fuel off)",22,2,"UCS (cap 1,000)",True,solved,70.0,70.0,True,82,82,1.0,84,0.0003
+"small (7x7, fuel off)",22,2,"UCS (cap 10,000)",True,solved,70.0,70.0,True,82,82,1.0,84,0.0003
+"small (7x7, fuel off)",22,2,UCS (no cap),True,solved,70.0,70.0,True,82,82,1.0,84,0.0003
+"small (7x7, fuel off)",22,2,IDS,True,solved,72.0,70.0,False,65877,84,784.25,19,0.3807
+"small (7x7, fuel off)",22,2,IDA*,True,solved,70.0,70.0,True,75,25,3.0,19,0.0013
+"small (7x7, fuel off)",23,2,A* (cap 25),True,solved,17.0,17.0,True,5,5,1.0,15,0.0004
+"small (7x7, fuel off)",23,2,A* (cap 50),True,solved,17.0,17.0,True,5,5,1.0,15,0.0004
+"small (7x7, fuel off)",23,2,A* (cap 100),True,solved,17.0,17.0,True,5,5,1.0,15,0.0004
+"small (7x7, fuel off)",23,2,A* (cap 250),True,solved,17.0,17.0,True,5,5,1.0,15,0.0004
+"small (7x7, fuel off)",23,2,"A* (cap 1,000)",True,solved,17.0,17.0,True,5,5,1.0,15,0.0004
+"small (7x7, fuel off)",23,2,"A* (cap 10,000)",True,solved,17.0,17.0,True,5,5,1.0,15,0.0004
+"small (7x7, fuel off)",23,2,A* (no cap),True,solved,17.0,17.0,True,5,5,1.0,15,0.0004
+"small (7x7, fuel off)",23,2,UCS (cap 25),False,memory_limit,,17.0,False,16,16,1.0,27,0.0001
+"small (7x7, fuel off)",23,2,UCS (cap 50),True,solved,17.0,17.0,True,31,31,1.0,42,0.0001
+"small (7x7, fuel off)",23,2,UCS (cap 100),True,solved,17.0,17.0,True,31,31,1.0,42,0.0001
+"small (7x7, fuel off)",23,2,UCS (cap 250),True,solved,17.0,17.0,True,31,31,1.0,42,0.0001
+"small (7x7, fuel off)",23,2,"UCS (cap 1,000)",True,solved,17.0,17.0,True,31,31,1.0,42,0.0001
+"small (7x7, fuel off)",23,2,"UCS (cap 10,000)",True,solved,17.0,17.0,True,31,31,1.0,42,0.0001
+"small (7x7, fuel off)",23,2,UCS (no cap),True,solved,17.0,17.0,True,31,31,1.0,42,0.0001
+"small (7x7, fuel off)",23,2,IDS,True,solved,17.0,17.0,True,62,19,3.263157894736842,6,0.0003
+"small (7x7, fuel off)",23,2,IDA*,True,solved,17.0,17.0,True,5,5,1.0,6,0.0002
+"small (7x7, fuel off)",24,3,A* (cap 25),False,memory_limit,,42.0,False,15,15,1.0,27,0.0007
+"small (7x7, fuel off)",24,3,A* (cap 50),True,solved,42.0,42.0,True,19,19,1.0,35,0.0009
+"small (7x7, fuel off)",24,3,A* (cap 100),True,solved,42.0,42.0,True,19,19,1.0,35,0.0009
+"small (7x7, fuel off)",24,3,A* (cap 250),True,solved,42.0,42.0,True,19,19,1.0,35,0.0009
+"small (7x7, fuel off)",24,3,"A* (cap 1,000)",True,solved,42.0,42.0,True,19,19,1.0,35,0.0009
+"small (7x7, fuel off)",24,3,"A* (cap 10,000)",True,solved,42.0,42.0,True,19,19,1.0,35,0.0015
+"small (7x7, fuel off)",24,3,A* (no cap),True,solved,42.0,42.0,True,19,19,1.0,35,0.0014
+"small (7x7, fuel off)",24,3,UCS (cap 25),False,memory_limit,,42.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",24,3,UCS (cap 50),False,memory_limit,,42.0,False,40,40,1.0,51,0.0002
+"small (7x7, fuel off)",24,3,UCS (cap 100),False,memory_limit,,42.0,False,83,83,1.0,101,0.0003
+"small (7x7, fuel off)",24,3,UCS (cap 250),True,solved,42.0,42.0,True,154,154,1.0,172,0.0006
+"small (7x7, fuel off)",24,3,"UCS (cap 1,000)",True,solved,42.0,42.0,True,154,154,1.0,172,0.0006
+"small (7x7, fuel off)",24,3,"UCS (cap 10,000)",True,solved,42.0,42.0,True,154,154,1.0,172,0.0009
+"small (7x7, fuel off)",24,3,UCS (no cap),True,solved,42.0,42.0,True,154,154,1.0,172,0.0009
+"small (7x7, fuel off)",24,3,IDS,True,solved,45.0,42.0,False,8542,131,65.20610687022901,14,0.0441
+"small (7x7, fuel off)",24,3,IDA*,True,solved,42.0,42.0,True,73,24,3.0416666666666665,15,0.0012
+"small (7x7, fuel off)",25,1,A* (cap 25),True,solved,8.0,8.0,True,2,2,1.0,5,0.0001
+"small (7x7, fuel off)",25,1,A* (cap 50),True,solved,8.0,8.0,True,2,2,1.0,5,0.0001
+"small (7x7, fuel off)",25,1,A* (cap 100),True,solved,8.0,8.0,True,2,2,1.0,5,0.0001
+"small (7x7, fuel off)",25,1,A* (cap 250),True,solved,8.0,8.0,True,2,2,1.0,5,0.0002
+"small (7x7, fuel off)",25,1,"A* (cap 1,000)",True,solved,8.0,8.0,True,2,2,1.0,5,0.0002
+"small (7x7, fuel off)",25,1,"A* (cap 10,000)",True,solved,8.0,8.0,True,2,2,1.0,5,0.0002
+"small (7x7, fuel off)",25,1,A* (no cap),True,solved,8.0,8.0,True,2,2,1.0,5,0.0002
+"small (7x7, fuel off)",25,1,UCS (cap 25),True,solved,8.0,8.0,True,5,5,1.0,10,0.0001
+"small (7x7, fuel off)",25,1,UCS (cap 50),True,solved,8.0,8.0,True,5,5,1.0,10,0.0001
+"small (7x7, fuel off)",25,1,UCS (cap 100),True,solved,8.0,8.0,True,5,5,1.0,10,0.0
+"small (7x7, fuel off)",25,1,UCS (cap 250),True,solved,8.0,8.0,True,5,5,1.0,10,0.0
+"small (7x7, fuel off)",25,1,"UCS (cap 1,000)",True,solved,8.0,8.0,True,5,5,1.0,10,0.0
+"small (7x7, fuel off)",25,1,"UCS (cap 10,000)",True,solved,8.0,8.0,True,5,5,1.0,10,0.0
+"small (7x7, fuel off)",25,1,UCS (no cap),True,solved,8.0,8.0,True,5,5,1.0,10,0.0
+"small (7x7, fuel off)",25,1,IDS,True,solved,8.0,8.0,True,4,3,1.3333333333333333,3,0.0001
+"small (7x7, fuel off)",25,1,IDA*,True,solved,8.0,8.0,True,2,2,1.0,3,0.0001
+"small (7x7, fuel off)",26,3,A* (cap 25),False,memory_limit,,75.0,False,16,16,1.0,26,0.0011
+"small (7x7, fuel off)",26,3,A* (cap 50),False,memory_limit,,75.0,False,33,33,1.0,52,0.0018
+"small (7x7, fuel off)",26,3,A* (cap 100),True,solved,75.0,75.0,True,45,45,1.0,61,0.0017
+"small (7x7, fuel off)",26,3,A* (cap 250),True,solved,75.0,75.0,True,45,45,1.0,61,0.0018
+"small (7x7, fuel off)",26,3,"A* (cap 1,000)",True,solved,75.0,75.0,True,45,45,1.0,61,0.0019
+"small (7x7, fuel off)",26,3,"A* (cap 10,000)",True,solved,75.0,75.0,True,45,45,1.0,61,0.0019
+"small (7x7, fuel off)",26,3,A* (no cap),True,solved,75.0,75.0,True,45,45,1.0,61,0.0017
+"small (7x7, fuel off)",26,3,UCS (cap 25),False,memory_limit,,75.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",26,3,UCS (cap 50),False,memory_limit,,75.0,False,44,44,1.0,51,0.0002
+"small (7x7, fuel off)",26,3,UCS (cap 100),False,memory_limit,,75.0,False,94,94,1.0,101,0.0003
+"small (7x7, fuel off)",26,3,UCS (cap 250),True,solved,75.0,75.0,True,113,113,1.0,122,0.0004
+"small (7x7, fuel off)",26,3,"UCS (cap 1,000)",True,solved,75.0,75.0,True,113,113,1.0,122,0.0004
+"small (7x7, fuel off)",26,3,"UCS (cap 10,000)",True,solved,75.0,75.0,True,113,113,1.0,122,0.0004
+"small (7x7, fuel off)",26,3,UCS (no cap),True,solved,75.0,75.0,True,113,113,1.0,122,0.0004
+"small (7x7, fuel off)",26,3,IDS,True,solved,85.0,75.0,False,299836,134,2237.582089552239,22,1.5484
+"small (7x7, fuel off)",26,3,IDA*,True,solved,75.0,75.0,True,1364,46,29.652173913043477,23,0.0116
+"small (7x7, fuel off)",27,1,A* (cap 25),True,solved,14.0,14.0,True,4,4,1.0,12,0.0003
+"small (7x7, fuel off)",27,1,A* (cap 50),True,solved,14.0,14.0,True,4,4,1.0,12,0.0003
+"small (7x7, fuel off)",27,1,A* (cap 100),True,solved,14.0,14.0,True,4,4,1.0,12,0.0003
+"small (7x7, fuel off)",27,1,A* (cap 250),True,solved,14.0,14.0,True,4,4,1.0,12,0.0003
+"small (7x7, fuel off)",27,1,"A* (cap 1,000)",True,solved,14.0,14.0,True,4,4,1.0,12,0.0003
+"small (7x7, fuel off)",27,1,"A* (cap 10,000)",True,solved,14.0,14.0,True,4,4,1.0,12,0.0003
+"small (7x7, fuel off)",27,1,A* (no cap),True,solved,14.0,14.0,True,4,4,1.0,12,0.0005
+"small (7x7, fuel off)",27,1,UCS (cap 25),False,memory_limit,,14.0,False,16,16,1.0,26,0.0001
+"small (7x7, fuel off)",27,1,UCS (cap 50),True,solved,14.0,14.0,True,20,20,1.0,30,0.0001
+"small (7x7, fuel off)",27,1,UCS (cap 100),True,solved,14.0,14.0,True,20,20,1.0,30,0.0001
+"small (7x7, fuel off)",27,1,UCS (cap 250),True,solved,14.0,14.0,True,20,20,1.0,30,0.0001
+"small (7x7, fuel off)",27,1,"UCS (cap 1,000)",True,solved,14.0,14.0,True,20,20,1.0,30,0.0001
+"small (7x7, fuel off)",27,1,"UCS (cap 10,000)",True,solved,14.0,14.0,True,20,20,1.0,30,0.0001
+"small (7x7, fuel off)",27,1,UCS (no cap),True,solved,14.0,14.0,True,20,20,1.0,30,0.0001
+"small (7x7, fuel off)",27,1,IDS,True,solved,14.0,14.0,True,30,12,2.5,5,0.0002
+"small (7x7, fuel off)",27,1,IDA*,True,solved,14.0,14.0,True,4,4,1.0,5,0.0002
+"small (7x7, fuel off)",28,1,A* (cap 25),True,solved,9.0,9.0,True,3,3,1.0,6,0.0001
+"small (7x7, fuel off)",28,1,A* (cap 50),True,solved,9.0,9.0,True,3,3,1.0,6,0.0002
+"small (7x7, fuel off)",28,1,A* (cap 100),True,solved,9.0,9.0,True,3,3,1.0,6,0.0001
+"small (7x7, fuel off)",28,1,A* (cap 250),True,solved,9.0,9.0,True,3,3,1.0,6,0.0001
+"small (7x7, fuel off)",28,1,"A* (cap 1,000)",True,solved,9.0,9.0,True,3,3,1.0,6,0.0001
+"small (7x7, fuel off)",28,1,"A* (cap 10,000)",True,solved,9.0,9.0,True,3,3,1.0,6,0.0002
+"small (7x7, fuel off)",28,1,A* (no cap),True,solved,9.0,9.0,True,3,3,1.0,6,0.0002
+"small (7x7, fuel off)",28,1,UCS (cap 25),True,solved,9.0,9.0,True,8,8,1.0,13,0.0001
+"small (7x7, fuel off)",28,1,UCS (cap 50),True,solved,9.0,9.0,True,8,8,1.0,13,0.0001
+"small (7x7, fuel off)",28,1,UCS (cap 100),True,solved,9.0,9.0,True,8,8,1.0,13,0.0001
+"small (7x7, fuel off)",28,1,UCS (cap 250),True,solved,9.0,9.0,True,8,8,1.0,13,0.0001
+"small (7x7, fuel off)",28,1,"UCS (cap 1,000)",True,solved,9.0,9.0,True,8,8,1.0,13,0.0001
+"small (7x7, fuel off)",28,1,"UCS (cap 10,000)",True,solved,9.0,9.0,True,8,8,1.0,13,0.0001
+"small (7x7, fuel off)",28,1,UCS (no cap),True,solved,9.0,9.0,True,8,8,1.0,13,0.0001
+"small (7x7, fuel off)",28,1,IDS,True,solved,9.0,9.0,True,10,6,1.6666666666666667,4,0.0001
+"small (7x7, fuel off)",28,1,IDA*,True,solved,9.0,9.0,True,3,3,1.0,4,0.0002
+"small (7x7, fuel off)",29,2,A* (cap 25),True,solved,19.0,19.0,True,10,10,1.0,23,0.0009
+"small (7x7, fuel off)",29,2,A* (cap 50),True,solved,19.0,19.0,True,10,10,1.0,23,0.0009
+"small (7x7, fuel off)",29,2,A* (cap 100),True,solved,19.0,19.0,True,10,10,1.0,23,0.0009
+"small (7x7, fuel off)",29,2,A* (cap 250),True,solved,19.0,19.0,True,10,10,1.0,23,0.0007
+"small (7x7, fuel off)",29,2,"A* (cap 1,000)",True,solved,19.0,19.0,True,10,10,1.0,23,0.0006
+"small (7x7, fuel off)",29,2,"A* (cap 10,000)",True,solved,19.0,19.0,True,10,10,1.0,23,0.0005
+"small (7x7, fuel off)",29,2,A* (no cap),True,solved,19.0,19.0,True,10,10,1.0,23,0.0009
+"small (7x7, fuel off)",29,2,UCS (cap 25),False,memory_limit,,19.0,False,14,14,1.0,26,0.0001
+"small (7x7, fuel off)",29,2,UCS (cap 50),False,memory_limit,,19.0,False,36,36,1.0,51,0.0002
+"small (7x7, fuel off)",29,2,UCS (cap 100),True,solved,19.0,19.0,True,47,47,1.0,65,0.0003
+"small (7x7, fuel off)",29,2,UCS (cap 250),True,solved,19.0,19.0,True,47,47,1.0,65,0.0003
+"small (7x7, fuel off)",29,2,"UCS (cap 1,000)",True,solved,19.0,19.0,True,47,47,1.0,65,0.0003
+"small (7x7, fuel off)",29,2,"UCS (cap 10,000)",True,solved,19.0,19.0,True,47,47,1.0,65,0.0003
+"small (7x7, fuel off)",29,2,UCS (no cap),True,solved,19.0,19.0,True,47,47,1.0,65,0.0003
+"small (7x7, fuel off)",29,2,IDS,True,solved,23.0,19.0,False,176,41,4.2926829268292686,8,0.0008
+"small (7x7, fuel off)",29,2,IDA*,True,solved,19.0,19.0,True,9,9,1.0,10,0.0004
+"medium (15x15, fuel on)",0,2,A* (cap 25),False,memory_limit,,16.0,False,8,8,1.0,26,0.0006
+"medium (15x15, fuel on)",0,2,A* (cap 50),True,solved,16.0,16.0,True,9,9,1.0,30,0.0007
+"medium (15x15, fuel on)",0,2,A* (cap 100),True,solved,16.0,16.0,True,9,9,1.0,30,0.0007
+"medium (15x15, fuel on)",0,2,A* (cap 250),True,solved,16.0,16.0,True,9,9,1.0,30,0.0006
+"medium (15x15, fuel on)",0,2,"A* (cap 1,000)",True,solved,16.0,16.0,True,9,9,1.0,30,0.0006
+"medium (15x15, fuel on)",0,2,"A* (cap 10,000)",True,solved,16.0,16.0,True,9,9,1.0,30,0.0006
+"medium (15x15, fuel on)",0,2,A* (no cap),True,solved,16.0,16.0,True,9,9,1.0,30,0.0006
+"medium (15x15, fuel on)",0,2,UCS (cap 25),False,memory_limit,,16.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",0,2,UCS (cap 50),False,memory_limit,,16.0,False,22,22,1.0,52,0.0002
+"medium (15x15, fuel on)",0,2,UCS (cap 100),False,memory_limit,,16.0,False,42,42,1.0,101,0.0004
+"medium (15x15, fuel on)",0,2,UCS (cap 250),True,solved,16.0,16.0,True,100,100,1.0,213,0.0009
+"medium (15x15, fuel on)",0,2,"UCS (cap 1,000)",True,solved,16.0,16.0,True,100,100,1.0,213,0.0007
+"medium (15x15, fuel on)",0,2,"UCS (cap 10,000)",True,solved,16.0,16.0,True,100,100,1.0,213,0.0007
+"medium (15x15, fuel on)",0,2,UCS (no cap),True,solved,16.0,16.0,True,100,100,1.0,213,0.0006
+"medium (15x15, fuel on)",0,2,IDS,True,solved,22.0,16.0,False,1207,256,4.71484375,9,0.0059
+"medium (15x15, fuel on)",0,2,IDA*,True,solved,16.0,16.0,True,11,9,1.2222222222222223,9,0.0005
+"medium (15x15, fuel on)",1,2,A* (cap 25),False,memory_limit,,34.0,False,8,8,1.0,27,0.0005
+"medium (15x15, fuel on)",1,2,A* (cap 50),True,solved,34.0,34.0,True,12,12,1.0,38,0.0007
+"medium (15x15, fuel on)",1,2,A* (cap 100),True,solved,34.0,34.0,True,12,12,1.0,38,0.0007
+"medium (15x15, fuel on)",1,2,A* (cap 250),True,solved,34.0,34.0,True,12,12,1.0,38,0.0009
+"medium (15x15, fuel on)",1,2,"A* (cap 1,000)",True,solved,34.0,34.0,True,12,12,1.0,38,0.0007
+"medium (15x15, fuel on)",1,2,"A* (cap 10,000)",True,solved,34.0,34.0,True,12,12,1.0,38,0.0007
+"medium (15x15, fuel on)",1,2,A* (no cap),True,solved,34.0,34.0,True,12,12,1.0,38,0.0007
+"medium (15x15, fuel on)",1,2,UCS (cap 25),False,memory_limit,,34.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",1,2,UCS (cap 50),False,memory_limit,,34.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",1,2,UCS (cap 100),False,memory_limit,,34.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",1,2,UCS (cap 250),False,memory_limit,,34.0,False,131,131,1.0,251,0.0005
+"medium (15x15, fuel on)",1,2,"UCS (cap 1,000)",False,memory_limit,,34.0,False,655,655,1.0,1001,0.0027
+"medium (15x15, fuel on)",1,2,"UCS (cap 10,000)",True,solved,34.0,34.0,True,1369,1369,1.0,1910,0.0067
+"medium (15x15, fuel on)",1,2,UCS (no cap),True,solved,34.0,34.0,True,1369,1369,1.0,1910,0.0061
+"medium (15x15, fuel on)",1,2,IDS,True,solved,36.0,34.0,False,209500,1489,140.69845533915378,13,1.2873
+"medium (15x15, fuel on)",1,2,IDA*,True,solved,34.0,34.0,True,12,12,1.0,13,0.001
+"medium (15x15, fuel on)",2,2,A* (cap 25),False,memory_limit,,94.0,False,8,8,1.0,26,0.0008
+"medium (15x15, fuel on)",2,2,A* (cap 50),False,memory_limit,,94.0,False,19,19,1.0,53,0.0017
+"medium (15x15, fuel on)",2,2,A* (cap 100),False,memory_limit,,94.0,False,37,37,1.0,101,0.0015
+"medium (15x15, fuel on)",2,2,A* (cap 250),False,memory_limit,,94.0,False,108,107,1.0093457943925233,252,0.004
+"medium (15x15, fuel on)",2,2,"A* (cap 1,000)",False,memory_limit,,94.0,False,706,649,1.0878274268104777,1002,0.0274
+"medium (15x15, fuel on)",2,2,"A* (cap 10,000)",True,solved,94.0,94.0,True,1656,1564,1.0588235294117647,1862,0.0255
+"medium (15x15, fuel on)",2,2,A* (no cap),True,solved,94.0,94.0,True,1656,1564,1.0588235294117647,1862,0.0138
+"medium (15x15, fuel on)",2,2,UCS (cap 25),False,memory_limit,,94.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",2,2,UCS (cap 50),False,memory_limit,,94.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",2,2,UCS (cap 100),False,memory_limit,,94.0,False,43,43,1.0,101,0.0004
+"medium (15x15, fuel on)",2,2,UCS (cap 250),False,memory_limit,,94.0,False,131,131,1.0,251,0.0011
+"medium (15x15, fuel on)",2,2,"UCS (cap 1,000)",False,memory_limit,,94.0,False,709,709,1.0,1002,0.0058
+"medium (15x15, fuel on)",2,2,"UCS (cap 10,000)",True,solved,94.0,94.0,True,3530,3530,1.0,3769,0.0253
+"medium (15x15, fuel on)",2,2,UCS (no cap),True,solved,94.0,94.0,True,3530,3530,1.0,3769,0.0181
+"medium (15x15, fuel on)",2,2,IDS,False,node_limit,,94.0,False,500000,1577,317.0577045022194,14,3.2681
+"medium (15x15, fuel on)",2,2,IDA*,False,node_limit,,94.0,False,500000,706,708.2152974504249,26,3.7742
+"medium (15x15, fuel on)",3,3,A* (cap 25),False,memory_limit,,41.0,False,8,8,1.0,27,0.0011
+"medium (15x15, fuel on)",3,3,A* (cap 50),False,memory_limit,,41.0,False,16,16,1.0,51,0.0024
+"medium (15x15, fuel on)",3,3,A* (cap 100),True,solved,41.0,41.0,True,16,16,1.0,51,0.0018
+"medium (15x15, fuel on)",3,3,A* (cap 250),True,solved,41.0,41.0,True,16,16,1.0,51,0.0017
+"medium (15x15, fuel on)",3,3,"A* (cap 1,000)",True,solved,41.0,41.0,True,16,16,1.0,51,0.0019
+"medium (15x15, fuel on)",3,3,"A* (cap 10,000)",True,solved,41.0,41.0,True,16,16,1.0,51,0.0016
+"medium (15x15, fuel on)",3,3,A* (no cap),True,solved,41.0,41.0,True,16,16,1.0,51,0.0015
+"medium (15x15, fuel on)",3,3,UCS (cap 25),False,memory_limit,,41.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",3,3,UCS (cap 50),False,memory_limit,,41.0,False,23,23,1.0,54,0.0002
+"medium (15x15, fuel on)",3,3,UCS (cap 100),False,memory_limit,,41.0,False,43,43,1.0,101,0.0003
+"medium (15x15, fuel on)",3,3,UCS (cap 250),False,memory_limit,,41.0,False,131,131,1.0,251,0.001
+"medium (15x15, fuel on)",3,3,"UCS (cap 1,000)",False,memory_limit,,41.0,False,690,690,1.0,1002,0.0029
+"medium (15x15, fuel on)",3,3,"UCS (cap 10,000)",True,solved,41.0,41.0,True,2070,2070,1.0,2514,0.0089
+"medium (15x15, fuel on)",3,3,UCS (no cap),True,solved,41.0,41.0,True,2070,2070,1.0,2514,0.0109
+"medium (15x15, fuel on)",3,3,IDS,False,node_limit,,41.0,False,500000,1634,305.99755201958385,14,3.3791
+"medium (15x15, fuel on)",3,3,IDA*,True,solved,41.0,41.0,True,34,25,1.36,16,0.0017
+"medium (15x15, fuel on)",4,3,A* (cap 25),False,memory_limit,,88.0,False,9,9,1.0,26,0.0011
+"medium (15x15, fuel on)",4,3,A* (cap 50),False,memory_limit,,88.0,False,18,18,1.0,53,0.001
+"medium (15x15, fuel on)",4,3,A* (cap 100),False,memory_limit,,88.0,False,37,37,1.0,101,0.0017
+"medium (15x15, fuel on)",4,3,A* (cap 250),False,memory_limit,,88.0,False,102,100,1.02,252,0.0037
+"medium (15x15, fuel on)",4,3,"A* (cap 1,000)",False,memory_limit,,88.0,False,627,602,1.041528239202658,1001,0.0132
+"medium (15x15, fuel on)",4,3,"A* (cap 10,000)",True,solved,88.0,88.0,True,1998,1946,1.02672147995889,2568,0.0195
+"medium (15x15, fuel on)",4,3,A* (no cap),True,solved,88.0,88.0,True,1998,1946,1.02672147995889,2568,0.0176
+"medium (15x15, fuel on)",4,3,UCS (cap 25),False,memory_limit,,88.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",4,3,UCS (cap 50),False,memory_limit,,88.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",4,3,UCS (cap 100),False,memory_limit,,88.0,False,43,43,1.0,101,0.0003
+"medium (15x15, fuel on)",4,3,UCS (cap 250),False,memory_limit,,88.0,False,127,127,1.0,251,0.0009
+"medium (15x15, fuel on)",4,3,"UCS (cap 1,000)",False,memory_limit,,88.0,False,643,643,1.0,1002,0.0042
+"medium (15x15, fuel on)",4,3,"UCS (cap 10,000)",True,solved,88.0,88.0,True,6545,6545,1.0,6994,0.0414
+"medium (15x15, fuel on)",4,3,UCS (no cap),True,solved,88.0,88.0,True,6545,6545,1.0,6994,0.0358
+"medium (15x15, fuel on)",4,3,IDS,False,node_limit,,88.0,False,500000,2033,245.94195769798327,14,3.3456
+"medium (15x15, fuel on)",4,3,IDA*,False,node_limit,,88.0,False,500000,657,761.03500761035,24,3.6461
+"medium (15x15, fuel on)",5,2,A* (cap 25),False,memory_limit,,40.0,False,9,9,1.0,28,0.0006
+"medium (15x15, fuel on)",5,2,A* (cap 50),True,solved,40.0,40.0,True,15,15,1.0,46,0.0008
+"medium (15x15, fuel on)",5,2,A* (cap 100),True,solved,40.0,40.0,True,15,15,1.0,46,0.0008
+"medium (15x15, fuel on)",5,2,A* (cap 250),True,solved,40.0,40.0,True,15,15,1.0,46,0.0009
+"medium (15x15, fuel on)",5,2,"A* (cap 1,000)",True,solved,40.0,40.0,True,15,15,1.0,46,0.0009
+"medium (15x15, fuel on)",5,2,"A* (cap 10,000)",True,solved,40.0,40.0,True,15,15,1.0,46,0.0009
+"medium (15x15, fuel on)",5,2,A* (no cap),True,solved,40.0,40.0,True,15,15,1.0,46,0.0008
+"medium (15x15, fuel on)",5,2,UCS (cap 25),False,memory_limit,,40.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",5,2,UCS (cap 50),False,memory_limit,,40.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",5,2,UCS (cap 100),False,memory_limit,,40.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",5,2,UCS (cap 250),False,memory_limit,,40.0,False,131,131,1.0,253,0.0007
+"medium (15x15, fuel on)",5,2,"UCS (cap 1,000)",False,memory_limit,,40.0,False,624,624,1.0,1001,0.0028
+"medium (15x15, fuel on)",5,2,"UCS (cap 10,000)",True,solved,40.0,40.0,True,2480,2480,1.0,3018,0.0159
+"medium (15x15, fuel on)",5,2,UCS (no cap),True,solved,40.0,40.0,True,2480,2480,1.0,3018,0.0165
+"medium (15x15, fuel on)",5,2,IDS,False,node_limit,,40.0,False,500000,1995,250.6265664160401,14,3.3356
+"medium (15x15, fuel on)",5,2,IDA*,True,solved,40.0,40.0,True,19,15,1.2666666666666666,15,0.001
+"medium (15x15, fuel on)",6,2,A* (cap 25),False,memory_limit,,70.0,False,12,12,1.0,29,0.0008
+"medium (15x15, fuel on)",6,2,A* (cap 50),False,memory_limit,,70.0,False,22,22,1.0,52,0.0012
+"medium (15x15, fuel on)",6,2,A* (cap 100),False,memory_limit,,70.0,False,47,47,1.0,103,0.0018
+"medium (15x15, fuel on)",6,2,A* (cap 250),True,solved,70.0,70.0,True,125,125,1.0,246,0.0035
+"medium (15x15, fuel on)",6,2,"A* (cap 1,000)",True,solved,70.0,70.0,True,125,125,1.0,246,0.0035
+"medium (15x15, fuel on)",6,2,"A* (cap 10,000)",True,solved,70.0,70.0,True,125,125,1.0,246,0.0024
+"medium (15x15, fuel on)",6,2,A* (no cap),True,solved,70.0,70.0,True,125,125,1.0,246,0.0027
+"medium (15x15, fuel on)",6,2,UCS (cap 25),False,memory_limit,,70.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",6,2,UCS (cap 50),False,memory_limit,,70.0,False,23,23,1.0,54,0.0002
+"medium (15x15, fuel on)",6,2,UCS (cap 100),False,memory_limit,,70.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",6,2,UCS (cap 250),False,memory_limit,,70.0,False,131,131,1.0,251,0.0006
+"medium (15x15, fuel on)",6,2,"UCS (cap 1,000)",False,memory_limit,,70.0,False,699,699,1.0,1002,0.0032
+"medium (15x15, fuel on)",6,2,"UCS (cap 10,000)",True,solved,70.0,70.0,True,3986,3986,1.0,4388,0.0242
+"medium (15x15, fuel on)",6,2,UCS (no cap),True,solved,70.0,70.0,True,3986,3986,1.0,4388,0.02
+"medium (15x15, fuel on)",6,2,IDS,False,node_limit,,70.0,False,500000,1982,252.27043390514632,14,3.2535
+"medium (15x15, fuel on)",6,2,IDA*,True,solved,70.0,70.0,True,1381,135,10.22962962962963,19,0.0183
+"medium (15x15, fuel on)",7,2,A* (cap 25),True,solved,25.0,25.0,True,9,9,1.0,24,0.0007
+"medium (15x15, fuel on)",7,2,A* (cap 50),True,solved,25.0,25.0,True,9,9,1.0,24,0.0007
+"medium (15x15, fuel on)",7,2,A* (cap 100),True,solved,25.0,25.0,True,9,9,1.0,24,0.0007
+"medium (15x15, fuel on)",7,2,A* (cap 250),True,solved,25.0,25.0,True,9,9,1.0,24,0.0007
+"medium (15x15, fuel on)",7,2,"A* (cap 1,000)",True,solved,25.0,25.0,True,9,9,1.0,24,0.0009
+"medium (15x15, fuel on)",7,2,"A* (cap 10,000)",True,solved,25.0,25.0,True,9,9,1.0,24,0.0008
+"medium (15x15, fuel on)",7,2,A* (no cap),True,solved,25.0,25.0,True,9,9,1.0,24,0.0007
+"medium (15x15, fuel on)",7,2,UCS (cap 25),False,memory_limit,,25.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",7,2,UCS (cap 50),False,memory_limit,,25.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",7,2,UCS (cap 100),False,memory_limit,,25.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",7,2,UCS (cap 250),False,memory_limit,,25.0,False,131,131,1.0,252,0.001
+"medium (15x15, fuel on)",7,2,"UCS (cap 1,000)",True,solved,25.0,25.0,True,446,446,1.0,686,0.0025
+"medium (15x15, fuel on)",7,2,"UCS (cap 10,000)",True,solved,25.0,25.0,True,446,446,1.0,686,0.002
+"medium (15x15, fuel on)",7,2,UCS (no cap),True,solved,25.0,25.0,True,446,446,1.0,686,0.0022
+"medium (15x15, fuel on)",7,2,IDS,True,solved,31.0,25.0,False,3003,325,9.24,10,0.0207
+"medium (15x15, fuel on)",7,2,IDA*,True,solved,25.0,25.0,True,9,9,1.0,10,0.0005
+"medium (15x15, fuel on)",8,3,A* (cap 25),False,memory_limit,,47.0,False,12,12,1.0,26,0.0008
+"medium (15x15, fuel on)",8,3,A* (cap 50),False,memory_limit,,47.0,False,23,23,1.0,51,0.0013
+"medium (15x15, fuel on)",8,3,A* (cap 100),True,solved,47.0,47.0,True,29,29,1.0,69,0.0018
+"medium (15x15, fuel on)",8,3,A* (cap 250),True,solved,47.0,47.0,True,29,29,1.0,69,0.0018
+"medium (15x15, fuel on)",8,3,"A* (cap 1,000)",True,solved,47.0,47.0,True,29,29,1.0,69,0.0018
+"medium (15x15, fuel on)",8,3,"A* (cap 10,000)",True,solved,47.0,47.0,True,29,29,1.0,69,0.0017
+"medium (15x15, fuel on)",8,3,A* (no cap),True,solved,47.0,47.0,True,29,29,1.0,69,0.0017
+"medium (15x15, fuel on)",8,3,UCS (cap 25),False,memory_limit,,47.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",8,3,UCS (cap 50),False,memory_limit,,47.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",8,3,UCS (cap 100),False,memory_limit,,47.0,False,42,42,1.0,101,0.0002
+"medium (15x15, fuel on)",8,3,UCS (cap 250),False,memory_limit,,47.0,False,126,126,1.0,251,0.0009
+"medium (15x15, fuel on)",8,3,"UCS (cap 1,000)",False,memory_limit,,47.0,False,609,609,1.0,1001,0.0037
+"medium (15x15, fuel on)",8,3,"UCS (cap 10,000)",True,solved,47.0,47.0,True,4416,4416,1.0,5228,0.0276
+"medium (15x15, fuel on)",8,3,UCS (no cap),True,solved,47.0,47.0,True,4416,4416,1.0,5228,0.0307
+"medium (15x15, fuel on)",8,3,IDS,False,node_limit,,47.0,False,500000,2806,178.1895937277263,14,3.3455
+"medium (15x15, fuel on)",8,3,IDA*,True,solved,47.0,47.0,True,77,28,2.75,16,0.0018
+"medium (15x15, fuel on)",9,2,A* (cap 25),False,memory_limit,,42.0,False,9,9,1.0,26,0.0006
+"medium (15x15, fuel on)",9,2,A* (cap 50),True,solved,42.0,42.0,True,17,17,1.0,49,0.0009
+"medium (15x15, fuel on)",9,2,A* (cap 100),True,solved,42.0,42.0,True,17,17,1.0,49,0.0009
+"medium (15x15, fuel on)",9,2,A* (cap 250),True,solved,42.0,42.0,True,17,17,1.0,49,0.0009
+"medium (15x15, fuel on)",9,2,"A* (cap 1,000)",True,solved,42.0,42.0,True,17,17,1.0,49,0.001
+"medium (15x15, fuel on)",9,2,"A* (cap 10,000)",True,solved,42.0,42.0,True,17,17,1.0,49,0.0012
+"medium (15x15, fuel on)",9,2,A* (no cap),True,solved,42.0,42.0,True,17,17,1.0,49,0.0008
+"medium (15x15, fuel on)",9,2,UCS (cap 25),False,memory_limit,,42.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",9,2,UCS (cap 50),False,memory_limit,,42.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",9,2,UCS (cap 100),False,memory_limit,,42.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",9,2,UCS (cap 250),False,memory_limit,,42.0,False,131,131,1.0,251,0.0005
+"medium (15x15, fuel on)",9,2,"UCS (cap 1,000)",False,memory_limit,,42.0,False,685,685,1.0,1001,0.003
+"medium (15x15, fuel on)",9,2,"UCS (cap 10,000)",True,solved,42.0,42.0,True,2081,2081,1.0,2401,0.0095
+"medium (15x15, fuel on)",9,2,UCS (no cap),True,solved,42.0,42.0,True,2081,2081,1.0,2401,0.0095
+"medium (15x15, fuel on)",9,2,IDS,False,node_limit,,42.0,False,500000,1624,307.8817733990148,14,3.6311
+"medium (15x15, fuel on)",9,2,IDA*,True,solved,42.0,42.0,True,16,16,1.0,17,0.001
+"medium (15x15, fuel on)",10,3,A* (cap 25),False,memory_limit,,95.0,False,10,10,1.0,28,0.0007
+"medium (15x15, fuel on)",10,3,A* (cap 50),False,memory_limit,,95.0,False,19,19,1.0,51,0.0006
+"medium (15x15, fuel on)",10,3,A* (cap 100),False,memory_limit,,95.0,False,44,44,1.0,101,0.0008
+"medium (15x15, fuel on)",10,3,A* (cap 250),False,memory_limit,,95.0,False,132,131,1.0076335877862594,254,0.0018
+"medium (15x15, fuel on)",10,3,"A* (cap 1,000)",False,memory_limit,,95.0,False,629,596,1.0553691275167785,1002,0.0065
+"medium (15x15, fuel on)",10,3,"A* (cap 10,000)",True,solved,95.0,95.0,True,1411,1356,1.0405604719764012,2117,0.0151
+"medium (15x15, fuel on)",10,3,A* (no cap),True,solved,95.0,95.0,True,1411,1356,1.0405604719764012,2117,0.016
+"medium (15x15, fuel on)",10,3,UCS (cap 25),False,memory_limit,,95.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",10,3,UCS (cap 50),False,memory_limit,,95.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",10,3,UCS (cap 100),False,memory_limit,,95.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",10,3,UCS (cap 250),False,memory_limit,,95.0,False,131,131,1.0,251,0.0006
+"medium (15x15, fuel on)",10,3,"UCS (cap 1,000)",False,memory_limit,,95.0,False,659,659,1.0,1002,0.003
+"medium (15x15, fuel on)",10,3,"UCS (cap 10,000)",False,memory_limit,,95.0,False,9350,9350,1.0,10001,0.0457
+"medium (15x15, fuel on)",10,3,UCS (no cap),True,solved,95.0,95.0,True,9388,9388,1.0,10027,0.0435
+"medium (15x15, fuel on)",10,3,IDS,False,node_limit,,95.0,False,500000,2052,243.66471734892787,14,3.738
+"medium (15x15, fuel on)",10,3,IDA*,False,node_limit,,95.0,False,500000,618,809.0614886731391,28,3.8714
+"medium (15x15, fuel on)",11,2,A* (cap 25),False,memory_limit,,30.0,False,7,7,1.0,26,0.0009
+"medium (15x15, fuel on)",11,2,A* (cap 50),True,solved,30.0,30.0,True,8,8,1.0,29,0.0009
+"medium (15x15, fuel on)",11,2,A* (cap 100),True,solved,30.0,30.0,True,8,8,1.0,29,0.0009
+"medium (15x15, fuel on)",11,2,A* (cap 250),True,solved,30.0,30.0,True,8,8,1.0,29,0.0009
+"medium (15x15, fuel on)",11,2,"A* (cap 1,000)",True,solved,30.0,30.0,True,8,8,1.0,29,0.0011
+"medium (15x15, fuel on)",11,2,"A* (cap 10,000)",True,solved,30.0,30.0,True,8,8,1.0,29,0.001
+"medium (15x15, fuel on)",11,2,A* (no cap),True,solved,30.0,30.0,True,8,8,1.0,29,0.001
+"medium (15x15, fuel on)",11,2,UCS (cap 25),False,memory_limit,,30.0,False,10,10,1.0,27,0.0001
+"medium (15x15, fuel on)",11,2,UCS (cap 50),False,memory_limit,,30.0,False,22,22,1.0,51,0.0002
+"medium (15x15, fuel on)",11,2,UCS (cap 100),False,memory_limit,,30.0,False,44,44,1.0,104,0.0002
+"medium (15x15, fuel on)",11,2,UCS (cap 250),False,memory_limit,,30.0,False,129,129,1.0,251,0.0006
+"medium (15x15, fuel on)",11,2,"UCS (cap 1,000)",False,memory_limit,,30.0,False,627,627,1.0,1001,0.0028
+"medium (15x15, fuel on)",11,2,"UCS (cap 10,000)",True,solved,30.0,30.0,True,1075,1075,1.0,1563,0.0048
+"medium (15x15, fuel on)",11,2,UCS (no cap),True,solved,30.0,30.0,True,1075,1075,1.0,1563,0.0047
+"medium (15x15, fuel on)",11,2,IDS,True,solved,30.0,30.0,True,2371,377,6.289124668435013,9,0.0121
+"medium (15x15, fuel on)",11,2,IDA*,True,solved,30.0,30.0,True,8,8,1.0,9,0.0003
+"medium (15x15, fuel on)",12,3,A* (cap 25),False,memory_limit,,55.0,False,10,10,1.0,27,0.0004
+"medium (15x15, fuel on)",12,3,A* (cap 50),False,memory_limit,,55.0,False,19,19,1.0,52,0.0005
+"medium (15x15, fuel on)",12,3,A* (cap 100),False,memory_limit,,55.0,False,41,41,1.0,103,0.001
+"medium (15x15, fuel on)",12,3,A* (cap 250),True,solved,55.0,55.0,True,57,57,1.0,147,0.0016
+"medium (15x15, fuel on)",12,3,"A* (cap 1,000)",True,solved,55.0,55.0,True,57,57,1.0,147,0.0016
+"medium (15x15, fuel on)",12,3,"A* (cap 10,000)",True,solved,55.0,55.0,True,57,57,1.0,147,0.0016
+"medium (15x15, fuel on)",12,3,A* (no cap),True,solved,55.0,55.0,True,57,57,1.0,147,0.0026
+"medium (15x15, fuel on)",12,3,UCS (cap 25),False,memory_limit,,55.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",12,3,UCS (cap 50),False,memory_limit,,55.0,False,23,23,1.0,54,0.0002
+"medium (15x15, fuel on)",12,3,UCS (cap 100),False,memory_limit,,55.0,False,43,43,1.0,101,0.0004
+"medium (15x15, fuel on)",12,3,UCS (cap 250),False,memory_limit,,55.0,False,125,125,1.0,252,0.0011
+"medium (15x15, fuel on)",12,3,"UCS (cap 1,000)",False,memory_limit,,55.0,False,615,615,1.0,1001,0.0053
+"medium (15x15, fuel on)",12,3,"UCS (cap 10,000)",True,solved,55.0,55.0,True,5748,5748,1.0,6416,0.0355
+"medium (15x15, fuel on)",12,3,UCS (no cap),True,solved,55.0,55.0,True,5748,5748,1.0,6416,0.0252
+"medium (15x15, fuel on)",12,3,IDS,False,node_limit,,55.0,False,500000,2469,202.5111381125962,14,3.7363
+"medium (15x15, fuel on)",12,3,IDA*,True,solved,55.0,55.0,True,82,59,1.3898305084745763,22,0.0035
+"medium (15x15, fuel on)",13,2,A* (cap 25),False,memory_limit,,46.0,False,12,12,1.0,29,0.0006
+"medium (15x15, fuel on)",13,2,A* (cap 50),False,memory_limit,,46.0,False,19,19,1.0,51,0.001
+"medium (15x15, fuel on)",13,2,A* (cap 100),True,solved,46.0,46.0,True,24,24,1.0,68,0.0012
+"medium (15x15, fuel on)",13,2,A* (cap 250),True,solved,46.0,46.0,True,24,24,1.0,68,0.0012
+"medium (15x15, fuel on)",13,2,"A* (cap 1,000)",True,solved,46.0,46.0,True,24,24,1.0,68,0.0013
+"medium (15x15, fuel on)",13,2,"A* (cap 10,000)",True,solved,46.0,46.0,True,24,24,1.0,68,0.0014
+"medium (15x15, fuel on)",13,2,A* (no cap),True,solved,46.0,46.0,True,24,24,1.0,68,0.0013
+"medium (15x15, fuel on)",13,2,UCS (cap 25),False,memory_limit,,46.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",13,2,UCS (cap 50),False,memory_limit,,46.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",13,2,UCS (cap 100),False,memory_limit,,46.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",13,2,UCS (cap 250),False,memory_limit,,46.0,False,127,127,1.0,251,0.0006
+"medium (15x15, fuel on)",13,2,"UCS (cap 1,000)",False,memory_limit,,46.0,False,638,638,1.0,1002,0.005
+"medium (15x15, fuel on)",13,2,"UCS (cap 10,000)",True,solved,46.0,46.0,True,3287,3287,1.0,3729,0.0153
+"medium (15x15, fuel on)",13,2,UCS (no cap),True,solved,46.0,46.0,True,3287,3287,1.0,3729,0.0151
+"medium (15x15, fuel on)",13,2,IDS,False,node_limit,,46.0,False,500000,2266,220.6531332744925,14,3.8549
+"medium (15x15, fuel on)",13,2,IDA*,True,solved,46.0,46.0,True,68,25,2.72,15,0.0012
+"medium (15x15, fuel on)",14,3,A* (cap 25),False,memory_limit,,66.0,False,11,11,1.0,26,0.0005
+"medium (15x15, fuel on)",14,3,A* (cap 50),False,memory_limit,,66.0,False,20,20,1.0,54,0.0008
+"medium (15x15, fuel on)",14,3,A* (cap 100),False,memory_limit,,66.0,False,42,42,1.0,102,0.0013
+"medium (15x15, fuel on)",14,3,A* (cap 250),True,solved,66.0,66.0,True,78,78,1.0,187,0.004
+"medium (15x15, fuel on)",14,3,"A* (cap 1,000)",True,solved,66.0,66.0,True,78,78,1.0,187,0.0037
+"medium (15x15, fuel on)",14,3,"A* (cap 10,000)",True,solved,66.0,66.0,True,78,78,1.0,187,0.0037
+"medium (15x15, fuel on)",14,3,A* (no cap),True,solved,66.0,66.0,True,78,78,1.0,187,0.0041
+"medium (15x15, fuel on)",14,3,UCS (cap 25),False,memory_limit,,66.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",14,3,UCS (cap 50),False,memory_limit,,66.0,False,22,22,1.0,51,0.0002
+"medium (15x15, fuel on)",14,3,UCS (cap 100),False,memory_limit,,66.0,False,43,43,1.0,104,0.0003
+"medium (15x15, fuel on)",14,3,UCS (cap 250),False,memory_limit,,66.0,False,129,129,1.0,251,0.0011
+"medium (15x15, fuel on)",14,3,"UCS (cap 1,000)",False,memory_limit,,66.0,False,609,609,1.0,1001,0.004
+"medium (15x15, fuel on)",14,3,"UCS (cap 10,000)",True,solved,66.0,66.0,True,6716,6716,1.0,7019,0.0351
+"medium (15x15, fuel on)",14,3,UCS (no cap),True,solved,66.0,66.0,True,6716,6716,1.0,7019,0.0388
+"medium (15x15, fuel on)",14,3,IDS,False,node_limit,,66.0,False,500000,2496,200.32051282051282,14,3.719
+"medium (15x15, fuel on)",14,3,IDA*,True,solved,66.0,66.0,True,490,91,5.384615384615385,23,0.0081
+"medium (15x15, fuel on)",15,3,A* (cap 25),False,memory_limit,,58.0,False,11,11,1.0,29,0.0005
+"medium (15x15, fuel on)",15,3,A* (cap 50),False,memory_limit,,58.0,False,20,19,1.0526315789473684,52,0.0016
+"medium (15x15, fuel on)",15,3,A* (cap 100),False,memory_limit,,58.0,False,49,47,1.0425531914893618,104,0.002
+"medium (15x15, fuel on)",15,3,A* (cap 250),True,solved,58.0,58.0,True,63,61,1.0327868852459017,146,0.0033
+"medium (15x15, fuel on)",15,3,"A* (cap 1,000)",True,solved,58.0,58.0,True,63,61,1.0327868852459017,146,0.0022
+"medium (15x15, fuel on)",15,3,"A* (cap 10,000)",True,solved,58.0,58.0,True,63,61,1.0327868852459017,146,0.0036
+"medium (15x15, fuel on)",15,3,A* (no cap),True,solved,58.0,58.0,True,63,61,1.0327868852459017,146,0.0033
+"medium (15x15, fuel on)",15,3,UCS (cap 25),False,memory_limit,,58.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",15,3,UCS (cap 50),False,memory_limit,,58.0,False,23,23,1.0,54,0.0002
+"medium (15x15, fuel on)",15,3,UCS (cap 100),False,memory_limit,,58.0,False,43,43,1.0,101,0.0004
+"medium (15x15, fuel on)",15,3,UCS (cap 250),False,memory_limit,,58.0,False,131,131,1.0,251,0.0013
+"medium (15x15, fuel on)",15,3,"UCS (cap 1,000)",False,memory_limit,,58.0,False,664,664,1.0,1002,0.0053
+"medium (15x15, fuel on)",15,3,"UCS (cap 10,000)",True,solved,58.0,58.0,True,3489,3489,1.0,3831,0.0196
+"medium (15x15, fuel on)",15,3,UCS (no cap),True,solved,58.0,58.0,True,3489,3489,1.0,3831,0.0168
+"medium (15x15, fuel on)",15,3,IDS,False,node_limit,,58.0,False,500000,1796,278.39643652561244,14,3.7345
+"medium (15x15, fuel on)",15,3,IDA*,True,solved,58.0,58.0,True,227,58,3.913793103448276,21,0.0046
+"medium (15x15, fuel on)",16,2,A* (cap 25),False,memory_limit,,69.0,False,13,13,1.0,27,0.0009
+"medium (15x15, fuel on)",16,2,A* (cap 50),False,memory_limit,,69.0,False,24,24,1.0,53,0.0014
+"medium (15x15, fuel on)",16,2,A* (cap 100),False,memory_limit,,69.0,False,48,48,1.0,101,0.0024
+"medium (15x15, fuel on)",16,2,A* (cap 250),False,memory_limit,,69.0,False,135,135,1.0,252,0.0021
+"medium (15x15, fuel on)",16,2,"A* (cap 1,000)",True,solved,69.0,69.0,True,173,173,1.0,327,0.003
+"medium (15x15, fuel on)",16,2,"A* (cap 10,000)",True,solved,69.0,69.0,True,173,173,1.0,327,0.003
+"medium (15x15, fuel on)",16,2,A* (no cap),True,solved,69.0,69.0,True,173,173,1.0,327,0.0039
+"medium (15x15, fuel on)",16,2,UCS (cap 25),False,memory_limit,,69.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",16,2,UCS (cap 50),False,memory_limit,,69.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",16,2,UCS (cap 100),False,memory_limit,,69.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",16,2,UCS (cap 250),False,memory_limit,,69.0,False,131,131,1.0,251,0.0006
+"medium (15x15, fuel on)",16,2,"UCS (cap 1,000)",False,memory_limit,,69.0,False,680,680,1.0,1002,0.0037
+"medium (15x15, fuel on)",16,2,"UCS (cap 10,000)",True,solved,69.0,69.0,True,3782,3782,1.0,4053,0.0178
+"medium (15x15, fuel on)",16,2,UCS (no cap),True,solved,69.0,69.0,True,3782,3782,1.0,4053,0.0196
+"medium (15x15, fuel on)",16,2,IDS,False,node_limit,,69.0,False,500000,1777,281.37310073157005,14,3.7229
+"medium (15x15, fuel on)",16,2,IDA*,True,solved,69.0,69.0,True,2279,186,12.25268817204301,24,0.0165
+"medium (15x15, fuel on)",17,2,A* (cap 25),False,memory_limit,,69.0,False,10,10,1.0,27,0.0006
+"medium (15x15, fuel on)",17,2,A* (cap 50),False,memory_limit,,69.0,False,19,19,1.0,52,0.0008
+"medium (15x15, fuel on)",17,2,A* (cap 100),False,memory_limit,,69.0,False,37,37,1.0,101,0.0016
+"medium (15x15, fuel on)",17,2,A* (cap 250),False,memory_limit,,69.0,False,111,111,1.0,251,0.0025
+"medium (15x15, fuel on)",17,2,"A* (cap 1,000)",True,solved,69.0,69.0,True,344,344,1.0,586,0.0065
+"medium (15x15, fuel on)",17,2,"A* (cap 10,000)",True,solved,69.0,69.0,True,344,344,1.0,586,0.0087
+"medium (15x15, fuel on)",17,2,A* (no cap),True,solved,69.0,69.0,True,344,344,1.0,586,0.0057
+"medium (15x15, fuel on)",17,2,UCS (cap 25),False,memory_limit,,69.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",17,2,UCS (cap 50),False,memory_limit,,69.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",17,2,UCS (cap 100),False,memory_limit,,69.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",17,2,UCS (cap 250),False,memory_limit,,69.0,False,131,131,1.0,251,0.0007
+"medium (15x15, fuel on)",17,2,"UCS (cap 1,000)",False,memory_limit,,69.0,False,672,672,1.0,1001,0.0035
+"medium (15x15, fuel on)",17,2,"UCS (cap 10,000)",True,solved,69.0,69.0,True,3585,3585,1.0,3800,0.0205
+"medium (15x15, fuel on)",17,2,UCS (no cap),True,solved,69.0,69.0,True,3585,3585,1.0,3800,0.0282
+"medium (15x15, fuel on)",17,2,IDS,False,node_limit,,69.0,False,500000,1674,298.6857825567503,14,3.5736
+"medium (15x15, fuel on)",17,2,IDA*,True,solved,69.0,69.0,True,80613,411,196.13868613138686,26,0.5803
+"medium (15x15, fuel on)",18,2,A* (cap 25),True,solved,17.0,17.0,True,5,5,1.0,15,0.0005
+"medium (15x15, fuel on)",18,2,A* (cap 50),True,solved,17.0,17.0,True,5,5,1.0,15,0.0005
+"medium (15x15, fuel on)",18,2,A* (cap 100),True,solved,17.0,17.0,True,5,5,1.0,15,0.0003
+"medium (15x15, fuel on)",18,2,A* (cap 250),True,solved,17.0,17.0,True,5,5,1.0,15,0.0003
+"medium (15x15, fuel on)",18,2,"A* (cap 1,000)",True,solved,17.0,17.0,True,5,5,1.0,15,0.0006
+"medium (15x15, fuel on)",18,2,"A* (cap 10,000)",True,solved,17.0,17.0,True,5,5,1.0,15,0.0004
+"medium (15x15, fuel on)",18,2,A* (no cap),True,solved,17.0,17.0,True,5,5,1.0,15,0.0003
+"medium (15x15, fuel on)",18,2,UCS (cap 25),False,memory_limit,,17.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",18,2,UCS (cap 50),False,memory_limit,,17.0,False,20,20,1.0,51,0.0001
+"medium (15x15, fuel on)",18,2,UCS (cap 100),False,memory_limit,,17.0,False,44,44,1.0,103,0.0002
+"medium (15x15, fuel on)",18,2,UCS (cap 250),False,memory_limit,,17.0,False,118,118,1.0,251,0.0006
+"medium (15x15, fuel on)",18,2,"UCS (cap 1,000)",True,solved,17.0,17.0,True,127,127,1.0,262,0.0006
+"medium (15x15, fuel on)",18,2,"UCS (cap 10,000)",True,solved,17.0,17.0,True,127,127,1.0,262,0.0006
+"medium (15x15, fuel on)",18,2,UCS (no cap),True,solved,17.0,17.0,True,127,127,1.0,262,0.0006
+"medium (15x15, fuel on)",18,2,IDS,True,solved,17.0,17.0,True,67,36,1.8611111111111112,6,0.0004
+"medium (15x15, fuel on)",18,2,IDA*,True,solved,17.0,17.0,True,5,5,1.0,6,0.0002
+"medium (15x15, fuel on)",19,2,A* (cap 25),False,memory_limit,,26.0,False,9,9,1.0,26,0.0006
+"medium (15x15, fuel on)",19,2,A* (cap 50),True,solved,26.0,26.0,True,10,10,1.0,29,0.0006
+"medium (15x15, fuel on)",19,2,A* (cap 100),True,solved,26.0,26.0,True,10,10,1.0,29,0.0007
+"medium (15x15, fuel on)",19,2,A* (cap 250),True,solved,26.0,26.0,True,10,10,1.0,29,0.0006
+"medium (15x15, fuel on)",19,2,"A* (cap 1,000)",True,solved,26.0,26.0,True,10,10,1.0,29,0.0006
+"medium (15x15, fuel on)",19,2,"A* (cap 10,000)",True,solved,26.0,26.0,True,10,10,1.0,29,0.0006
+"medium (15x15, fuel on)",19,2,A* (no cap),True,solved,26.0,26.0,True,10,10,1.0,29,0.0006
+"medium (15x15, fuel on)",19,2,UCS (cap 25),False,memory_limit,,26.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",19,2,UCS (cap 50),False,memory_limit,,26.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",19,2,UCS (cap 100),False,memory_limit,,26.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",19,2,UCS (cap 250),False,memory_limit,,26.0,False,131,131,1.0,251,0.001
+"medium (15x15, fuel on)",19,2,"UCS (cap 1,000)",True,solved,26.0,26.0,True,506,506,1.0,796,0.005
+"medium (15x15, fuel on)",19,2,"UCS (cap 10,000)",True,solved,26.0,26.0,True,506,506,1.0,796,0.0037
+"medium (15x15, fuel on)",19,2,UCS (no cap),True,solved,26.0,26.0,True,506,506,1.0,796,0.0045
+"medium (15x15, fuel on)",19,2,IDS,True,solved,26.0,26.0,True,13477,640,21.0578125,11,0.1049
+"medium (15x15, fuel on)",19,2,IDA*,True,solved,26.0,26.0,True,10,10,1.0,11,0.0005
+"medium (15x15, fuel on)",20,3,A* (cap 25),False,memory_limit,,94.0,False,10,10,1.0,27,0.0006
+"medium (15x15, fuel on)",20,3,A* (cap 50),False,memory_limit,,94.0,False,21,20,1.05,54,0.0014
+"medium (15x15, fuel on)",20,3,A* (cap 100),False,memory_limit,,94.0,False,47,45,1.0444444444444445,101,0.0014
+"medium (15x15, fuel on)",20,3,A* (cap 250),False,memory_limit,,94.0,False,129,125,1.032,251,0.0021
+"medium (15x15, fuel on)",20,3,"A* (cap 1,000)",False,memory_limit,,94.0,False,562,558,1.007168458781362,1003,0.0084
+"medium (15x15, fuel on)",20,3,"A* (cap 10,000)",True,solved,94.0,94.0,True,2026,2020,1.002970297029703,2624,0.0257
+"medium (15x15, fuel on)",20,3,A* (no cap),True,solved,94.0,94.0,True,2026,2020,1.002970297029703,2624,0.0295
+"medium (15x15, fuel on)",20,3,UCS (cap 25),False,memory_limit,,94.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",20,3,UCS (cap 50),False,memory_limit,,94.0,False,23,23,1.0,54,0.0002
+"medium (15x15, fuel on)",20,3,UCS (cap 100),False,memory_limit,,94.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",20,3,UCS (cap 250),False,memory_limit,,94.0,False,131,131,1.0,251,0.0006
+"medium (15x15, fuel on)",20,3,"UCS (cap 1,000)",False,memory_limit,,94.0,False,694,694,1.0,1001,0.0034
+"medium (15x15, fuel on)",20,3,"UCS (cap 10,000)",True,solved,94.0,94.0,True,7962,7962,1.0,8754,0.0572
+"medium (15x15, fuel on)",20,3,UCS (no cap),True,solved,94.0,94.0,True,7962,7962,1.0,8754,0.0429
+"medium (15x15, fuel on)",20,3,IDS,False,node_limit,,94.0,False,500000,1682,297.2651605231867,14,3.7158
+"medium (15x15, fuel on)",20,3,IDA*,False,node_limit,,94.0,False,500000,814,614.2506142506143,27,4.4023
+"medium (15x15, fuel on)",21,2,A* (cap 25),False,memory_limit,,40.0,False,12,12,1.0,27,0.0005
+"medium (15x15, fuel on)",21,2,A* (cap 50),True,solved,40.0,40.0,True,16,16,1.0,40,0.0007
+"medium (15x15, fuel on)",21,2,A* (cap 100),True,solved,40.0,40.0,True,16,16,1.0,40,0.0012
+"medium (15x15, fuel on)",21,2,A* (cap 250),True,solved,40.0,40.0,True,16,16,1.0,40,0.0013
+"medium (15x15, fuel on)",21,2,"A* (cap 1,000)",True,solved,40.0,40.0,True,16,16,1.0,40,0.0007
+"medium (15x15, fuel on)",21,2,"A* (cap 10,000)",True,solved,40.0,40.0,True,16,16,1.0,40,0.0015
+"medium (15x15, fuel on)",21,2,A* (no cap),True,solved,40.0,40.0,True,16,16,1.0,40,0.0007
+"medium (15x15, fuel on)",21,2,UCS (cap 25),False,memory_limit,,40.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",21,2,UCS (cap 50),False,memory_limit,,40.0,False,22,22,1.0,51,0.0001
+"medium (15x15, fuel on)",21,2,UCS (cap 100),False,memory_limit,,40.0,False,42,42,1.0,101,0.0002
+"medium (15x15, fuel on)",21,2,UCS (cap 250),False,memory_limit,,40.0,False,131,131,1.0,251,0.0006
+"medium (15x15, fuel on)",21,2,"UCS (cap 1,000)",False,memory_limit,,40.0,False,649,649,1.0,1001,0.0033
+"medium (15x15, fuel on)",21,2,"UCS (cap 10,000)",True,solved,40.0,40.0,True,2230,2230,1.0,2849,0.0117
+"medium (15x15, fuel on)",21,2,UCS (no cap),True,solved,40.0,40.0,True,2230,2230,1.0,2849,0.0164
+"medium (15x15, fuel on)",21,2,IDS,True,solved,40.0,40.0,True,14216,789,18.017743979721168,11,0.1118
+"medium (15x15, fuel on)",21,2,IDA*,True,solved,40.0,40.0,True,33,19,1.736842105263158,13,0.0009
+"medium (15x15, fuel on)",22,2,A* (cap 25),False,memory_limit,,60.0,False,13,13,1.0,27,0.0005
+"medium (15x15, fuel on)",22,2,A* (cap 50),False,memory_limit,,60.0,False,22,22,1.0,51,0.0008
+"medium (15x15, fuel on)",22,2,A* (cap 100),False,memory_limit,,60.0,False,51,51,1.0,102,0.001
+"medium (15x15, fuel on)",22,2,A* (cap 250),True,solved,60.0,60.0,True,76,76,1.0,163,0.003
+"medium (15x15, fuel on)",22,2,"A* (cap 1,000)",True,solved,60.0,60.0,True,76,76,1.0,163,0.003
+"medium (15x15, fuel on)",22,2,"A* (cap 10,000)",True,solved,60.0,60.0,True,76,76,1.0,163,0.0029
+"medium (15x15, fuel on)",22,2,A* (no cap),True,solved,60.0,60.0,True,76,76,1.0,163,0.0023
+"medium (15x15, fuel on)",22,2,UCS (cap 25),False,memory_limit,,60.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",22,2,UCS (cap 50),False,memory_limit,,60.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",22,2,UCS (cap 100),False,memory_limit,,60.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",22,2,UCS (cap 250),False,memory_limit,,60.0,False,131,131,1.0,251,0.0006
+"medium (15x15, fuel on)",22,2,"UCS (cap 1,000)",False,memory_limit,,60.0,False,656,656,1.0,1001,0.0031
+"medium (15x15, fuel on)",22,2,"UCS (cap 10,000)",True,solved,60.0,60.0,True,3850,3850,1.0,4132,0.0253
+"medium (15x15, fuel on)",22,2,UCS (no cap),True,solved,60.0,60.0,True,3850,3850,1.0,4132,0.0223
+"medium (15x15, fuel on)",22,2,IDS,False,node_limit,,60.0,False,500000,2008,249.003984063745,14,3.8293
+"medium (15x15, fuel on)",22,2,IDA*,True,solved,60.0,60.0,True,445,84,5.2976190476190474,21,0.0063
+"medium (15x15, fuel on)",23,3,A* (cap 25),False,memory_limit,,54.0,False,12,12,1.0,28,0.0009
+"medium (15x15, fuel on)",23,3,A* (cap 50),False,memory_limit,,54.0,False,24,24,1.0,51,0.0012
+"medium (15x15, fuel on)",23,3,A* (cap 100),False,memory_limit,,54.0,False,50,50,1.0,102,0.0013
+"medium (15x15, fuel on)",23,3,A* (cap 250),True,solved,54.0,54.0,True,71,71,1.0,151,0.0018
+"medium (15x15, fuel on)",23,3,"A* (cap 1,000)",True,solved,54.0,54.0,True,71,71,1.0,151,0.0026
+"medium (15x15, fuel on)",23,3,"A* (cap 10,000)",True,solved,54.0,54.0,True,71,71,1.0,151,0.0033
+"medium (15x15, fuel on)",23,3,A* (no cap),True,solved,54.0,54.0,True,71,71,1.0,151,0.003
+"medium (15x15, fuel on)",23,3,UCS (cap 25),False,memory_limit,,54.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",23,3,UCS (cap 50),False,memory_limit,,54.0,False,22,22,1.0,51,0.0002
+"medium (15x15, fuel on)",23,3,UCS (cap 100),False,memory_limit,,54.0,False,42,42,1.0,101,0.0003
+"medium (15x15, fuel on)",23,3,UCS (cap 250),False,memory_limit,,54.0,False,130,130,1.0,251,0.001
+"medium (15x15, fuel on)",23,3,"UCS (cap 1,000)",False,memory_limit,,54.0,False,659,659,1.0,1002,0.0054
+"medium (15x15, fuel on)",23,3,"UCS (cap 10,000)",True,solved,54.0,54.0,True,5007,5007,1.0,5536,0.0371
+"medium (15x15, fuel on)",23,3,UCS (no cap),True,solved,54.0,54.0,True,5007,5007,1.0,5536,0.0301
+"medium (15x15, fuel on)",23,3,IDS,False,node_limit,,54.0,False,500000,2088,239.46360153256705,14,3.8627
+"medium (15x15, fuel on)",23,3,IDA*,True,solved,54.0,54.0,True,279,63,4.428571428571429,21,0.0054
+"medium (15x15, fuel on)",24,2,A* (cap 25),False,memory_limit,,33.0,False,8,8,1.0,26,0.001
+"medium (15x15, fuel on)",24,2,A* (cap 50),False,memory_limit,,33.0,False,19,19,1.0,52,0.0016
+"medium (15x15, fuel on)",24,2,A* (cap 100),True,solved,33.0,33.0,True,25,25,1.0,73,0.0021
+"medium (15x15, fuel on)",24,2,A* (cap 250),True,solved,33.0,33.0,True,25,25,1.0,73,0.0021
+"medium (15x15, fuel on)",24,2,"A* (cap 1,000)",True,solved,33.0,33.0,True,25,25,1.0,73,0.002
+"medium (15x15, fuel on)",24,2,"A* (cap 10,000)",True,solved,33.0,33.0,True,25,25,1.0,73,0.002
+"medium (15x15, fuel on)",24,2,A* (no cap),True,solved,33.0,33.0,True,25,25,1.0,73,0.002
+"medium (15x15, fuel on)",24,2,UCS (cap 25),False,memory_limit,,33.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",24,2,UCS (cap 50),False,memory_limit,,33.0,False,23,23,1.0,54,0.0002
+"medium (15x15, fuel on)",24,2,UCS (cap 100),False,memory_limit,,33.0,False,43,43,1.0,101,0.0004
+"medium (15x15, fuel on)",24,2,UCS (cap 250),False,memory_limit,,33.0,False,130,130,1.0,251,0.001
+"medium (15x15, fuel on)",24,2,"UCS (cap 1,000)",False,memory_limit,,33.0,False,646,646,1.0,1001,0.0058
+"medium (15x15, fuel on)",24,2,"UCS (cap 10,000)",True,solved,33.0,33.0,True,1244,1244,1.0,1759,0.0089
+"medium (15x15, fuel on)",24,2,UCS (no cap),True,solved,33.0,33.0,True,1244,1244,1.0,1759,0.0061
+"medium (15x15, fuel on)",24,2,IDS,False,node_limit,,33.0,False,500000,1973,253.42118601115052,14,3.6753
+"medium (15x15, fuel on)",24,2,IDA*,True,solved,33.0,33.0,True,98,39,2.5128205128205128,16,0.0032
+"medium (15x15, fuel on)",25,2,A* (cap 25),False,memory_limit,,63.0,False,10,10,1.0,26,0.0009
+"medium (15x15, fuel on)",25,2,A* (cap 50),False,memory_limit,,63.0,False,22,21,1.0476190476190477,51,0.0014
+"medium (15x15, fuel on)",25,2,A* (cap 100),False,memory_limit,,63.0,False,46,44,1.0454545454545454,101,0.002
+"medium (15x15, fuel on)",25,2,A* (cap 250),True,solved,63.0,63.0,True,87,84,1.0357142857142858,192,0.0023
+"medium (15x15, fuel on)",25,2,"A* (cap 1,000)",True,solved,63.0,63.0,True,87,84,1.0357142857142858,192,0.0038
+"medium (15x15, fuel on)",25,2,"A* (cap 10,000)",True,solved,63.0,63.0,True,87,84,1.0357142857142858,192,0.0036
+"medium (15x15, fuel on)",25,2,A* (no cap),True,solved,63.0,63.0,True,87,84,1.0357142857142858,192,0.0023
+"medium (15x15, fuel on)",25,2,UCS (cap 25),False,memory_limit,,63.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",25,2,UCS (cap 50),False,memory_limit,,63.0,False,23,23,1.0,54,0.0002
+"medium (15x15, fuel on)",25,2,UCS (cap 100),False,memory_limit,,63.0,False,43,43,1.0,101,0.0004
+"medium (15x15, fuel on)",25,2,UCS (cap 250),False,memory_limit,,63.0,False,131,131,1.0,251,0.0012
+"medium (15x15, fuel on)",25,2,"UCS (cap 1,000)",False,memory_limit,,63.0,False,687,687,1.0,1001,0.0074
+"medium (15x15, fuel on)",25,2,"UCS (cap 10,000)",True,solved,63.0,63.0,True,3052,3052,1.0,3217,0.0167
+"medium (15x15, fuel on)",25,2,UCS (no cap),True,solved,63.0,63.0,True,3052,3052,1.0,3217,0.0197
+"medium (15x15, fuel on)",25,2,IDS,False,node_limit,,63.0,False,500000,1638,305.25030525030525,14,3.7341
+"medium (15x15, fuel on)",25,2,IDA*,True,solved,63.0,63.0,True,425,87,4.885057471264368,24,0.0079
+"medium (15x15, fuel on)",26,2,A* (cap 25),True,solved,15.0,15.0,True,5,5,1.0,15,0.0007
+"medium (15x15, fuel on)",26,2,A* (cap 50),True,solved,15.0,15.0,True,5,5,1.0,15,0.0006
+"medium (15x15, fuel on)",26,2,A* (cap 100),True,solved,15.0,15.0,True,5,5,1.0,15,0.0006
+"medium (15x15, fuel on)",26,2,A* (cap 250),True,solved,15.0,15.0,True,5,5,1.0,15,0.0004
+"medium (15x15, fuel on)",26,2,"A* (cap 1,000)",True,solved,15.0,15.0,True,5,5,1.0,15,0.0004
+"medium (15x15, fuel on)",26,2,"A* (cap 10,000)",True,solved,15.0,15.0,True,5,5,1.0,15,0.0004
+"medium (15x15, fuel on)",26,2,A* (no cap),True,solved,15.0,15.0,True,5,5,1.0,15,0.0004
+"medium (15x15, fuel on)",26,2,UCS (cap 25),False,memory_limit,,15.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",26,2,UCS (cap 50),False,memory_limit,,15.0,False,22,22,1.0,51,0.0002
+"medium (15x15, fuel on)",26,2,UCS (cap 100),False,memory_limit,,15.0,False,43,43,1.0,102,0.0004
+"medium (15x15, fuel on)",26,2,UCS (cap 250),True,solved,15.0,15.0,True,63,63,1.0,142,0.0005
+"medium (15x15, fuel on)",26,2,"UCS (cap 1,000)",True,solved,15.0,15.0,True,63,63,1.0,142,0.0006
+"medium (15x15, fuel on)",26,2,"UCS (cap 10,000)",True,solved,15.0,15.0,True,63,63,1.0,142,0.0005
+"medium (15x15, fuel on)",26,2,UCS (no cap),True,solved,15.0,15.0,True,63,63,1.0,142,0.0005
+"medium (15x15, fuel on)",26,2,IDS,True,solved,15.0,15.0,True,55,30,1.8333333333333333,6,0.0006
+"medium (15x15, fuel on)",26,2,IDA*,True,solved,15.0,15.0,True,5,5,1.0,6,0.0003
+"medium (15x15, fuel on)",27,3,A* (cap 25),False,memory_limit,,89.0,False,11,11,1.0,26,0.0005
+"medium (15x15, fuel on)",27,3,A* (cap 50),False,memory_limit,,89.0,False,22,22,1.0,52,0.0009
+"medium (15x15, fuel on)",27,3,A* (cap 100),False,memory_limit,,89.0,False,44,44,1.0,101,0.0014
+"medium (15x15, fuel on)",27,3,A* (cap 250),False,memory_limit,,89.0,False,117,117,1.0,251,0.0027
+"medium (15x15, fuel on)",27,3,"A* (cap 1,000)",False,memory_limit,,89.0,False,576,575,1.0017391304347827,1003,0.0084
+"medium (15x15, fuel on)",27,3,"A* (cap 10,000)",True,solved,89.0,89.0,True,1247,1239,1.0064568200161421,2006,0.0228
+"medium (15x15, fuel on)",27,3,A* (no cap),True,solved,89.0,89.0,True,1247,1239,1.0064568200161421,2006,0.0257
+"medium (15x15, fuel on)",27,3,UCS (cap 25),False,memory_limit,,89.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",27,3,UCS (cap 50),False,memory_limit,,89.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",27,3,UCS (cap 100),False,memory_limit,,89.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",27,3,UCS (cap 250),False,memory_limit,,89.0,False,131,131,1.0,251,0.0006
+"medium (15x15, fuel on)",27,3,"UCS (cap 1,000)",False,memory_limit,,89.0,False,656,656,1.0,1002,0.0032
+"medium (15x15, fuel on)",27,3,"UCS (cap 10,000)",False,memory_limit,,89.0,False,9229,9229,1.0,10001,0.0526
+"medium (15x15, fuel on)",27,3,UCS (no cap),True,solved,89.0,89.0,True,9454,9454,1.0,10190,0.0573
+"medium (15x15, fuel on)",27,3,IDS,False,node_limit,,89.0,False,500000,2075,240.96385542168676,14,3.5921
+"medium (15x15, fuel on)",27,3,IDA*,False,node_limit,,89.0,False,500000,812,615.7635467980296,26,4.7049
+"medium (15x15, fuel on)",28,2,A* (cap 25),False,memory_limit,,50.0,False,10,10,1.0,28,0.0005
+"medium (15x15, fuel on)",28,2,A* (cap 50),False,memory_limit,,50.0,False,19,19,1.0,52,0.0007
+"medium (15x15, fuel on)",28,2,A* (cap 100),False,memory_limit,,50.0,False,42,42,1.0,102,0.0013
+"medium (15x15, fuel on)",28,2,A* (cap 250),True,solved,50.0,50.0,True,65,65,1.0,161,0.0019
+"medium (15x15, fuel on)",28,2,"A* (cap 1,000)",True,solved,50.0,50.0,True,65,65,1.0,161,0.0019
+"medium (15x15, fuel on)",28,2,"A* (cap 10,000)",True,solved,50.0,50.0,True,65,65,1.0,161,0.0018
+"medium (15x15, fuel on)",28,2,A* (no cap),True,solved,50.0,50.0,True,65,65,1.0,161,0.0018
+"medium (15x15, fuel on)",28,2,UCS (cap 25),False,memory_limit,,50.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",28,2,UCS (cap 50),False,memory_limit,,50.0,False,23,23,1.0,54,0.0001
+"medium (15x15, fuel on)",28,2,UCS (cap 100),False,memory_limit,,50.0,False,43,43,1.0,101,0.0002
+"medium (15x15, fuel on)",28,2,UCS (cap 250),False,memory_limit,,50.0,False,131,131,1.0,251,0.0006
+"medium (15x15, fuel on)",28,2,"UCS (cap 1,000)",False,memory_limit,,50.0,False,663,663,1.0,1001,0.0032
+"medium (15x15, fuel on)",28,2,"UCS (cap 10,000)",True,solved,50.0,50.0,True,3041,3041,1.0,3276,0.0151
+"medium (15x15, fuel on)",28,2,UCS (no cap),True,solved,50.0,50.0,True,3041,3041,1.0,3276,0.0152
+"medium (15x15, fuel on)",28,2,IDS,False,node_limit,,50.0,False,500000,1859,268.9618074233459,14,3.627
+"medium (15x15, fuel on)",28,2,IDA*,True,solved,50.0,50.0,True,371,79,4.69620253164557,19,0.0061
+"medium (15x15, fuel on)",29,3,A* (cap 25),False,memory_limit,,95.0,False,10,10,1.0,28,0.0008
+"medium (15x15, fuel on)",29,3,A* (cap 50),False,memory_limit,,95.0,False,20,19,1.0526315789473684,51,0.0007
+"medium (15x15, fuel on)",29,3,A* (cap 100),False,memory_limit,,95.0,False,48,46,1.0434782608695652,101,0.0011
+"medium (15x15, fuel on)",29,3,A* (cap 250),False,memory_limit,,95.0,False,132,128,1.03125,252,0.0022
+"medium (15x15, fuel on)",29,3,"A* (cap 1,000)",False,memory_limit,,95.0,False,597,587,1.0170357751277683,1001,0.008
+"medium (15x15, fuel on)",29,3,"A* (cap 10,000)",True,solved,95.0,95.0,True,1912,1894,1.0095036958817318,2451,0.0224
+"medium (15x15, fuel on)",29,3,A* (no cap),True,solved,95.0,95.0,True,1912,1894,1.0095036958817318,2451,0.022
+"medium (15x15, fuel on)",29,3,UCS (cap 25),False,memory_limit,,95.0,False,10,10,1.0,26,0.0001
+"medium (15x15, fuel on)",29,3,UCS (cap 50),False,memory_limit,,95.0,False,23,23,1.0,54,0.0002
+"medium (15x15, fuel on)",29,3,UCS (cap 100),False,memory_limit,,95.0,False,43,43,1.0,101,0.0003
+"medium (15x15, fuel on)",29,3,UCS (cap 250),False,memory_limit,,95.0,False,131,131,1.0,251,0.001
+"medium (15x15, fuel on)",29,3,"UCS (cap 1,000)",False,memory_limit,,95.0,False,709,709,1.0,1003,0.0054
+"medium (15x15, fuel on)",29,3,"UCS (cap 10,000)",True,solved,95.0,95.0,True,6992,6992,1.0,7507,0.0495
+"medium (15x15, fuel on)",29,3,UCS (no cap),True,solved,95.0,95.0,True,6992,6992,1.0,7507,0.0328
+"medium (15x15, fuel on)",29,3,IDS,False,node_limit,,95.0,False,500000,1834,272.6281352235551,14,3.5573
+"medium (15x15, fuel on)",29,3,IDA*,False,node_limit,,95.0,False,500000,757,660.5019815059445,27,4.2266
