@@ -1,3 +1,3 @@
 # Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) | M. Rayyan (534733) | instance 38bfda97
 planner,hills,fuel,tunnels,slip,seed,fuel_reserve,planned_cost,nodes_expanded,max_frontier,plan_runtime_s,peak_mem_kb,outcome,end_reason,actual_cost,extra_cost,steps,slips,failed_moves,waits,replans_rejoin,replans_full
-A* + h_ours + fuel pruning,True,True,True,0.25,952097431,20,353.0,7007,1156,0.15,not measured (--quick),loss,stranded: no plan can finish from here,785.0,n/a (stranded),321,92,21,0,80,11
+A* + h_ours + fuel pruning,True,True,True,0.25,952097431,20,353.0,7007,1156,0.24,not measured (--quick),loss,stranded: no plan can finish from here,785.0,n/a (stranded),321,92,21,0,80,11

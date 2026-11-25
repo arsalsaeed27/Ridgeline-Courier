@@ -210,7 +210,78 @@ A: The plan changed, not the rules. A\* breaks ties between routes of exactly th
 **Q: Why is UCS kept for the simulator's "rejoin" search, even though A\* is the default now?**
 A: The rejoin search has a different goal: "get back onto my planned route", not "deliver every parcel". h_ours estimates the cost of delivering everything, which can be far more than the few moves back to the route. So for that goal it is not a lower bound, and A\* could return a worse rejoin. The rejoin searches are small (radius 4, at most 20k nodes), so UCS is fine there. Full replans use A\* + h_ours + pruning.
 
+**Q: Why did we keep the default fuel reserve at 20 when the rule now picks 15?** (decision, Turn 2 session 4)
+A: With A\* replans the win rates for reserves 10 / 15 / 20 are 53 / 57 / 47% out of 30 runs each. Their 95% Wilson intervals overlap almost completely (about 30–73%), so 15 is not shown to be better, and the difference is noise. Changing the default would also change every plan id and invalidate Part D's cached LLM plans and conversations. So we kept 20 and will revisit it once Ali's real blocker replaces the placeholder rival.
+
+**Q: Part B in numbers (one glance)?**
+A:
+- **Full map, cost 329:** UCS 1,775,457 nodes; A\* + h_ours 29,542 (60×); + fuel pruning 2,752 (645×).
+- **30 scenarios:** 34× and ~410× on average, all optimal.
+- **Weighted A\*:** w = 1.2 gives about half the nodes for +2.4%; w = 5 can be +40%.
+- **Memory:** IDA\* uses about 18 states and is optimal; A\* needs about 550 states; IDS repeats each state about 200×.
+- **Ablation:** without tunnel edges, h_ours is wrong in 15 of 30 scenarios.
+
 ## Part C: Adversarial search (rival blocker)
+
+### The evaluation function (designed in Turn 2 by Laiba; Ali's Minimax uses it)
+
+**Q: What is the evaluation function for?**
+A: Minimax / Alpha-Beta can only look a few moves ahead in the game against the blocker. When it stops, it needs a number saying how good that position is for us. The evaluation is that number: `evaluate(state, weights) = Σ weight × feature`. Higher is better for us; the rival, as the minimiser, wants it low. A finished game gets +1000 (win), −1000 (loss) or 0 (draw).
+
+**Q: What is in a game state?**
+A: Our cell, the rival's cell, which parcels are delivered, our fuel, the step count, the next stop our A\* plan delivers, the next 8 cells of that plan, and whose turn it is. It is frozen (unchangeable), so it can be a dictionary key, e.g. for remembering positions already searched. It also carries the map facts, but those don't count when comparing two states.
+
+**Q: Explain each feature in one line.**
+A: All six are scaled to about −1…1:
+1. **progress:** minus the remaining cost from our admissible heuristic h_ours (tunnels and hills included), divided by its value at the start. Closer to done = higher.
+2. **delivered:** parcels done ÷ 5. Weight 10, so a delivery (2 points) beats any other one-step change.
+3. **interference:** how close the rival is to the next 8 cells of our plan; cells we'll reach sooner count more. −1 when it stands on our very next cell. A blocker hurts by standing *on our route*, not by being near *us*.
+4. **race:** (the rival's moves − our moves) to our next stop, ÷ 20. Positive when we get there first, so it can't park on it. Counted in moves because each robot moves one cell per turn on any terrain. Our count may use tunnels; the rival's can't.
+5. **mobility:** our legal moves plus the free cells within 2 moves, not counting the rival's cell. Room to dodge; a small tie-breaker weight (0.5).
+6. **fuel safety:** fuel left after driving to the nearest station or the depot, ÷ the tank size. Negative means we can't reach one any more and a stranding is coming.
+
+**Q: Why these weights (10, 4, 3, 2, 1.5, 0.5)?**
+A:
+- **Delivered 10:** the goal. A delivery must never be traded for position.
+- **Progress 4:** the route is what wins.
+- **Fuel 3:** strandings are our real losses.
+- **Interference 2:** a blocker on our path costs waits, but it moves away again.
+- **Race 1.5:** a parked rival is bad, but a few moves rarely decide the game.
+- **Mobility 0.5:** only a tie-breaker.
+
+These are starting values; Ali tunes them with real games in Turn 3.
+
+**Q: How is "fuel needed to reach a station" computed, with hills?**
+A: For each cell, it is the least fuel needed to reach a refuel point without the tank going below 0, following the simulator's own rule: need(u) = max(fuel use of the move + need(next cell), 0), and 0 at a station. Downhill moves can *give* fuel back, so a move can have negative use, and Dijkstra isn't safe with negative weights. We use a label-correcting search instead: whenever a cell's need improves, its neighbours are re-checked. It always finishes, because no loop can gain fuel (regen 1 per level down < climb 3 per level up). A test checks that the result satisfies the equation exactly.
+
+**Q: Why isn't "trapped by the rival" a loss?**
+A: In our simulator, being boxed in *only* by the rival is not a loss: the rival has to move, and we can wait. If the game called it a loss, it would disagree with the real world. So it's a strong penalty instead (low mobility, interference −1). A real loss is being stranded: no legal move even if the rival left.
+
+**Q: How is ours different from a textbook evaluation?**
+A: The textbook version is "−distance to the goal (+ distance from the opponent)". Ours differs in five ways:
+1. Our distance is a **proven lower bound** over five stops, with tunnels and hills. Manhattan distance overestimates next to our tunnels by up to 34.
+2. Our opponent term is about **our route**, because a blocker blocks rather than chases.
+3. A **race** in moves, where only we can use tunnels.
+4. A **resource** feature (fuel) with hills and regen.
+5. Deliveries are scored separately, because h_ours is not consistent and can even rise at a delivery.
+
+**Q: How do you know the features work without Minimax?**
+A: Two checks:
+- **12 unit tests**, one per direction. Closer to the stop scores higher; the rival on our path scores lower; low fuel far from a station gives negative fuel safety; one more parcel scores higher; a win beats every state of a whole run.
+- **`eval_along_route.png`**, which scores every step of two simulated runs:
+  - the score rises about +0.05 per step, dips on slips (−0.04 to −0.10) and jumps +1.1 to +1.4 at each delivery;
+  - in the winning run interference drops to −1 while the rival sits on our path;
+  - in the losing run fuel safety slides from 0.14 to −0.03 over the last 10 steps before the stranding.
+  - **Honest limit:** in the losing run the total still rises (progress outweighs fuel with the default weights). The lookahead and the weight tuning in Turn 3 are what should catch it.
+
+**Q: How does the tuning tool work?**
+A: Ali writes `play_fn(weights, seed)`, which plays one full game and returns win, draw or loss.
+- **Grid search** plays every combination of a few values per weight.
+- **Coordinate ascent** goes through the weights one at a time: try it halved and doubled, keep whichever scores best (win rate + ½ × draw rate), and repeat until nothing improves.
+- **Every setting plays the same seeded games**, so differences come from the weights and not from luckier slips.
+- Each result has Wilson 95% intervals. Settings run in parallel and are cached, so reruns are instant.
+- A heatmap shows the win rate for each pair of two weights.
+- **It was tested with a stand-in `play_fn` whose best weights we knew**, and the tool found them.
 
 ## Part D: LLM dispatcher
 

@@ -1,0 +1,4 @@
+# Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) | M. Rayyan (534733) | instance 38bfda97
+run,seed,outcome,end_reason,steps,slips,deliveries_at_steps,score_start,score_end,mean_jump_at_delivery,mean_change_on_slip,mean_change_other_steps,min_interference,min_fuel_safety,first_step_fuel_safety_below_0.1,fuel_safety_last_10_steps
+default seed,952097431,loss,stranded: no plan can finish from here,321,92,"[11, 96, 187, 279]",0.14,9.41,1.41,-0.097,0.056,0.0,-0.03,120.0,"[0.14, 0.12, 0.08, 0.08, 0.06, 0.04, 0.02, 0.0, -0.01, -0.03]"
+first winning seed,952097432,win,all parcels delivered,278,68,"[7, 52, 131, 206, 278]",-0.46,9.71,1.1,-0.042,0.042,-1.0,0.19,,"[0.48, 0.44, 0.42, 0.39, 0.33, 0.3, 0.28, 0.23, 0.23, 0.19]"

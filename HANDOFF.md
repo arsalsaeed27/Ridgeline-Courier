@@ -318,3 +318,121 @@ _Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) |
 ### What the next person needs to know
 - **Ali:** use `framework.run_cached(jobs, "your_name")` or `run_experiment` for your tournament sweeps (caching + parallel + CIs), and `stats.wilson_ci` for W/D/L. A rival policy can plan with `registry.default_planner` (about 0.1 s on the full map).
 - Cached rows are keyed by the planning config, so live changes are recomputed automatically. If you change a planner's behaviour, bump `framework.FRAMEWORK_VERSION`.
+
+---
+
+## Turn 2 (session 4): Laiba Rehman (505099), 2026-11-25
+### What I built
+- `oel/game/state.py`:
+  - `GameState` (frozen, hashable), `GameContext` (map facts, cached per map);
+  - `from_simulator`, `make_state`, `is_terminal`, `after_agent_move`, `after_rival_move`, `agent_moves`;
+  - the game distance fields: move counts to each stop for us (tunnels allowed) and for the rival (no tunnels), and the hill-aware fuel needed to reach a refuel point (label-correcting, because regen makes some fuel uses negative).
+- `oel/game/evaluation.py`: `features()` (6, each scaled to about -1..1), `evaluate()` (+-1000 for a win/loss), `DEFAULT_WEIGHTS` with a reason for each.
+- `oel/game/tuning.py`: `grid_search`, `coordinate_ascent`, `play_settings`, `plot_weight_heatmap`, `demo_play_fn` (a stand-in). Parallel, cached, Wilson CIs, the same seeds for every setting.
+- `oel/experiments/eval_along_route.py` (in `run_all`, ~3 s): `results/figures/eval_along_route.png` + `results/tables/eval_along_route`.
+- Tests: `tests/test_game_eval.py` (12), `tests/test_tuning.py` (5).
+- Report: `report/sections/part_c_evaluation.md` (graded justification), `part_b_search.md` (the missing session-1 draft).
+### Key results / numbers
+- Evaluation along the default run (loss, stranded) and seed 952097432 (the first winning seed):
+  - the score rises +0.04-0.06 per normal step, drops 0.04-0.10 on slips and jumps +1.1-1.4 per delivery;
+  - interference reaches -1 while the rival sits on our path (winning run, steps ~205-265);
+  - fuel safety falls 0.14 -> -0.03 over the last 10 steps before the stranding.
+  - Limit: the total score still rises in the losing run, because the default weights let progress outweigh fuel. Lookahead and tuning should fix that.
+- Context build 0.05 s; one `evaluate()` call ~0.04 ms.
+- `pytest -q`: 122 passed (2 min). `run_all.py --quick`: 234 s on battery power (CPU at 1.3 GHz); 133 s when plugged in last session. **Plug the laptop in for the viva.**
+### Decision: the default fuel reserve stays 20
+With A* replans, the fuel-reserve experiment's rule picks 15. But the 95% Wilson CIs for reserves 10 / 15 / 20 (53 / 57 / 47% wins out of 30) overlap almost completely (about 30-73%), so 15 is not shown to be better. Changing `cfg.fuel_reserve` would also change every plan id and invalidate Part D's cached LLM plans and conversations (a live Groq re-run would be needed). So the config is unchanged. Revisit after Ali's real rival replaces the placeholder (see below).
+### Changes to other people's code (if any)
+- `oel/world/simulator.py` (Arsal): **added** an optional `on_step=callback(sim)` argument (called after every step) and the attributes `sim.plan`, `sim.plan_states`, `sim.plan_index` (set in `run_plan`). Nothing existing changed; all simulator tests pass.
+
+---
+
+## Turn 2: Laiba Rehman (505099), 2026-11-25 (FINAL, all sessions)
+Sessions 1-2 were built by M. Arsal Saeed on my behalf (see their entries above); sessions 3-4 were built by me.
+### What I built
+- **Session 1 (Arsal):** BFS, UCS, DLS, IDS, Greedy, A*, weighted A* from scratch; the small-instance generator (masking); the first comparison table; the stand-in UCS replaced.
+- **Session 2 (Arsal):** the relaxed distance fields (backward Dijkstra); h_ours = max(MST, farthest) + admissibility proof; 2 baselines + an inadmissible example; consistency check; fuel-dominance pruning; ablation.
+- **Session 3 (me):**
+  - `max_states` memory cap, IDA*, the default planner (A* + h_ours + pruning) everywhere;
+  - the weighted A* study, the memory-limit study, the 30-scenario framework + comparison + ablation + failure analysis;
+  - the fuel-reserve experiment back in `--quick`.
+- **Session 4 (me):** the game state, the evaluation function, the tuning tool, the evaluation-along-route check.
+### How to run it
+- `python run_all.py --quick` (~2-4 min); `pytest -q` (122 tests, ~2 min).
+- Alone: `python -m oel.experiments.<search_small | heuristic_eval | weighted_astar | memory_limit | heuristic_scenarios | fuel_reserve | eval_along_route>`.
+- Full mode only: the slow 30-scenario variants (~10 min), peak-memory measurement. `--quick` reads their cache.
+### Key results / numbers
+- **Full map (reserve 0, cost 329):** UCS 1,775,457 nodes; A* + h_ours 29,542 (60x fewer); A* + h_ours + fuel pruning 2,752 (645x fewer). Reserve 20 (cost 353): UCS 1,326,200 vs 7,007 with pruning.
+- **h_ours:** admissible (0 violations on 553 states), 84% tight at the start (277 vs 329), inconsistent on 15.5% of edges (4,525 reopenings, still optimal).
+- **Small instances:** BFS / DLS / IDS cost 1.07x the optimum; IDS expands 35,840 nodes vs BFS 70.
+- **Weighted A*:**
+  - w = 1.2: 47-57% fewer nodes for +2.3-2.4% cost;
+  - w = 5 (reserve 20): 494 (+40%) after 3 depot recharges;
+  - every run within w x optimum;
+  - h_manhattan_raw: 1.58M nodes.
+- **Memory (15x15, fuel on):**
+  - A* solves 10 / 47 / 80 / 100% with 25 / 100 / 1,000 / unlimited stored states (it needs ~550);
+  - IDS: ~13 states, 27% solved, ~200 expansions per state;
+  - IDA*: ~18 states, 80% solved, always optimal.
+- **30 scenarios:**
+  - UCS 1,476,045 vs A* + h_ours 43,974 (34x; median 73x) vs + pruning 3,586 (~410x). All optimal.
+  - Greedy +54% (worst +131%).
+  - Without tunnel edges h_ours is non-optimal in 15/30 scenarios (up to +53%).
+- **Evaluation function:** 6 features, all tested to move the right way; see session 4.
+### Files I created or changed
+- See the session 1-4 entries above.
+### Changes to other people's code (if any)
+- See the session entries.
+  - Simulator: `on_step` + plan attributes.
+  - Planner switches in `standin_demo`, `fuel_reserve`, `ui/app.py`.
+  - `plots.plot_route_comparison` (added).
+  - `SearchResult.stats` field (session 1).
+### Known issues / TODOs
+- The default demo run is a **loss (stranded)** at real cost 785 vs planned 353. Win rates are only ~50% (fuel-reserve experiment, A* replans).
+- The default fuel reserve stays 20 (decision above).
+- `cfg.llm_algorithms` is still `("ucs",)`: exposing `astar_pruned` to the LLM needs a deliberate live re-run with a Groq key (Arsal / final assembly).
+- IDA* re-expands states ~150x on medium instances (no transposition table, by design).
+- In the losing run the evaluation sees the fuel danger but doesn't outweigh progress with the default weights: tune `fuel_safety` (and use lookahead).
+- `venv/` is empty in the repo; install with `pip install -r requirements.txt`.
+
+## Ali, start here (Turn 3)
+**What you build:**
+1. The reduced game: a window (e.g. 9x9) around our agent, with move generation for both players (`oel/game/window.py`).
+2. Minimax, then Alpha-Beta with your own move ordering (`oel/game/minimax.py`). Table: nodes searched at depths 2-6 and % saved by pruning.
+3. The real Alpha-Beta **blocker** as the simulator's rival (a `rival_policy(sim) -> "N"/"S"/"E"/"W"/None`), replacing the placeholder `greedy_blocker`.
+4. Slip / replanning analysis with a slip sweep from 0 to 0.5: how often we replan, the extra cost, and what the "no slip" assumption gets wrong.
+5. Weight tuning with `oel/game/tuning.py`.
+6. The 100-game tournament with win / draw / loss and Wilson CIs (`oel/game/tournament.py`).
+
+**Use these (interfaces in CLAUDE.md, "Game interface"):**
+- `oel/game/state.py`:
+  - `GameState` is hashable (use it for a transposition table);
+  - `from_simulator(sim)` gives you the current position;
+  - `after_agent_move` / `after_rival_move` do the bookkeeping (you decide which moves are legal in the window);
+  - `agent_moves(state)` gives our real legal moves;
+  - `is_terminal(state)`.
+- `oel/game/evaluation.py`:
+  - `evaluate(state, weights)` scores from OUR side (maximise on our turn, minimise on the rival's);
+  - `features(state)` lets you inspect each feature;
+  - `DEFAULT_WEIGHTS` are the starting weights.
+- `oel/game/tuning.py`:
+  - write a TOP-LEVEL `play_fn(weights, seed) -> "win"|"draw"|"loss"` that plays one full game;
+  - then call `grid_search(play_fn, {"interference": [...], "race": [...]}, n_games=30)` or `coordinate_ascent(play_fn, DEFAULT_WEIGHTS, steps=3)`, and draw it with `plot_weight_heatmap(df, x, y)`;
+  - pass `tag="v2"` whenever `play_fn` changes, so the old cached results aren't reused;
+  - it is tested with `demo_play_fn`, a stand-in; ignore it once your real `play_fn` exists.
+- `oel/experiments/framework.py` (`run_cached`, `run_experiment`, caching) and `oel/experiments/stats.wilson_ci`.
+- `registry.default_planner` plans the full map in ~0.1-0.25 s, so your agent can replan every turn if you want.
+- The Simulator's `on_step=callback(sim)` records a `GameState` after every step (`eval_along_route.py` shows how).
+
+**State of play (with the PLACEHOLDER rival):**
+- Win rates with A* replans are only ~50% (fuel-reserve experiment, 30 seeds per reserve).
+- The default demo (seed 952097431, reserve 20) is a **loss (stranded)** at real cost 785 vs planned 353, after 321 steps and 92 slips.
+- Where the non-wins come from (`results/tables/fuel_reserve_runs`; reserve 20: 14 wins, 8 draws, 8 losses):
+  - **Every draw is the placeholder rival parking on a stop.** The draws hit the 600-step limit after waiting on average 443 of those steps.
+  - **Every loss is a fuel stranding with 0 waits**: the rival was not involved; slips (about 39 per run) drained the tank.
+
+  Across all reserves there are 56 losses and 31 draws.
+- Your real blocker will change all of these numbers. **After you replace the rival:**
+  - rerun the fuel-reserve experiment (`python -m oel.experiments.fuel_reserve`, ~1 min) and the demo (`run_all.py --quick`);
+  - revisit the reserve-20 decision;
+  - investigate the gap between real and planned cost (slips vs rival waits vs replans; `RunReport` has slips, waits, replans by kind).

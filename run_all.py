@@ -9,7 +9,7 @@ import time
 from collections import defaultdict
 
 from oel.config import RESULTS_DIR, parse_cli
-from oel.experiments import (fuel_reserve, heuristic_eval, heuristic_scenarios, llm_eval,
+from oel.experiments import (eval_along_route, fuel_reserve, heuristic_eval, heuristic_scenarios, llm_eval,
                             memory_limit, search_small, standin_demo, validator_fault_injection,
                             weighted_astar)
 from oel.stamp import get_logger, stamp
@@ -78,7 +78,10 @@ def main(argv=None):
     heuristic_scenarios.run(cfg, log)
 
     # ------------------------------------------------------------ Part C (Turn 3: Ali Salman Mustafa)
-    # TODO: minimax vs alpha-beta node counts, weight tuning, 100-game tournament (Wilson CIs).
+    # Turn 2 (Laiba): the evaluation function along two simulated runs (sanity check, ~3 s)
+    eval_along_route.run(cfg, log)
+    # TODO (Turn 3): minimax vs alpha-beta node counts, weight tuning with oel/game/tuning.py,
+    #       100-game tournament (Wilson CIs).
 
     # ------------------------------------------------------------ Part D (Turn 1: M. Arsal Saeed)
     # LLM dispatcher: 20 requests x (direct, LLM, LLM + validation). Replays the committed LLM

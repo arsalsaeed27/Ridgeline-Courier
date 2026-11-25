@@ -106,8 +106,16 @@ def greedy_blocker(sim, lookahead: int = 3):
 class Simulator:
     """Holds the agent state, the rival position and the step count."""
 
-    def __init__(self, config, problem, rng, rival_policy=greedy_blocker, use_rival=True):
+    def __init__(self, config, problem, rng, rival_policy=greedy_blocker, use_rival=True, on_step=None):
+        """on_step: optional callback on_step(sim), called after every step (agent + rival
+        moved). Used to record GameStates along a run (oel/game); it must not change the sim."""
         self.cfg = config
+        self.on_step = on_step
+        # the plan being executed and the index of its next action (set by run_plan), so the
+        # game code can read "the next cells of our plan" (oel/game/state.py: from_simulator)
+        self.plan = []
+        self.plan_states = []    # predicted states of self.plan: plan_states[j] is before action j
+        self.plan_index = 0
         self.problem = problem                # planning view (with the fuel reserve): for replans
         self.world = problem.with_reserve(0)  # real-world view: the tank may go down to 0
         self.rng = rng
@@ -229,6 +237,8 @@ class Simulator:
                 self.rival_pos = self.rival_target(move)
             self.rival_path.append(self.rival_pos)
         self.timeline.append(self._snapshot(event))
+        if self.on_step is not None:
+            self.on_step(self)
 
     # ------------------------------------------------------------ executing a whole plan
     def predict(self, actions, state=None) -> list:
@@ -264,6 +274,7 @@ class Simulator:
         slips = failed = waits = 0
         replans = []
         i = 0   # index of the next planned action
+        self.plan, self.plan_states, self.plan_index = plan, plan_states, i
 
         while not self.done:
             if replan_fn is not None:
@@ -286,9 +297,11 @@ class Simulator:
                     plan = new_plan
                     plan_states = self.predict(plan)
                     i = 0
+                    self.plan, self.plan_states, self.plan_index = plan, plan_states, i
             if i >= len(plan):
                 self.outcome, self.end_reason = "draw", "plan used up"  # blind mode
                 break
+            self.plan_index = i + 1        # visible to on_step: the action AFTER this one is next
             info = self.step(plan[i])
             slips += info.slipped
             failed += info.failed

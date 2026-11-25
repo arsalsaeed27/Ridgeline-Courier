@@ -83,9 +83,11 @@ oel/
     heuristics.py   # h_mst (ours), h_manhattan_min, h_farthest
     result.py       # SearchResult dataclass
   game/             # Part C
+    state.py        # GameState, GameContext, from_simulator, is_terminal (Turn 2)
     window.py       # reduced game (local window around agent)
     minimax.py      # minimax, alphabeta, move ordering
-    evaluation.py   # features + weights
+    evaluation.py   # features + weights (Turn 2)
+    tuning.py       # grid_search, coordinate_ascent, weight heatmap (Turn 2; run in Turn 3)
     tournament.py   # N games, W/D/L, Wilson CIs
   llm/              # Part D
     tools.py, validator.py, agent.py, requests.json, cache/
@@ -136,6 +138,42 @@ class SearchResult:
 - `ucs` / `astar` accept `max_states=` (memory cap -> reason `"memory_limit"`); `ida_star` (informed.py) is registered.
 - **Default planner:** `oel.search.registry.default_planner` = A* + h_ours + fuel pruning (registered as `"astar_pruned"`). Used by the simulator's full replans, the run_all demo, the fuel-reserve experiment and the UI. The rejoin search stays UCS (its goal is not "deliver everything", so h_ours is not a valid heuristic for it).
 - **Experiment framework:** `oel/experiments/framework.py`: `make_scenarios(n)` (30 seeded stop layouts on our map), `run_experiment(variants, n)` -> tidy DataFrame (parallel, cached in `oel/experiments/cache/`), `summarise()` -> mean + 95% bootstrap CI. Bump `FRAMEWORK_VERSION` if planner results change.
+### Game interface (Part C; defined in Turn 2, used as is by Turn 3)
+```python
+# oel/game/state.py
+@dataclass(frozen=True)            # hashable: usable as a transposition-table key
+class GameState:
+    agent: tuple                   # our cell (row, col), FULL-map coordinates
+    rival: tuple | None            # the rival's cell
+    delivered_mask: int
+    fuel: int
+    step: int                      # OUR moves so far (a turn = our move, then the rival's)
+    target_stop: int | None        # the stop our A* plan delivers next
+    path: tuple                    # the next PATH_LEN (8) cells of our plan
+    to_move: str = "agent"         # "agent" | "rival"
+    ctx: GameContext               # map facts (problem, world, distance fields); NOT part of == / hash
+    agent_state -> (row, col, mask, fuel)   # property, for problem.actions()/result()
+
+GameContext.for_problem(problem) -> GameContext      # cached per map
+from_simulator(sim, plan_states=None) -> GameState   # reads sim.plan_states / sim.plan_index
+make_state(ctx, agent, rival, delivered_mask=0, fuel=None, ...) -> GameState
+is_terminal(state) -> (bool, "win" | "loss" | "draw" | "running")
+after_agent_move(state, new_agent_state) -> GameState   # bookkeeping only; legality = caller
+after_rival_move(state, new_rival_cell) -> GameState
+agent_moves(state) -> list[str]                      # real-world legal moves minus the rival's cell
+
+# oel/game/evaluation.py
+features(state) -> dict            # progress, delivered, interference, race, mobility, fuel_safety
+evaluate(state, weights=None) -> float   # OUR point of view; +-1000 (win/loss), 0 (draw)
+DEFAULT_WEIGHTS                    # {feature: weight}
+
+# oel/game/tuning.py   (play_fn(weights, seed) -> "win"|"draw"|"loss", a TOP-LEVEL function)
+grid_search(play_fn, weight_grid, n_games, seed) -> DataFrame
+coordinate_ascent(play_fn, start_weights, steps, n_games, seed) -> (best_weights, DataFrame)
+plot_weight_heatmap(df, x, y, name)
+```
+Terminal rules match the simulator: win = all delivered; loss = no legal move even without the rival (stranded) or an unreachable stop; draw = `cfg.max_steps`. Boxed in ONLY by the rival is NOT terminal (the evaluation penalises it). The Simulator takes `on_step=callback(sim)` (called after every step) and exposes `sim.plan`, `sim.plan_states`, `sim.plan_index`.
+
 Planners: `planner(problem, **kwargs) -> SearchResult`. Heuristics: `h(state, problem) -> float`.
 Register them in `oel/search/registry.py` (`register_planner(name, fn, uses_heuristic=...)`, `register_heuristic(name, h)`); the UI, the LLM tools and the plan cache read the registries. `DeliveryProblem(config, constraints=PlanConstraints(...))` adds user constraints (`oel/world/constraints.py`); `verify_plan(actions, constraints, cfg)` checks a plan independently.
 
