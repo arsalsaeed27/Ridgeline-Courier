@@ -1,7 +1,7 @@
 """Experiment: how big should the planner's fuel reserve be?
 
 The optimal plan has zero fuel slack, so slips (which burn extra fuel) can strand the agent.
-For each reserve in RESERVES: plan once with the stand-in UCS (the plan doesn't depend on the
+For each reserve in RESERVES: plan once with UCS (the plan doesn't depend on the
 seed), then simulate it with slip + rival + rejoin/full replanning for N seeds
 (BASE_SEED + i). Record win/draw/loss, the mean cost of won runs and replans.
 
@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 
 from oel.experiments.stats import wilson_ci
-from oel.search.standin import ucs
+from oel.search.uninformed import ucs
 from oel.stamp import save_fig, save_table
 from oel.world.problem import DeliveryProblem
 from oel.world.simulator import RejoinReplanner, Simulator
@@ -44,7 +44,7 @@ GRID = "#e4e3df"
 # ---------------------------------------------------------------- work done in the pool
 # These are top-level functions so the worker processes can import them.
 def _plan(cfg, reserve):
-    """Stand-in UCS plan with this reserve (the planned, no-slip cost)."""
+    """UCS plan with this reserve (the planned, no-slip cost)."""
     problem = DeliveryProblem(dataclasses.replace(cfg, fuel_reserve=reserve))
     t0 = time.perf_counter()
     res = ucs(problem)

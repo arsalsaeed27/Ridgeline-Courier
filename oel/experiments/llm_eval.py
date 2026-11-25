@@ -112,7 +112,7 @@ def write_gold_doc(cfg, requests) -> str:
             reason += f"; alt reading {describe(alt)} -> {alt_cost}"
         rows.append(f"| {req['id']} | {req['tier']} | {req['text']} | {answer} | {reason} |")
     text = (f"_{stamp()}_\n\n# Part D: gold answers for the 20 LLM requests\n\n"
-            "Written by us, not by the LLM. Costs are the direct (stand-in UCS) plans on the gold "
+            "Written by us, not by the LLM. Costs are the direct (UCS) plans on the gold "
             f"constraints, with the default planning fuel reserve {cfg.fuel_reserve}.\n\n" + "\n".join(rows) + "\n")
     GOLD_DOC.write_text(text, encoding="utf-8")
     return text

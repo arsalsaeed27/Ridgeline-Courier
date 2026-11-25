@@ -128,6 +128,8 @@ class SearchResult:
     solved: bool
     expanded_order: list | None = None   # OPTIONAL: cell (row, col) of each expanded state, in order,
                                           # capped at EXPANDED_ORDER_CAP (200k); drives the UI search animation
+    stats: dict = {}      # OPTIONAL planner facts: reason (failure/cutoff/node_limit/time_limit/max_depth),
+                          # goal_test, steps, IDS iterations + re_expansions, A* reopened, weight
 ```
 Planners: `planner(problem, **kwargs) -> SearchResult`. Heuristics: `h(state, problem) -> float`.
 Register them in `oel/search/registry.py` (`register_planner(name, fn, uses_heuristic=...)`, `register_heuristic(name, h)`); the UI, the LLM tools and the plan cache read the registries. `DeliveryProblem(config, constraints=PlanConstraints(...))` adds user constraints (`oel/world/constraints.py`); `verify_plan(actions, constraints, cfg)` checks a plan independently.

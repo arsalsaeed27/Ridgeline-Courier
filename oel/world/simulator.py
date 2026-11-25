@@ -333,7 +333,7 @@ class RejoinReplanner:
     Wait: if we are still ON the plan and only the rival blocks the next step (and no short
     detour exists), stay put one step; the rival moves every step. Cheaper than a full replan.
     Full replan: full_planner on the whole map from the current state (rival = wall).
-    full_planner is pluggable (stand-in UCS now; Laiba's A* later) to compare strategies.
+    full_planner is pluggable (UCS by default; A* with a heuristic is faster) to compare strategies.
     Fuel reserve: replans keep the planner's reserve. If that is impossible (e.g. slips already
     pushed the tank below the reserve), they fall back to the real limit of 0 rather than give
     up: kind "full_no_reserve". Only if even that fails is the agent truly stranded.

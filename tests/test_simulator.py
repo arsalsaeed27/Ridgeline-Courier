@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from oel.config import parse_cli
-from oel.search.standin import ucs
+from oel.search.uninformed import ucs
 from oel.world.problem import TUNNEL, DeliveryProblem
 from oel.world.simulator import PERPENDICULAR, RejoinReplanner, Simulator, fuel_needed
 

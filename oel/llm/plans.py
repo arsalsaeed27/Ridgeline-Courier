@@ -16,7 +16,7 @@ import numpy as np
 
 from oel.search import registry
 from oel.search.result import EXPANDED_ORDER_CAP, run_timed
-from oel.search.standin import ucs
+from oel.search.uninformed import ucs
 from oel.stamp import get_logger
 from oel.world.constraints import PlanConstraints
 from oel.world.problem import TUNNEL, DeliveryProblem
@@ -126,10 +126,14 @@ def plan(cfg, constraints: PlanConstraints, algorithm: str = "ucs", heuristic: s
         problem = DeliveryProblem(cfg, constraints=constraints)
         res = run_timed(planner, problem, measure_memory=measure_memory, **kwargs)
         record.update(nodes_expanded=res.nodes_expanded, runtime_s=round(res.runtime_s, 2),
-                      peak_mem_kb=round(res.peak_mem_kb) if measure_memory else None)
+                      peak_mem_kb=round(res.peak_mem_kb) if measure_memory else None,
+                      stats=res.stats)
         if res.expanded_order is not None:
             record.update(expansion_grids(cfg, res.expanded_order))
-        if not res.solved:
+        stopped = res.stats.get("reason")
+        if not res.solved and stopped in ("node_limit", "time_limit", "cutoff", "max_depth"):
+            record["reason"] = f"{algorithm} stopped before finding a route ({stopped})"
+        elif not res.solved:
             record["reason"] = "no route satisfies the constraints (search space exhausted)"
         else:
             record.update(cost=res.cost, actions=list(res.actions),

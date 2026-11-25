@@ -24,13 +24,13 @@ import views                          # noqa: E402
 from oel.config import TERRAINS, load_config, parse_cli   # noqa: E402
 from oel.llm import plans, tools      # noqa: E402
 from oel.search import registry       # noqa: E402
-from oel.search.standin import ucs    # noqa: E402
+from oel.search.uninformed import ucs  # noqa: E402
 from oel.stamp import stamp           # noqa: E402
 from oel.world.constraints import PlanConstraints        # noqa: E402
 from oel.world.problem import DeliveryProblem            # noqa: E402
 from oel.world.simulator import RejoinReplanner, Simulator, greedy_blocker   # noqa: E402
 
-PLAN_ESTIMATE = "about 25-50 s with the stand-in UCS"
+PLAN_ESTIMATE = "about 25-50 s with UCS on the full map"
 st.set_page_config(page_title="Ridgeline Courier", layout="wide")
 
 # ---------------------------------------------------------------- banner (on every page)
@@ -271,7 +271,7 @@ with tab_sim:
     else:
         st.write(f"Plan `{rec['plan_id']}` (cost {rec['cost']:.0f}) in the real world: slip {cfg.slip}, "
                  f"seed {cfg.seed}, placeholder rival, rejoin/full replanning.")
-        if st.button("Simulate (usually 10-90 s: full replans run the stand-in UCS)", key="sim_btn", type="primary"):
+        if st.button("Simulate (usually 10-90 s: full replans run UCS)", key="sim_btn", type="primary"):
             with st.spinner("Simulating..."):
                 st.session_state["sim"] = simulate_run(ARGV, rec["plan_id"])
                 st.session_state["sim_key"] = (ARGV, rec["plan_id"])
@@ -369,7 +369,7 @@ with tab_exp:
     st.caption("Every stamped table and figure in results/, as produced by `python run_all.py`.")
     groups = {
         "World, hills and twists": ["instance_map", "elevation_map"],
-        "Turn 1 pipeline: stand-in planner + simulator": ["standin_"],
+        "Pipeline demo: UCS plan + simulator": ["standin_"],
         "Fuel reserve experiment": ["fuel_reserve"],
         "Part D: LLM dispatcher": ["llm_eval"],
         "Part D: validator fault injection": ["validator_fault"],

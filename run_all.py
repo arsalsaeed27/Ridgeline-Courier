@@ -9,7 +9,8 @@ import time
 from collections import defaultdict
 
 from oel.config import RESULTS_DIR, parse_cli
-from oel.experiments import fuel_reserve, llm_eval, standin_demo, validator_fault_injection
+from oel.experiments import (fuel_reserve, llm_eval, search_small, standin_demo,
+                            validator_fault_injection)
 from oel.stamp import get_logger, stamp
 from oel.world.plots import plot_elevation_map, plot_instance_map
 
@@ -46,12 +47,12 @@ def main(argv=None):
     log.info("saved %s", plot_instance_map(cfg).name)
     log.info("saved %s", plot_elevation_map(cfg).name)
 
-    # ------------------------------------------------------------ stand-in pipeline (Turn 1)
-    # TEMPORARY: plan with the stand-in UCS, execute it in the simulator (slip + rival,
+    # ------------------------------------------------------------ pipeline demo (Turn 1)
+    # plan with UCS, execute it in the simulator (slip + rival,
     # rejoin/full replanning), save standin_route.png + standin_summary. Swap in Laiba's A*.
     standin_demo.run(cfg, log)
 
-    # fuel-reserve experiment (Turn 1): 5 reserves x 30 seeds, ~28 min with the stand-in UCS.
+    # fuel-reserve experiment (Turn 1): 5 reserves x 30 seeds, ~28 min with UCS.
     # Skipped in --quick (even 10 seeds take ~10 min, over the 5-minute limit); run it alone
     # with:  python -m oel.experiments.fuel_reserve --quick   (10 seeds per reserve)
     if cfg.quick:
@@ -63,8 +64,10 @@ def main(argv=None):
     # TODO: vectorised cost map + loop benchmark table, PEAS / environment tables.
 
     # ------------------------------------------------------------ Part B (Turn 2: Laiba Rehman)
-    # TODO: planner comparison table (BFS, UCS, DLS, IDS, Greedy, A*, weighted A*),
-    #       30-seed experiments with 95% CIs, heuristic ablation.
+    # all six algorithms on 30 small instances (7x7 window, ~6 s, so also in --quick)
+    search_small.run(cfg, log)
+    # TODO (Turn 2, next sessions): heuristics (MST + baselines), full-map A* comparison,
+    #       weighted A*, IDS vs A* under a memory limit, 30-seed experiments + ablation.
 
     # ------------------------------------------------------------ Part C (Turn 3: Ali Salman Mustafa)
     # TODO: minimax vs alpha-beta node counts, weight tuning, 100-game tournament (Wilson CIs).

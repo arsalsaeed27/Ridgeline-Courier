@@ -4,7 +4,7 @@ from __future__ import annotations
 import dataclasses
 import time
 import tracemalloc
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 # Planners record at most this many expanded cells in expanded_order (memory: ~15 MB of tuples).
 EXPANDED_ORDER_CAP = 200_000
@@ -23,6 +23,9 @@ class SearchResult:
     # OPTIONAL: the CELL (row, col) of each expanded state, in expansion order, capped at
     # EXPANDED_ORDER_CAP entries. Used by the UI's search visualisation. None = not recorded.
     expanded_order: list | None = None
+    # OPTIONAL planner-specific facts, e.g. {"reason": "cutoff"} for DLS, the per-iteration node
+    # counts of IDS, A*'s reopenings, "goal_test": "on generation" / "on pop".
+    stats: dict = field(default_factory=dict)
 
 
 def failed_result(nodes_expanded: int = 0, max_frontier: int = 0) -> SearchResult:

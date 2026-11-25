@@ -12,7 +12,7 @@ from __future__ import annotations
 import dataclasses
 
 from oel.config import TERRAINS
-from oel.search.standin import ucs
+from oel.search.uninformed import ucs
 from oel.world.constraints import PlanConstraints
 from oel.world.problem import TUNNEL, DeliveryProblem
 
@@ -97,7 +97,9 @@ def get_instance_info(cfg) -> dict:
             "fuel_capacity": cfg.fuel_capacity, "default_fuel_reserve": cfg.fuel_reserve,
             "hills": {"up_cost_per_level": cfg.up_cost, "up_fuel_per_level": cfg.up_fuel,
                       "regen_per_level_down": cfg.regen, "enabled": cfg.use_hills},
-            "algorithms": sorted(plans.PLANNERS),
+            # only the planners the LLM is told about (cfg.llm_algorithms; the Part D benchmark
+            # was graded with ["ucs"]). The validator still accepts every registered planner.
+            "algorithms": [a for a in cfg.llm_algorithms if a in plans.PLANNERS],
             "notes": "Stops are numbered 0-4 (stop 0 is the first stop; there is no stop 5). "
                      "Cells are [row, col], row 0 at the top; "
                      "path_cost_from_depot ignores the fuel limit",

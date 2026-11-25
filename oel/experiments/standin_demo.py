@@ -1,4 +1,4 @@
-"""End-to-end demo with the TEMPORARY stand-in planner (replace with Laiba's A* in Turn 2).
+"""End-to-end pipeline demo (Turn 1): plan with UCS, then simulate. (File name kept from Turn 1.)
 
 plan (perfect model) -> execute in the simulator (slip + rival) with rejoin/full replanning
 -> results/figures/standin_route.png and results/tables/standin_summary.{csv,md}
@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from oel.search.result import run_timed
-from oel.search.standin import ucs
+from oel.search.uninformed import ucs
 from oel.stamp import save_table
 from oel.world.plots import plot_route
 from oel.world.problem import DeliveryProblem
@@ -20,9 +20,9 @@ def run(cfg, log):
     # tracemalloc makes search ~2-3x slower, so the quick run skips the memory measurement
     plan = run_timed(ucs, problem, measure_memory=not cfg.quick)
     if not plan.solved:
-        log.warning("stand-in UCS found no plan")
+        log.warning("UCS found no plan")
         return None
-    log.info("stand-in UCS: cost %.0f, %d actions, %d nodes, %.1f s",
+    log.info("UCS: cost %.0f, %d actions, %d nodes, %.1f s",
              plan.cost, len(plan.actions), plan.nodes_expanded, plan.runtime_s)
 
     sim = Simulator(cfg, problem, np.random.default_rng(cfg.seed))
@@ -35,12 +35,12 @@ def run(cfg, log):
              report.extra_cost_text(), report.steps, report.slips)
 
     planned_cells = [s[:2] for s in plan.path]
-    title = (f"Stand-in UCS route: planned cost {plan.cost:.0f}; simulated (slip {cfg.slip}) "
+    title = (f"UCS route: planned cost {plan.cost:.0f}; simulated (slip {cfg.slip}) "
              f"{report.outcome}, cost {report.total_cost:.0f}")
     fig_path = plot_route(cfg, report.agent_path, report.rival_path, planned_cells, title)
 
     row = {
-        "planner": "stand-in UCS",
+        "planner": "UCS",
         "hills": cfg.use_hills, "fuel": cfg.use_fuel, "tunnels": cfg.use_tunnels,
         "slip": cfg.slip, "seed": cfg.seed, "fuel_reserve": cfg.fuel_reserve,
         "planned_cost": plan.cost, "nodes_expanded": plan.nodes_expanded,

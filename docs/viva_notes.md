@@ -57,6 +57,47 @@ A: From **0 to 4**, everywhere: in the code (stop i = bit i of `delivered_mask`)
 
 ## Part B: Search planners and heuristic
 
+**Q: How do BFS, UCS, DLS, IDS, Greedy and A\* differ?**
+A: They all walk the same graph (states `(row, col, mask, fuel)`) and differ in which state they expand next:
+- **BFS** expands the oldest state (FIFO) and finds the fewest **moves**.
+- **UCS** expands the cheapest-so-far state (lowest g) and finds the cheapest **cost**.
+- **DLS** goes depth-first down to a limit, storing only the current path.
+- **IDS** repeats DLS with limits 0, 1, 2, …: fewest moves like BFS, little memory like DLS.
+- **Greedy** expands the state that looks closest (lowest h); fast but not optimal.
+- **A\*** expands the lowest g + h; optimal if h never overestimates.
+
+**Q: Why isn't BFS optimal here?**
+A: Moves cost 1–9 (road to ford) plus climbing, so the route with the fewest moves isn't the cheapest. On 30 small instances BFS cost 1.07× the optimum on average (95% CI 1.03–1.11), while UCS and A\* were always optimal.
+
+**Q: When is the goal tested, and why does it matter?**
+A: BFS tests a state when it's **generated**: every state at depth d is generated before any at depth d+1, so the first goal generated already has the fewest moves, and a whole layer is saved. UCS and A\* must test when a state is **popped**: only then is g guaranteed to be the cheapest, because every cheaper path was popped first. Testing on push could return a costlier path. So node counts aren't measured at exactly the same moment for each algorithm, and the table has a `goal_test` column for that reason.
+
+**Q: What does DLS return, and what is "cutoff" versus "failure"?**
+A: DLS returns a solution, *cutoff* or *failure*:
+- *cutoff*: some branch reached the depth limit, so a deeper solution might exist; IDS should try a bigger limit.
+- *failure*: everything reachable was explored without hitting the limit, so no solution exists at any depth.
+
+On every small instance, DLS with limit d\* (the BFS move count) succeeded, and with d\*−1 it returned cutoff (30/30 each).
+
+**Q: How does DLS avoid loops without a visited set?**
+A: It keeps the set of states on the **current path**: a state is added when the search goes down and removed when it backtracks, and states already on the path are skipped. That stops cycles but doesn't stop reaching the same state again along a different path, which is why DLS and IDS repeat work. Mean nodes on the small instances: BFS 70, DLS(d\*) 5,381, IDS 35,840 (including 0-limit to d\* repeats, counted in `stats["re_expansions"]`).
+
+**Q: Why does IDS struggle with fuel ON?**
+A: Fuel is part of the state, so returning to a cell with a different fuel level counts as a new state, and the on-path check almost never prunes. With fuel ON (or a 9×9 window), IDS solved only 25/30 (or 24/30) within 500k nodes. The main table therefore uses a 7×7 window with fuel off, where IDS solves 30/30.
+
+**Q: Why does A\* break ties by larger g, and what is a reopening?**
+A: Among states with equal f, the one with larger g is further along its path, so it usually reaches the goal sooner without hurting optimality. *Reopening* means finding a cheaper path to an already-expanded state; A\* then pushes it again. That never happens with a consistent heuristic (h_zero reopened 0 times), but our MST heuristic may be inconsistent, so A\* allows it and counts it.
+
+**Q: Why does A\*(h_zero) give exactly the UCS result?**
+A: With h = 0, f = g, so A\* orders states exactly like UCS. The tests check UCS == A\*(h_zero) == 307 (hills off) and 329 (hills on). Weighted A\* (f = g + w·h) trades optimality for speed; with an admissible h its cost is at most w × the optimum (checked with w = 2).
+
+**Q: How were the small instances made, and why masking?**
+A: We keep the real map but turn every cell outside a 7×7 window around the depot into a wall, and put 1–3 stops on random reachable cells inside (seeded from BASE_SEED + 1000 + i, redrawn if infeasible). Masking keeps the real terrain, heights and coordinates, so `verify_plan`, the plots and the UI work unchanged; cropping would renumber every cell.
+
+**Q: Why bootstrap confidence intervals in the table?**
+A: Node counts are very skewed (a few instances need far more nodes), and a t interval for DLS/IDS nodes even went below zero. The percentile bootstrap (resample the 30 values with replacement 10,000 times, seeded, and take the middle 95% of the means) handles skewed data. Solved % uses the Wilson interval.
+
+
 ## Part C: Adversarial search (rival blocker)
 
 ## Part D: LLM dispatcher

@@ -10,7 +10,9 @@ plan cache all read these dicts, so a new planner appears everywhere after one l
 Planners: planner(problem, **kwargs) -> SearchResult. A planner registered with
 uses_heuristic=True is called as planner(problem, heuristic=h) with h(state, problem) -> float.
 """
-from oel.search.standin import ucs
+from oel.search.heuristics import h_zero
+from oel.search.informed import astar, greedy, weighted_astar
+from oel.search.uninformed import bfs, dls, ids, ucs
 
 PLANNERS = {}       # name -> planner function
 PLANNER_INFO = {}   # name -> {"uses_heuristic": bool, "description": str}
@@ -28,5 +30,14 @@ def register_heuristic(name: str, heuristic, description: str = "") -> None:
     HEURISTIC_INFO[name] = {"description": description}
 
 
-# TEMPORARY: Laiba replaces this with her own UCS (oel/search/uninformed.py) in Turn 2.
-register_planner("ucs", ucs, description="uniform-cost search (temporary stand-in)")
+# ---------------------------------------------------------------- Part B planners (Turn 2)
+register_planner("bfs", bfs, description="breadth-first search: fewest moves, not cheapest")
+register_planner("ucs", ucs, description="uniform-cost search: cheapest path")
+register_planner("dls", dls, description="depth-limited search (limit 50, node/time budget)")
+register_planner("ids", ids, description="iterative deepening (max depth 30, node/time budget)")
+register_planner("greedy", greedy, uses_heuristic=True, description="greedy best-first on h")
+register_planner("astar", astar, uses_heuristic=True, description="A*: f = g + h")
+register_planner("weighted_astar", weighted_astar, uses_heuristic=True,
+                 description="weighted A*: f = g + 2h (faster, may cost more)")
+
+register_heuristic("h_zero", h_zero, description="always 0 (A* = UCS)")

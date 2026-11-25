@@ -2,11 +2,11 @@
 import pytest
 
 from oel.config import parse_cli
-from oel.search.standin import ucs
+from oel.search.uninformed import ucs
 from oel.world.problem import TUNNEL, DeliveryProblem
 
 HILLS_OFF_OPTIMUM = 307   # reference from CLAUDE.md (brute-force UCS, hills OFF)
-HILLS_ON_OPTIMUM = 329    # stand-in UCS with UP_COST=2, UP_FUEL=3, REGEN=1; also in CLAUDE.md
+HILLS_ON_OPTIMUM = 329    # UCS with UP_COST=2, UP_FUEL=3, REGEN=1; also in CLAUDE.md
 # Both references are TRUE optima, so they are computed with --fuel-reserve 0.
 
 

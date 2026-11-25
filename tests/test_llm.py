@@ -5,7 +5,7 @@ import pytest
 
 from oel.config import TERRAINS, parse_cli
 from oel.llm import agent, plans, validator
-from oel.search.standin import ucs
+from oel.search.uninformed import ucs
 from oel.world.constraints import PlanConstraints, verify_plan
 from oel.world.problem import DeliveryProblem
 

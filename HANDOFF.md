@@ -180,3 +180,30 @@ _Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) |
 **Plan cache note:** cached plans are keyed by the algorithm NAME. If your UCS is registered as `"ucs"`, the cached stand-in plans are reused (same optimal costs), so Part D still replays from the cache. Only bump `CACHE_VERSION` in `oel/llm/plans.py` if the planning RULES change: that invalidates every cached plan id and the cached LLM conversations (they would then need a live re-run with a key).
 
 **Speed:** once A* is fast, move the fuel-reserve experiment back into `--quick` (see the comment in `run_all.py`) and use A* for the simulator's full replans (`RejoinReplanner(full_planner=astar, ...)`). Keep `python run_all.py --quick` under 5 minutes.
+
+---
+
+## Turn 2 (session 1): Laiba's part, done by M. Arsal Saeed (506676), 2026-11-25
+### What I built
+- `oel/search/uninformed.py`: `bfs` (graph search, goal test on generation), `ucs` (goal test on pop; keeps `is_goal=` / `max_nodes=` for the simulator's rejoin), `dls` (recursive, on-path cycle check, cutoff vs failure, node/time budget), `ids` (DLS 0..max_depth, per-iteration nodes, re-expansions, total budget).
+- `oel/search/informed.py`: `greedy` (h only, visited set), `astar` (f = g + w*h, ties to larger g, reopens closed states and counts it), `weighted_astar` (A* with w, default 2).
+- `oel/search/heuristics.py`: `h_zero` only (the real heuristics come next session). `oel/search/common.py`: shared path/result helpers.
+- `oel/experiments/small_instances.py` (masking: real map, everything outside a 7x7 window around the depot becomes a wall, 1-3 seeded stops, redrawn if infeasible) and `oel/experiments/search_small.py` (comparison table). `oel/experiments/stats.py`: + `mean_ci` (t) and `bootstrap_mean_ci`.
+- `tests/test_search.py`.
+### How to run it
+- `python -m oel.experiments.search_small` (~6 s; also part of `run_all.py --quick`). `pytest -q tests/test_search.py -m "not slow"` (~5 s).
+### Key results / numbers
+- `results/tables/search_uninformed_small` (30 instances, mean [95% bootstrap CI]): all algorithms solve 30/30 except DLS(d*-1), which returns cutoff 30/30 as it must. Mean nodes: BFS 70, UCS 74, A*(h_zero) 74, Greedy(h_zero) 79, DLS(d*) 5,381, IDS 35,840. BFS / DLS / IDS / Greedy cost 1.07x the optimum on average; UCS and A* are always optimal. Every plan passes `verify_plan`.
+- IDS limits: with fuel ON (25/30) or a 9x9 window (24/30) IDS runs out of its 500k-node budget, because fuel makes "the same cell" a new state and the on-path check stops pruning. That's why the table uses a 7x7 window with fuel off.
+### Files I created or changed
+- New: `oel/search/uninformed.py`, `informed.py`, `common.py`, `oel/experiments/small_instances.py`, `search_small.py`, `tests/test_search.py`. Changed: `heuristics.py`, `registry.py`, `oel/experiments/stats.py`, `run_all.py`, `docs/viva_notes.md`, `CLAUDE.md`.
+- **Deleted `oel/search/standin.py`**; all 10 importers now use `oel.search.uninformed.ucs`. `CACHE_VERSION` unchanged, so cached plans still load (tested).
+### Changes to other people's code (if any)
+- `oel/search/result.py` (shared interface): **new optional field `stats: dict`** (reason, goal_test, steps, IDS iterations / re_expansions, A* reopened, weight). Recorded in CLAUDE.md. Existing code is unaffected (it defaults to `{}`).
+- `oel/llm/plans.py`: plan records also store `stats`; an unsolved search that stopped on a budget says so in its reason.
+- `oel/config.py` + `oel/llm/tools.py`: new `cfg.llm_algorithms = ("ucs",)`. `get_instance_info` advertises only these, so the Part D benchmark replays exactly. The validator still accepts every registered planner. Widen it with ONE deliberate live re-run after the heuristic session.
+### Known issues / TODOs
+- Heuristics (MST + 2 baselines + admissibility proof/test), full-map A* comparison, weighted A* study, IDS vs A* under a memory limit, 30-seed experiments + ablation: next sessions.
+- `dls` / `ids` on the full map only stop on their budgets (expected).
+### What the next person needs to know
+- All planners are registered (`bfs, ucs, dls, ids, greedy, astar, weighted_astar`) plus `h_zero`; they show up in the UI's Plan and Search tabs automatically.

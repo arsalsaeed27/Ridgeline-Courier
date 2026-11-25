@@ -2,7 +2,7 @@ _Laiba Rehman (505099) | M. Arsal Saeed (506676) | Ali Salman Mustafa (534732) |
 
 # Part D: gold answers for the 20 LLM requests
 
-Written by us, not by the LLM. Costs are the direct (stand-in UCS) plans on the gold constraints, with the default planning fuel reserve 20.
+Written by us, not by the LLM. Costs are the direct (UCS) plans on the gold constraints, with the default planning fuel reserve 20.
 
 | id | tier | request | gold answer | reason |
 |---|---|---|---|---|

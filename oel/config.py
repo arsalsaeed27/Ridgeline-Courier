@@ -98,6 +98,9 @@ class Config:
     llm_temperature: float = 0.0
     llm_max_tool_calls: int = 8
     llm_live: bool = False         # False = replay cached LLM replies only (no API key needed)
+    # planners get_instance_info advertises to the LLM. Pinned to what the Part D benchmark was
+    # graded with, so the cached conversations replay exactly; widen it with a live re-run.
+    llm_algorithms: tuple = ("ucs",)
     # twist on/off flags
     use_fuel: bool = True
     use_tunnels: bool = True
